@@ -15,7 +15,7 @@ extern xdata UI16   Comp_Test_Disp_En_Timer;
 //#define _SYS_Inspect_s                 SYS_Inspect_bit.bit_.b1
 #define _COMP_TEST_EN                  SYS_Inspect_bit.bit_.b2
 #define _Comp_Test_Key_Count_EN        SYS_Inspect_bit.bit_.b3
- //#define _SYS_Inspect_Key_OK            SYS_Inspect_bit.bit_.b4
+//#define _SYS_Inspect_Key_OK            SYS_Inspect_bit.bit_.b4
 #define _Comp_Test_Key_First_Status    SYS_Inspect_bit.bit_.b5
 
 #if 1

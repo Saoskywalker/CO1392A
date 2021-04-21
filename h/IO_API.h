@@ -22,15 +22,15 @@ extern xdata UI08          DI_read_time;
 #define  DO_total 10
 
 extern xdata DO_PARA  Comp_para,
-               Way4_para,
-               Pump_para,
-               Hfan_para,
-               Mfan_para,
-               Lfan_para,
-               OutHfan_para,
-               OutLfan_para,
-               Power_para,//负载开机延时运行，摆叶例外
-               DCPUMP_para;
+       Way4_para,
+       Pump_para,
+       Hfan_para,
+       Mfan_para,
+       Lfan_para,
+       OutHfan_para,
+       OutLfan_para,
+       Power_para,//负载开机延时运行，摆叶例外
+       DCPUMP_para;
 
 extern void IO_data_Init(void);
 extern void IO_init(void);

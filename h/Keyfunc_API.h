@@ -13,7 +13,7 @@
 
 extern const UI08 TempSet_range[4][2];
 
-//°´¼ü
+//¡ã??¨¹
 #define power_key   1
 #define fan_key     2
 #define down_key    3
@@ -34,7 +34,7 @@ extern const UI08 TempSet_range[4][2];
 
 
 
-extern UI08 Disp_Delay;//ÏÔÊ¾delay
+extern UI08 Disp_Delay;//????delay
 void key_decode(void);
 extern void Turn_On(void);
 extern void Turn_Off(void);

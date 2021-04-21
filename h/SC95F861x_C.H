@@ -5,7 +5,7 @@ C Header file for SC95F861x microcontroller.
 Copyright (c) 2019 Shenzhen SinOne Chip Electronic CO., Ltd.
 All rights reserved.
 深圳市赛元微电子有限公司
-版本号:  V0.1    
+版本号:  V0.1
 日期:  2019.02.11
 --------------------------------------------------------------------------*/
 #ifndef _SC95F861x_H_
@@ -14,15 +14,15 @@ All rights reserved.
 /* ------------------- 字节寄存器-------------------- */
 ///*CPU*/
 sfr 	ACC	   = 0xE0;		//累加器Ａ
-sfr 	B	   = 0xF0;		//通用寄存器B		
+sfr 	B	   = 0xF0;		//通用寄存器B
 sfr 	PSW	   = 0xD0;		//程序状态字
 sfr 	DPS	   = 0x86;      //数据选择寄存器
-sfr 	DPH1   = 0x85;		//DPH1数据指针高8位	
-sfr 	DPL1   = 0x84;      //DPL1数据指针低8位	
-sfr 	DPH	   = 0x83;		//DPH数据指针高8位		
-sfr 	DPL	   = 0x82;		//DPL数据指针低8位		
-sfr 	SP	   = 0x81;		//堆栈指针	
-		
+sfr 	DPH1   = 0x85;		//DPH1数据指针高8位
+sfr 	DPL1   = 0x84;      //DPL1数据指针低8位
+sfr 	DPH	   = 0x83;		//DPH数据指针高8位
+sfr 	DPL	   = 0x82;		//DPL数据指针低8位
+sfr 	SP	   = 0x81;		//堆栈指针
+
 /*system*/
 sfr		PCON   = 0x87;		//电源管理控制寄存器
 
@@ -35,23 +35,23 @@ sfr		IE1    = 0xA9;  	//中断控制寄存器1
 sfr		IE2    = 0xAA;      //中断控制寄存器2
 
 /*PORT*/
-sfr 	P5PH    = 0xDA;		//P5口模式控制寄存器		
-sfr	  	P5CON	= 0xD9;		//P5口模式控制寄存器		
+sfr 	P5PH    = 0xDA;		//P5口模式控制寄存器
+sfr	  	P5CON	= 0xD9;		//P5口模式控制寄存器
 sfr   	P5	    = 0xD8;		//P5口数据寄存器
-sfr 	P4PH    = 0xC2;		//P4口模式控制寄存器		
-sfr	  	P4CON	= 0xC1;		//P4口模式控制寄存器		
+sfr 	P4PH    = 0xC2;		//P4口模式控制寄存器
+sfr	  	P4CON	= 0xC1;		//P4口模式控制寄存器
 sfr   	P4	    = 0xC0;		//P4口数据寄存器
-sfr 	P3PH    = 0xB2;		//P3口模式控制寄存器		
-sfr	  	P3CON	= 0xB1;		//P3口模式控制寄存器		
+sfr 	P3PH    = 0xB2;		//P3口模式控制寄存器
+sfr	  	P3CON	= 0xB1;		//P3口模式控制寄存器
 sfr   	P3	    = 0xB0;		//P3口数据寄存器
-sfr 	P2PH    = 0xA2;		//P2口模式控制寄存器		
-sfr	  	P2CON	= 0xA1;		//P2口模式控制寄存器		
+sfr 	P2PH    = 0xA2;		//P2口模式控制寄存器
+sfr	  	P2CON	= 0xA1;		//P2口模式控制寄存器
 sfr   	P2	    = 0xA0;		//P2口数据寄存器
-sfr   	P1PH    = 0x92;		//P1口模式控制寄存器		
-sfr	  	P1CON   = 0x91;		//P1口模式控制寄存器	
+sfr   	P1PH    = 0x92;		//P1口模式控制寄存器
+sfr	  	P1CON   = 0x91;		//P1口模式控制寄存器
 sfr   	P1	    = 0x90;		//P1口数据寄存器
-sfr	  	P0PH    = 0x9B;		//P0口模式控制寄存器		
-sfr	 	P0CON   = 0x9A;		//P0口模式控制寄存器		
+sfr	  	P0PH    = 0x9B;		//P0口模式控制寄存器
+sfr	 	P0CON   = 0x9A;		//P0口模式控制寄存器
 sfr 	P0	    = 0x80;		//P0口数据寄存器
 sfr 	IOHCON0 = 0x96;		//IOH0设置寄存器
 sfr 	IOHCON1 = 0x97;		//IOH1设置寄存器
@@ -142,7 +142,7 @@ sfr   US2CON1  = 0xC5;   //SPI2控制寄存器1
 sfr   US2CON2  = 0xC6;   //SPI2控制寄存器2
 sfr   US2CON3  = 0xC7;   //SPI2数据寄存器
 
-sfr   OPINX   = 0xFE; 
+sfr   OPINX   = 0xFE;
 sfr   OPREG   = 0xFF;
 sfr   EXADH   = 0xF7;
 
@@ -202,7 +202,7 @@ sbit 	EADC   = IE^6;		//ADC中断使能控制	0:关闭ADC中断		1:打开ADC中断
 sbit 	ET2    = IE^5;		//PWM中断使能控制	0:关闭PWM中断		1:打开PWM中断
 sbit	EUART  = IE^4;		//UART中断使能控制	0:关闭SIF中断		1:打开SIF中断
 sbit 	ET1    = IE^3;		//Timer1中断使能控制	0:关闭TIMER1中断	1:打开TIMER1中断
-sbit	EINT1  = IE^2;		//32K Base Timer中断使能控制	0:关闭32K中断		1:打开32K中断	
+sbit	EINT1  = IE^2;		//32K Base Timer中断使能控制	0:关闭32K中断		1:打开32K中断
 sbit 	ET0	   = IE^1;		//Timer0中断使能控制	0:关闭TIMER0中断	1:打开TIMER0中断
 sbit	EINT0  = IE^0;		//TouchKey的中断使能控制	0:关闭TouchKey中断  1:打开TouchKey中断
 

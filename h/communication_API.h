@@ -4,16 +4,16 @@
 
 typedef enum
 {
-  BUZZ_TYPE1=0,
-  BUZZ_TYPE2=1,
-  BUZZ_TYPE3=2,
-  BUZZ_TYPE4=3,
-  BUZZ_TYPE5=4,
-  BUZZ_TYPE6=5,
-  BUZZ_TYPE7=6,
-  BUZZ_TYPE8=7,
-  BUZZ_TYPE9=8,
-  BUZZ_OFF=9
+    BUZZ_TYPE1=0,
+    BUZZ_TYPE2=1,
+    BUZZ_TYPE3=2,
+    BUZZ_TYPE4=3,
+    BUZZ_TYPE5=4,
+    BUZZ_TYPE6=5,
+    BUZZ_TYPE7=6,
+    BUZZ_TYPE8=7,
+    BUZZ_TYPE9=8,
+    BUZZ_OFF=9
 }
 BUZZ_TYPE;
 
@@ -52,7 +52,7 @@ extern void txd_data_protocol(void);
 extern void Buz_mode(UI08 mode_buf);
 extern void  sleep_deal(void);
 extern void communication_Deal(void);
-extern UI08 crc_check(UI08 *buffer ,UI08 length);
+extern UI08 crc_check(UI08 *buffer,UI08 length);
 
 #endif
 

@@ -47,23 +47,23 @@
 
 typedef struct
 {
-  UI16 EXV_target;
-  UI16 EXV_now;
-  UI08  step_time;
-  UI08  EXV_inspect;//
-  FunctionalState _swing;
-  FunctionalState _Default;
-}EXVPARA;
+    UI16 EXV_target;
+    UI16 EXV_now;
+    UI08  step_time;
+    UI08  EXV_inspect;//
+    FunctionalState _swing;
+    FunctionalState _Default;
+} EXVPARA;
 extern  xdata EXVPARA EXV_para;
 
 typedef enum
 {
-  STATUS1=0,
-  STATUS2=1,
-  STATUS3=2,
-  STATUS4=3,
-  STATUS5=4
-}EXV_STATUS;
+    STATUS1=0,
+    STATUS2=1,
+    STATUS3=2,
+    STATUS4=3,
+    STATUS5=4
+} EXV_STATUS;
 
 
 //==============================================================================

@@ -19,15 +19,15 @@ extern void REC_data_init(void);
 
 typedef struct REC
 {
-       MODE_TYPE mode;
-       FANSPEED_TYPE fan;
-       UI08 temp;
-       CF_TYPE cf;
-       UI08 sleep;
-       ONOFF_STATUS power;
-       UI08 timer_f;
-       UI08 timer_time;
-}rec_T;
+    MODE_TYPE mode;
+    FANSPEED_TYPE fan;
+    UI08 temp;
+    CF_TYPE cf;
+    UI08 sleep;
+    ONOFF_STATUS power;
+    UI08 timer_f;
+    UI08 timer_time;
+} rec_T;
 
 
 

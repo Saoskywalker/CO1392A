@@ -22,12 +22,12 @@ xdata UI32 exKeyValueFlag = 0;		//当前轮按键标志
 **************************************************/
 void Sys_Scan(void)
 {
-	if(SOCAPI_TouchKeyStatus&0x80)	    //重要步骤2:  触摸键扫描一轮标志，是否调用TouchKeyScan()一定要根据此标志位置起后
-	 {
-		SOCAPI_TouchKeyStatus &= 0x7f;	//重要步骤3: 清除标志位， 需要外部清除。
-		exKeyValueFlag = TouchKeyScan();//按键数据处理函数
-		TouchKeyRestart();				//启动下一轮转换
-	}
+    if(SOCAPI_TouchKeyStatus&0x80)	    //重要步骤2:  触摸键扫描一轮标志，是否调用TouchKeyScan()一定要根据此标志位置起后
+    {
+        SOCAPI_TouchKeyStatus &= 0x7f;	//重要步骤3: 清除标志位， 需要外部清除。
+        exKeyValueFlag = TouchKeyScan();//按键数据处理函数
+        TouchKeyRestart();				//启动下一轮转换
+    }
 }
 /*************************************************
  // 函数名称    : LedDsp_manage
@@ -44,7 +44,7 @@ void get_key_number(void)
 
     if(Read_key_delay)//操作完长按键  松手后nms再读
     {
-      return;
+        return;
     }
     //
     Sys_Scan();
@@ -53,92 +53,94 @@ void get_key_number(void)
     _SYS_Inspect_Key_OK=1;
     SYS_Inspect_Key_Data=key_data;
 
-    for(i=0;i<8;i++)
+    for(i=0; i<8; i++)
     {
         if(key_data&(UI08)(0x01<<i))
-	{
-	    key_total_count++;
-	    number=i+1;
+        {
+            key_total_count++;
+            number=i+1;
         }
     }
 
     if(key_total_count==0)
     {
-    	   if((shake_count==2)&&(!_long_key_en))
-    	   {Key_Number=key_old;}
-           _long_key_en=0;//长按键使能下,此次短按键无效
-       	   shake_count=0;
-	   Key_last=0;
-	   return;
+        if((shake_count==2)&&(!_long_key_en))
+        {
+            Key_Number=key_old;
+        }
+        _long_key_en=0;//长按键使能下,此次短按键无效
+        shake_count=0;
+        Key_last=0;
+        return;
     }
     else if(key_total_count==1)
     {
-	key_new=number;
+        key_new=number;
     }
     else if(key_total_count==2)
     {
-    	if((key_data==_c_f)&&( Key_last>3000))
-	{
-		Key_Number=_c_f;
-		Key_last=0;
-		shake_count=0;
-		Read_key_delay=50;
-	        _long_key_en=1;//长按键使能下,此次短按键无效
-	}
+        if((key_data==_c_f)&&( Key_last>3000))
+        {
+            Key_Number=_c_f;
+            Key_last=0;
+            shake_count=0;
+            Read_key_delay=50;
+            _long_key_en=1;//长按键使能下,此次短按键无效
+        }
     }
     else
     {
-    	shake_count=0;
-	Key_last=0;
-	return;
+        shake_count=0;
+        Key_last=0;
+        return;
     }
     ///
     if(key_new!=key_old)
     {
-	   	key_old=key_new;
-		shake_count=0;
-        	//M_Key_last=0;
-        	return;
+        key_old=key_new;
+        shake_count=0;
+        //M_Key_last=0;
+        return;
     }
     //
     if(shake_count<2)
     {
-	    	shake_count++;
-		if((shake_count>=2)&&(key_total_count==1))
-		{
-			//M_Key_Number=key_old;
-            		//M_Key_last=0;
-            		;//松开有效
-		}
+        shake_count++;
+        if((shake_count>=2)&&(key_total_count==1))
+        {
+            //M_Key_Number=key_old;
+            //M_Key_last=0;
+            ;//松开有效
+        }
     }
     //长按灯光按键
     if((Key_last>=3000)&&(Key_last<=3500)&&(key_new==lamp_key))
     {
         if(Sys_filter_time>FITER_TIMER)
         {
-	  _long_key_en=1;//长按键使能下,此次短按键无效
-          Key_Number=filter_key;
-	  shake_count=0;
-          Key_last=0xffff;
-	  Read_key_delay=50;
+            _long_key_en=1;//长按键使能下,此次短按键无效
+            Key_Number=filter_key;
+            shake_count=0;
+            Key_last=0xffff;
+            Read_key_delay=50;
         }
     }
     //长按定时按键
     if((Key_last>=10000)&&(Key_last<=10500)&&(key_new==timer_key))
     {
-    	Key_Number=EC_Fast_key;
-	Key_last=0xffff;
-	shake_count=0;
-	Read_key_delay=50;
+        Key_Number=EC_Fast_key;
+        Key_last=0xffff;
+        shake_count=0;
+        Read_key_delay=50;
         _long_key_en=1;//长按键使能下,此次短按键无效
     }
     //
     if((Key_last>=5000)&&(Key_last<=5500)&&(PowerKey_off_cycle_Time>0)&&(Temp_Set_F==77)&&(key_new==fan_key))
     {
-    	Key_Number=OFF_CYCLE_KEY;
-	Key_last=0xffff;
-	shake_count=0;
-	Read_key_delay=50;
+        Key_Number=OFF_CYCLE_KEY;
+        Key_last=0xffff;
+        shake_count=0;
+        Read_key_delay=50;
         _long_key_en=1;//长按键使能下,此次短按键无效
     }
 }
@@ -150,63 +152,103 @@ void get_key_number(void)
 ***************************************************/
 void SEGNum_out(UI08 Data,UI08 com)
 {
-      UUI08 buf;
-      buf.byte=Data;
-      if(com==0)
-      {
-      	         if(buf.bit_.b0)
-		 {SEG_A_ON;}
-		 else
-		 { SEG_A_OFF;}
+    UUI08 buf;
+    buf.byte=Data;
+    if(com==0)
+    {
+        if(buf.bit_.b0)
+        {
+            SEG_A_ON;
+        }
+        else
+        {
+            SEG_A_OFF;
+        }
 
-		 if(buf.bit_.b1)
-		 {SEG_B_ON;}
-		 else
-		 { SEG_B_OFF;}
+        if(buf.bit_.b1)
+        {
+            SEG_B_ON;
+        }
+        else
+        {
+            SEG_B_OFF;
+        }
 
-		 if(buf.bit_.b2)
-		 {SEG_C_ON;}
-		 else
-		 { SEG_C_OFF;}
+        if(buf.bit_.b2)
+        {
+            SEG_C_ON;
+        }
+        else
+        {
+            SEG_C_OFF;
+        }
 
-		 if(buf.bit_.b3)
-		 {SEG_D_ON;}
-		 else
-		 { SEG_D_OFF;}
+        if(buf.bit_.b3)
+        {
+            SEG_D_ON;
+        }
+        else
+        {
+            SEG_D_OFF;
+        }
 
-		 if(buf.bit_.b4)
-		 {SEG_F_ON;}
-		 else
-		 { SEG_F_OFF;}
+        if(buf.bit_.b4)
+        {
+            SEG_F_ON;
+        }
+        else
+        {
+            SEG_F_OFF;
+        }
 
-		 if(buf.bit_.b5)
-		 {SEG_G_ON;}
-		 else
-		 { SEG_G_OFF;}
+        if(buf.bit_.b5)
+        {
+            SEG_G_ON;
+        }
+        else
+        {
+            SEG_G_OFF;
+        }
 
-		 if(buf.bit_.b6)
-		 {SEG_H_ON;}
-		 else
-		 { SEG_H_OFF;}
+        if(buf.bit_.b6)
+        {
+            SEG_H_ON;
+        }
+        else
+        {
+            SEG_H_OFF;
+        }
 
-		 //制冷
-		 if(buf.bit_.b7)
-		 {SEG_J_ON;}
-		 else
-		 {SEG_J_OFF;}
-      }
-      else  if(com==1)
-      {
-		 if(buf.bit_.b0)
-		 {SEG_I_ON;}
-		 else
-		 {SEG_I_OFF;}
+        //制冷
+        if(buf.bit_.b7)
+        {
+            SEG_J_ON;
+        }
+        else
+        {
+            SEG_J_OFF;
+        }
+    }
+    else  if(com==1)
+    {
+        if(buf.bit_.b0)
+        {
+            SEG_I_ON;
+        }
+        else
+        {
+            SEG_I_OFF;
+        }
 
-		 if(buf.bit_.b1)
-		 {SEG_E_ON;}
-		 else
-		 {SEG_E_OFF;}
-      }
+        if(buf.bit_.b1)
+        {
+            SEG_E_ON;
+        }
+        else
+        {
+            SEG_E_OFF;
+        }
+    }
 }
 
 /*************************************************
@@ -217,19 +259,25 @@ void SEGNum_out(UI08 Data,UI08 com)
 ***************************************************/
 void Led_and_Key_scan(void)
 {
- if(light_down.byte!=0)
- {
-  SEGNum_out(0,0);// data清零 全关
-  SEGNum_out(0,1);
- }
-  if(++led_scan_time<led_scan_interval)
-  {return;}
-  led_scan_time=0;
-  //
-  led_scan_position^=1;
-  if(led_scan_position==0)
-  {SEGNum_out(LED_data_DISP[led_scan_position],led_scan_position);}
-  else if(led_scan_position==1)
-  {SEGNum_out(LED_data_DISP[led_scan_position],led_scan_position);}
+    if(light_down.byte!=0)
+    {
+        SEGNum_out(0,0);// data清零 全关
+        SEGNum_out(0,1);
+    }
+    if(++led_scan_time<led_scan_interval)
+    {
+        return;
+    }
+    led_scan_time=0;
+    //
+    led_scan_position^=1;
+    if(led_scan_position==0)
+    {
+        SEGNum_out(LED_data_DISP[led_scan_position],led_scan_position);
+    }
+    else if(led_scan_position==1)
+    {
+        SEGNum_out(LED_data_DISP[led_scan_position],led_scan_position);
+    }
 }
 
