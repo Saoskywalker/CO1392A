@@ -156,7 +156,7 @@ void SEGNum_out(UI08 Data,UI08 com)
     buf.byte=Data;
     if(com==0)
     {
-        if(buf.bit_.b0)
+        if(buf.bit_.b0)//LED1
         {
             SEG_A_ON;
         }
@@ -165,7 +165,7 @@ void SEGNum_out(UI08 Data,UI08 com)
             SEG_A_OFF;
         }
 
-        if(buf.bit_.b1)
+        if(buf.bit_.b1)//LED2
         {
             SEG_B_ON;
         }
@@ -174,7 +174,7 @@ void SEGNum_out(UI08 Data,UI08 com)
             SEG_B_OFF;
         }
 
-        if(buf.bit_.b2)
+        if(buf.bit_.b2)//LED3
         {
             SEG_C_ON;
         }
@@ -183,7 +183,7 @@ void SEGNum_out(UI08 Data,UI08 com)
             SEG_C_OFF;
         }
 
-        if(buf.bit_.b3)
+        if(buf.bit_.b3)//LED4
         {
             SEG_D_ON;
         }
@@ -192,7 +192,7 @@ void SEGNum_out(UI08 Data,UI08 com)
             SEG_D_OFF;
         }
 
-        if(buf.bit_.b4)
+        if(buf.bit_.b4)//LED6
         {
             SEG_F_ON;
         }
@@ -201,7 +201,7 @@ void SEGNum_out(UI08 Data,UI08 com)
             SEG_F_OFF;
         }
 
-        if(buf.bit_.b5)
+        if(buf.bit_.b5)//LED7
         {
             SEG_G_ON;
         }
@@ -210,7 +210,7 @@ void SEGNum_out(UI08 Data,UI08 com)
             SEG_G_OFF;
         }
 
-        if(buf.bit_.b6)
+        if(buf.bit_.b6)//LED8
         {
             SEG_H_ON;
         }
@@ -220,7 +220,7 @@ void SEGNum_out(UI08 Data,UI08 com)
         }
 
         //ÖÆÀä
-        if(buf.bit_.b7)
+        if(buf.bit_.b7)//LED10
         {
             SEG_J_ON;
         }
@@ -233,7 +233,7 @@ void SEGNum_out(UI08 Data,UI08 com)
     {
         if(buf.bit_.b0)
         {
-            SEG_I_ON;
+            SEG_I_ON;//LED9
         }
         else
         {
@@ -242,7 +242,7 @@ void SEGNum_out(UI08 Data,UI08 com)
 
         if(buf.bit_.b1)
         {
-            SEG_E_ON;
+            SEG_E_ON;//LED5
         }
         else
         {
