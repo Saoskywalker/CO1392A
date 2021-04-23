@@ -35,12 +35,19 @@ xdata DO_PARA *DO_struct_addr[DO_total]=
     &Power_para,//¸ºÔØ¿ª»úÑÓÊ±ÔËÐÐ£¬°ÚÒ¶ÀýÍâ
     &DCPUMP_para
 };
-/* Private functions ---------------------------------------------------------*/
+
+/* ¸÷IO¿Ú¶¨Òå*/
 /*
-PA0 LED3     PA1 LED10    PA2 ¸¡¿Õ     PA3 ¸¡¿Õ     PA4 R      PA5 ¸¡¿Õ   PA6 ¸¡¿Õ   PA7 ¸¡¿Õ
-PB0 SWING4   PB1 SWING3   PB2 SWING2   PB3 SWING1   PB4 ¸¡¿Õ   PB5 D      PB6 C      PB7 ¸¡¿Õ
-PC0 LED2     PC1 LED1     PC2 LUX_AD   PC3 SAD      PC4 SCL    PC5 TXD    PC6 RXD    PC7 ¸¡¿Õ
-PE0 LED9     PE1 LED8     PE2 LED7     PE3 LED6     PE4 LED5   PE5 LED4
+SW1->P37  |  LED1->SEGG->P30  |  LED10->P23  |  LED3-1->P43  |  DISP_RXD->P02  |  SWINGA->P05   |   UV_LED->P04     |   DEBUG_D_TXD->P13            
+SW2->P36  |  LED2->SEGB->P10  |  LED11->P24  |  LED3-2->P42  |  DISP_TXD->P01  |  SWINGB->P06   |   UV_CHECK->P03   |   DEBUG_C_RXD->P11
+SW3->P35  |  LED4->SEGC->P12  |  LED12->P25  |               |  WIFI_RXD->P20  |  SWINGC->P52
+SW4->P34  |  LED5->SEGD->P14  |  COM4->P41   |               |  WIFI_TXD->P21  |  SWINGD->P53
+SW5->P33  |  LED6->SEGA->P15
+SW6->P00  |  LED7->SEGH->P17
+SW7->P27  |  LED8->SEGF->P22
+SW8->P26  |  LED9->SEGE->P16
+COM1->P31 |  COM3->P4.0
+COM2->P32 |                           
 */
 void IO_init(void)
 {
