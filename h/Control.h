@@ -10,8 +10,8 @@
 #define __Control_H
 
 
-#define DCPUMP_ON     P43=1
-#define DCPUMP_OFF    P43=0
+#define DCPUMP_ON     P45=1
+#define DCPUMP_OFF    P45=0
 
 //=================跟外部程序接口用到的RAM宏定义=======================
 #define mode_set 		Mode_Set
@@ -57,7 +57,7 @@
 
 //===================PUMP相关定义=================================
 #define  	SPEED_BUF_MAX  6		//数组带下
-#define  	INFAN_IO       (P42)		//IO口
+#define  	INFAN_IO       (P45)		//IO口
 #define 	PUMP_PG        (15*10)		//有反馈的打水泵,满水恢复后继续打水15S(15*10=15S)
 #define 	PUMP_NO_PG     (32*10)		//无反馈的打水泵,满水恢复后继续打水35S(35*10=35S)  ==>实测35S
 //==================对外接口===============================================================

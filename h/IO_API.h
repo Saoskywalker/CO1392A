@@ -1,3 +1,11 @@
+/*
+ * @文件内容描述: 
+ * @作者: GCE
+ * @Date: 2021-04-22 16:37:12
+ * @LastEditTime: 2021-04-28 17:38:04
+ * @最后编辑: 赵军
+ * @参考: 
+ */
 /**
   ******************************************************************************
   * @file IO_API.h
@@ -16,10 +24,13 @@
 
 extern xdata UI08          DI_read_time;
 
+#define UVC_ON   P04=1
+#define UVC_OFF  P04=0
+
 
 /////////////////////////////////////////////////////////////
 //IO输出
-#define  DO_total 10
+#define  DO_total 11
 
 extern xdata DO_PARA  Comp_para,
        Way4_para,
@@ -30,7 +41,8 @@ extern xdata DO_PARA  Comp_para,
        OutHfan_para,
        OutLfan_para,
        Power_para,//负载开机延时运行，摆叶例外
-       DCPUMP_para;
+       DCPUMP_para,
+       UVC_para;
 
 extern void IO_data_Init(void);
 extern void IO_init(void);

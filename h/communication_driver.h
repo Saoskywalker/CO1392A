@@ -1,3 +1,11 @@
+/*
+ * @文件内容描述: 
+ * @作者: GCE
+ * @Date: 2021-04-22 16:37:12
+ * @LastEditTime: 2021-04-28 12:33:05
+ * @最后编辑: 赵军
+ * @参考: 
+ */
 
 #ifndef _COMMUNICATION_DRIVER_H
 #define _COMMUNICATION_DRIVER_H
@@ -29,10 +37,10 @@ extern xdata UUI08  communication_bit1;
 
 extern  UI08 communication_width_count;
 
-#define Txd_H   P45=1
-#define Txd_L   P45=0
+#define Txd_H   P01=1
+#define Txd_L   P01=0
 
-#define Rxd_IO   (P44)
+#define Rxd_IO   (P02)
 
 
 

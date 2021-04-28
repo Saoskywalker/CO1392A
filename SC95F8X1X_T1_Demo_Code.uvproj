@@ -408,11 +408,6 @@
               <FilePath>.\c\General_func.c</FilePath>
             </File>
             <File>
-              <FileName>iic24c02_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\c\iic24c02_driver.c</FilePath>
-            </File>
-            <File>
               <FileName>IO_API.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\c\IO_API.c</FilePath>

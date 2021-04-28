@@ -1,3 +1,11 @@
+/*
+ * @文件内容描述: 
+ * @作者: GCE
+ * @Date: 2021-04-22 16:37:12
+ * @LastEditTime: 2021-04-28 12:18:03
+ * @最后编辑: 赵军
+ * @参考: 
+ */
 //************************************************************
 //  Copyright (c) 深圳市赛元微电子有限公司
 //	文件名称	: main.c
@@ -53,7 +61,7 @@ void main(void)
     {
         WDTCON|=0x10;//WDT_Clear
         key_deal();
-        rec_decode();
+        // rec_decode();
         Temp_Deal();
         LED_display();
         general_deal();

@@ -1,3 +1,4 @@
+
 #ifndef __KEYFUNC_API_H
 #define __KEYFUNC_API_H
 
@@ -13,15 +14,15 @@
 
 extern const UI08 TempSet_range[4][2];
 
-//¡ã??¨¹
-#define power_key   1
-#define fan_key     2
-#define down_key    3
-#define up_key      4
-#define timer_key   5
-#define lamp_key    6
-#define func_key    7
-#define SWING_key   8
+//°´¼ü¶¨Òå
+#define power_key   6
+#define fan_key     8
+#define down_key    4
+#define up_key      5
+#define timer_key   2
+#define lamp_key    1
+#define func_key    3
+#define SWING_key   7
 
 #define self_test_key 10
 #define _c_f        (12)
@@ -40,5 +41,7 @@ extern void Turn_On(void);
 extern void Turn_Off(void);
 extern void prg_s_key(void);
 extern void key_deal(void);
+extern void set_heat_temp_chack(void);
+void set_cool_temp_chack(void);
 #endif
 

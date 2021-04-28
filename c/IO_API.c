@@ -20,7 +20,8 @@ xdata DO_PARA  Comp_para,
       OutHfan_para,
       OutLfan_para,
       Power_para,//负载开机延时运行，摆叶例外
-      DCPUMP_para;
+      DCPUMP_para,
+      UVC_para;
 
 xdata DO_PARA *DO_struct_addr[DO_total]=
 {
@@ -33,7 +34,8 @@ xdata DO_PARA *DO_struct_addr[DO_total]=
     &OutHfan_para,
     &OutLfan_para,
     &Power_para,//负载开机延时运行，摆叶例外
-    &DCPUMP_para
+    &DCPUMP_para,
+    &UVC_para
 };
 
 /* 各IO口定义*/
@@ -97,10 +99,19 @@ void IO_init(void)
     P2CON |= (1<<6);//SW8，输出
     P2CON |= (1<<7);//SW7，输出
 
+    P3CON |= (1<<0);//SEGG 输出
+    P3CON |= (1<<1);//COM1 输出
+    P3CON |= (1<<2);//COM2 输出
+    P3CON |= (1<<3);//SW5 输出
+    P3CON |= (1<<4);//SW4，输出
+    P3CON |= (1<<5);//SW3，输出
+    P3CON |= (1<<6);//SW2，输出
+    P3CON |= (1<<7);//SW1，输出
+
     P4CON |= (1<<0);//COM3 输出
     P4CON |= (1<<1);//COM4 输出
-    P4CON |= (1<<2);//LED2 输出
-    P4CON |= (1<<3);//LED1 输出
+    P4CON |= (1<<2);//LED2 蓝灯输出
+    P4CON |= (1<<3);//LED1 红灯输出
 
     // P5CON |= (1<<0);//COM3 输出
     // P5CON |= (1<<1);//COM4 输出
@@ -114,7 +125,7 @@ void IO_init(void)
     P4 = 0xF7;
     P5 = 0xFF;
 
-    DCPUMP_OFF;
+    // DCPUMP_OFF;
     //IOHCON0= 0xFF;
     //IOHCON1= 0xFF;
 }
@@ -256,6 +267,25 @@ void prg_s_IO(void)
 }
 
 /*************************************************
+//名称        :	DO_output
+//功能        : IO 负载输出
+//入口参数    :	无
+//出口参数    :	无
+//构	建: 	GCE XXX
+//修	改: 	GCE XXX
+**************************************************/
+void DO_output(void)
+{
+  if((power_status==OFF)&&(!_Self_Test))
+  {
+  	UVC_OFF;
+	return;
+  }
+  //
+  if(UVC_para.OUT==ON) {UVC_ON;} else {UVC_OFF;}
+}
+
+/*************************************************
  // 函数名称    : void IO_operate(void)
  // 功能描述    :
  // 入口参数    : 无
@@ -266,6 +296,7 @@ void IO_operate(void)
     prg_ms100_IO();
     prg_s_IO();
     DI_read();
+    DO_output();
 }
 
 

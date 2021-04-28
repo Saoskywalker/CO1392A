@@ -3,6 +3,7 @@
 void get_key_number(void);
 void key_scan(void);
 void Led_and_Key_scan(void);
+void LED_out(UI08 led_data);
 
 xdata UI08 key_data=0;//按键数据
 xdata UI08 key_old=0;//旧键值
@@ -22,13 +23,11 @@ xdata UI32 exKeyValueFlag = 0;		//当前轮按键标志
 **************************************************/
 void Sys_Scan(void)
 {
-    UI32 key_tmp = 0;
+    // UI32 key_tmp = 0;
     if(SOCAPI_TouchKeyStatus&0x80)	    //重要步骤2:  触摸键扫描一轮标志，是否调用TouchKeyScan()一定要根据此标志位置起后
     {
         SOCAPI_TouchKeyStatus &= 0x7f;	//重要步骤3: 清除标志位， 需要外部清除。
         exKeyValueFlag = TouchKeyScan();//按键数据处理函数
-        key_tmp = (exKeyValueFlag >> 22) & 0x07;//SW6,SW7,SW8
-        exKeyValueFlag = (exKeyValueFlag & 0x1F) | ((((key_tmp>>2)&0x01)|(((key_tmp>>1)&0x01)<<1)|(((key_tmp>>0)&0x01))<<2) << 4);
         TouchKeyRestart();				//启动下一轮转换
     }
 }
@@ -49,9 +48,16 @@ void get_key_number(void)
     {
         return;
     }
-    //
+    //SW1->TK0
+    //SW2->TK1
+    //SW3->TK2
+    //SW4->TK3
+    //SW5->TK4
+    //SW6->TK24
+    //SW7->TK23
+    //SW8->TK22
     Sys_Scan();
-    key_data=(UI08)((exKeyValueFlag&0x7F800000)>>23);
+    key_data=(UI08)(((exKeyValueFlag>>22)<<5) | (exKeyValueFlag)&0x1F);
 
     _SYS_Inspect_Key_OK=1;
     SYS_Inspect_Key_Data=key_data;
@@ -157,101 +163,47 @@ void SEGNum_out(UI08 Data,UI08 com)
 {
     UUI08 buf;
     buf.byte=Data;
-    if(com==0)
+    if(com < 3)
     {
-        if(buf.bit_.b0)//LED1
-        {
-            SEG_A_ON;
-        }
-        else
-        {
-            SEG_A_OFF;
-        }
-
-        if(buf.bit_.b1)//LED2
-        {
-            SEG_B_ON;
-        }
-        else
-        {
-            SEG_B_OFF;
-        }
-
-        if(buf.bit_.b2)//LED3
-        {
-            SEG_C_ON;
-        }
-        else
-        {
-            SEG_C_OFF;
-        }
-
-        if(buf.bit_.b3)//LED4
-        {
-            SEG_D_ON;
-        }
-        else
-        {
-            SEG_D_OFF;
-        }
-
-        if(buf.bit_.b4)//LED6
-        {
-            SEG_F_ON;
-        }
-        else
-        {
-            SEG_F_OFF;
-        }
-
-        if(buf.bit_.b5)//LED7
-        {
-            SEG_G_ON;
-        }
-        else
-        {
-            SEG_G_OFF;
-        }
-
-        if(buf.bit_.b6)//LED8
-        {
-            SEG_H_ON;
-        }
-        else
-        {
-            SEG_H_OFF;
-        }
-
-        //制冷
-        if(buf.bit_.b7)//LED10
-        {
-            SEG_J_ON;
-        }
-        else
-        {
-            SEG_J_OFF;
-        }
+        if(buf.bit_.b0) {SEG_A_ON;} else {SEG_A_OFF;}
+        if(buf.bit_.b1) {SEG_B_ON;} else {SEG_B_OFF;}
+        if(buf.bit_.b2) {SEG_C_ON;} else {SEG_C_OFF;}
+        if(buf.bit_.b3) {SEG_D_ON;} else {SEG_D_OFF;}
+        if(buf.bit_.b4) {SEG_E_ON;} else {SEG_E_OFF;}
+        if(buf.bit_.b5) {SEG_F_ON;} else {SEG_F_OFF;}
+        if(buf.bit_.b6) {SEG_G_ON;} else {SEG_G_OFF;}
+        if(buf.bit_.b7) {SEG_P_ON;} else {SEG_P_OFF;}
     }
-    else  if(com==1)
+    else if(com == 3)
     {
-        if(buf.bit_.b0)
-        {
-            SEG_I_ON;//LED9
-        }
-        else
-        {
-            SEG_I_OFF;
-        }
-
-        if(buf.bit_.b1)
-        {
-            SEG_E_ON;//LED5
-        }
-        else
-        {
-            SEG_E_OFF;
-        }
+        if(buf.bit_.b0) {LED10_ON;} else {LED10_OFF;}
+        if(buf.bit_.b1) {LED11_ON;} else {LED11_OFF;}
+        if(buf.bit_.b2) {LED12_ON;} else {LED12_OFF;}
     }
+}
+
+void LED_out(UI08 led_data)
+{
+    UUI08 buf;
+    buf.byte=led_data;
+    if(buf.bit_.b0) {LED3_BLUE_ON;   } else {LED3_BLUE_OFF; }
+    if(buf.bit_.b1) {LED3_RED_ON;  } else {LED3_RED_OFF;}
+}
+
+/*************************************************
+ // 函数名称    : void LED_COM_OFF(void)
+ // 功能描述    : 关闭com
+ // 入口参数    : 无
+ // 出口参数    : 无
+***************************************************/
+void LED_COM_OFF(void)
+{
+    COMDIG1_OFF;
+    COMDIG2_OFF;
+    COMDIG3_OFF;
+    COMDIG4_OFF;
+    // LED3_BLUE_OFF;
+    // LED3_RED_OFF;
 }
 
 /*************************************************
@@ -264,23 +216,29 @@ void Led_and_Key_scan(void)
 {
     if(light_down.byte!=0)
     {
-        SEGNum_out(0,0);// data清零 全关
-        SEGNum_out(0,1);
+        LED_COM_OFF();
     }
     if(++led_scan_time<led_scan_interval)
     {
         return;
     }
     led_scan_time=0;
-    //
-    led_scan_position^=1;
-    if(led_scan_position==0)
+    
+    LED_COM_OFF();
+
+    LED_out(LED_out_buf.byte);
+    if(led_scan_position < COM_total)    
     {
-        SEGNum_out(LED_data_DISP[led_scan_position],led_scan_position);
+        SEGNum_out(Display_out_buf[led_scan_position].byte,led_scan_position);
+        if(led_scan_position==0)      {COMDIG1_ON;}    //COM1
+        else if(led_scan_position==1) {COMDIG2_ON;}    //COM2   
+        else if(led_scan_position==2) {COMDIG3_ON;}    //COM3
+        else if(led_scan_position==3) {COMDIG4_ON;}    //COM4     
     }
-    else if(led_scan_position==1)
+
+    if (++led_scan_position >= COM_total)
     {
-        SEGNum_out(LED_data_DISP[led_scan_position],led_scan_position);
+        led_scan_position = 0;   
     }
 }
 

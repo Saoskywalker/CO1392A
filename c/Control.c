@@ -291,6 +291,7 @@ void all_load_off(void)
     Way4_para.BUF=OFF;
     Pump_para.BUF=OFF;
     DCPUMP_para.OUT=OFF;
+    UVC_para.BUF=OFF;
 }
 /***********************************************************
 *函 数 名：  void normal_cool(void)
@@ -1634,7 +1635,7 @@ void load_set(void)
     {
         DCPUMP_OFF;
     }
-
+    UVC_para.OUT=UVC_para.BUF;
 }
 /***********************************************************
 *函 数 名：  void Sys_Control(void)

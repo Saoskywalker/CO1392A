@@ -5,14 +5,15 @@
 
 #include "General.h"
 
-xdata UI08   LED_data_buf[COM_total];//数码管显示buf
-xdata UI08   LED_data_DISP[COM_total];//LED显示
+xdata UUI08   Display_data_buf[COM_total];   //数码管显示操作缓存
+xdata UUI08   LED_data_buf;                  //LED显示操作缓存
+
+xdata UUI08   Display_out_buf[COM_total];    //数码管显示输出缓存
+xdata UUI08   LED_out_buf;                       //LED显示输出缓存
 
 xdata UI08   Screen_Data[SCREEN_MAX];//931D数码管显示
 xdata UI08   Dsp_Time;//显示时间
 
-xdata UUI08  LED_buf[COM_total]= {0}; //显示buf
-xdata UI08   LED_data[COM_total];//数码管显示
 //自检变量
 xdata UI08    test_cont1;//自检
 xdata UI08    test_cont2;//自检
@@ -43,19 +44,18 @@ code  UI08   BCD_tab[10]=   /*LED显示编码，用于查表*/
 void LED_data_intit(void)
 {
     UI08 i;
-    for(i=0; i<2; i++)
+    for(i=0; i<COM_total; i++)
     {
-        LED_data_buf[i]=0;
-        LED_data_DISP[i]=0;
-        LED_data[i]=0;
-        LED_buf[i].byte=0;
+        Display_data_buf[i].byte=0;
+        Display_out_buf[i].byte=0;
     }
+
+    LED_data_buf.byte = 0;
+    LED_out_buf.byte = 0;
 
     for(i=0; i<SCREEN_MAX; i++)
     {
-
         Screen_Data[i]=0;
-
     }
 
     Dsp_Time=0;
@@ -65,8 +65,6 @@ void LED_data_intit(void)
     test_cont2=0;
     test_seq=0;
     test_key_data=0;
-
-
 }
 /*************************************************
  // 函数名称    : prg_ms100_DSP
@@ -323,13 +321,14 @@ void TempRoom_dsp(void)
 ***************************************************/
 void disp_All(void)
 {
-    dig1_num=0xFF;
-    dig2_num=0xFF;
+    UI08 i;
+    for(i=0; i<COM_total; i++)
+    {
+        Display_data_buf[i].byte=0xFF;//数码管和LED灯全亮
+    }
     _led_swing_disp_buf=1;
     light_down.byte=0;
-    LED_buf[0].byte=0Xff;
-    LED_buf[1].byte=0Xff;
-    LED_buf[0].bit_.b0=0;//双色LED只亮白色
+    LED_data_buf.byte=0x02;//红灯
 }
 /*************************************************
  // 函数名称    : clear_all
@@ -344,10 +343,10 @@ void  clear_all(void)
     _led_swing_disp_buf=0;
     for(i=0; i<COM_total; i++)
     {
-        LED_data_buf[i]=0;
+        Display_data_buf[i].byte=0;
     }
-    LED_buf[0].byte=0X00;
-    LED_buf[1].byte=0X00;
+    // LED_out_buf.byte=0x00;
+    LED_data_buf.byte=0x00;
 }
 /*************************************************
  // 函数名称    : LedDsp_Test
@@ -401,10 +400,11 @@ void LedDsp_Test(void)
             break;
         case 10:
             LED_CoolAir;
+            LED_HEAT_off;
             break;
         case 11:
             LED_HEAT;
-            LED_buf[0].bit_.b1=0;// LED_CoolAir_off;
+            LED_CoolAir_off;
             _led_swing_disp_buf=1;
             break;
         case 12:
@@ -415,8 +415,7 @@ void LedDsp_Test(void)
             test_cont2=0;
             test_cont1=0;
             dig1_num=0;
-            LED_buf[0].byte=0X00;
-            LED_buf[1].byte=0X00;
+            LED_out_buf.byte=0X00;
             _led_swing_disp_buf=0;
             break;
         }
@@ -431,9 +430,8 @@ void LedDsp_Test(void)
         //LED全亮
         _led_swing_disp_buf=1;
         light_down.byte=0;
-        LED_buf[0].byte=0Xff;
-        LED_buf[1].byte=0Xff;
-        LED_buf[0].bit_.b0=0;//双色LED只亮白色
+        LED_out_buf.byte=0Xff;
+        LED_out_buf.bit_.b0=0;//双色LED只亮白色
         //
         if(Reda_EEP==0)
         {
@@ -458,9 +456,7 @@ void LedDsp_Test(void)
     break;
     case 2:
     {
-
-        LED_buf[0].byte=0X00;
-        LED_buf[1].byte=0X00;
+        LED_out_buf.byte=0X00;
 
         //测试水泵反馈
         if(INFAN_IO)
@@ -783,87 +779,32 @@ void LedDsp_content(void)
  // 入口参数    : *ptr,len
  // 出口参数    : verify
 ***************************************************/
-UI08 Verify_dat(UI08 *ptr,UI08 len)
-{
-    UI08 verify=0;
-    UI08 i=0;
-    for(i=0; i<len; i++)
-    {
-        verify+=*ptr;
-        ptr++;
-    }
-    verify=(~verify)+1;
-    return verify;
-}
+// UI08 Verify_dat(UI08 *ptr,UI08 len)
+// {
+//     UI08 verify=0;
+//     UI08 i=0;
+//     for(i=0; i<len; i++)
+//     {
+//         verify+=*ptr;
+//         ptr++;
+//     }
+//     verify=(~verify)+1;
+//     return verify;
+// }
 /*************************************************
  // 函数名称    : LedDsp_Outdata
- // 功能描述    :
+ // 功能描述    : 刷新显示缓冲区中的数据
  // 入口参数    : 无
  // 出口参数    : 无
 ***************************************************/
 void Get_LED_data(void)
 {
-
     UI08 i=0;
-    UI08 flag=0;
-
-    if((!_IICSleep_status)||(DE_rec_time>0))
+    for(i=0;i<COM_total;i++)
     {
-        return;
+        Display_out_buf[i].byte=Display_data_buf[i].byte;
     }
-    DE_rec_time=IIC_DELAY;//轮流20ms操作一次  发送931D显示小板数据/读取遥控键值
-    //
-    if(++IIC_count>=2)
-    {
-        IIC_count=0;
-    }
-    IIC_buy.byte=(0x01<<IIC_count);
-    //
-    if(!_LED_IIC)
-    {
-        return;
-    }
-    _LED_IIC=0;
-    //
-    for(i=0; i<2; i++)
-    {
-        LED_data[i]=LED_data_buf[i];
-    }
-    //
-    if((LAMP_Status==OFF)&&(Disp_Delay==0)&&(!_Self_Test))
-    {
-        Screen_Data[0]&=0x80;//关灯
-        Screen_Data[1]&=0x80;
-    }
-    else
-    {
-        Screen_Data[0]=LED_data[0];
-        Screen_Data[1]=LED_data[1];
-    }
-    //
-    if(light_down.byte!=0)
-    {
-        Screen_Data[0]|=0x80;   //半亮
-    }
-    else
-    {
-        Screen_Data[0]&=0x7f;
-    }
-    //
-    Screen_Data[2]=LED_LUX5;
-    Screen_Data[3]=Verify_dat(Screen_Data,3);
-    write_Ndata(0XB0,0x04,Screen_Data,4);
-    //
-    if((LAMP_Status==OFF)&&(Disp_Delay==0)&&(!_Self_Test))
-    {
-        LED_data_DISP[0]=0x00;
-        LED_data_DISP[1]=0x00;
-    }
-    else
-    {
-        LED_data_DISP[0]=LED_buf[0].byte;
-        LED_data_DISP[1]=LED_buf[1].byte;
-    }
+    LED_out_buf.byte = LED_data_buf.byte;
 }
 /*************************************************
  // 函数名称    : LED_display

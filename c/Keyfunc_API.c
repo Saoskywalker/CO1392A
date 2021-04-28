@@ -724,3 +724,56 @@ void key_deal(void)
     }
 }
 
+/***********************************************************
+*函 数 名：  void set_heat_temp_chack(void)
+*功能描述：  检查制热模式下温度设置值
+*输入参数：  无
+*函数返回值：无
+***********************************************************/
+void set_heat_temp_chack(void)
+{
+    if(Temp_Set_C>TempSet_range[HEAT_C][1])
+    {
+        Temp_Set_C=TempSet_range[HEAT_C][1];
+    }
+    else if(Temp_Set_C<TempSet_range[HEAT_C][0])
+    {
+        Temp_Set_C=TempSet_range[HEAT_C][0];
+    }
+
+    if(Temp_Set_F>TempSet_range[HEAT_F][1])
+    {
+        Temp_Set_F=TempSet_range[HEAT_F][1];
+    }
+    else if(Temp_Set_F<TempSet_range[HEAT_F][0])
+    {
+        Temp_Set_F=TempSet_range[HEAT_F][0];
+    }
+}
+/***********************************************************
+*函 数 名：  void set_cool_temp_chack(void)
+*功能描述：  检查制冷模式下温度设置值
+*输入参数：  无
+*函数返回值：无
+***********************************************************/
+void set_cool_temp_chack(void)
+{
+    if(Temp_Set_C>TempSet_range[COOL_C][1])
+    {
+        Temp_Set_C=TempSet_range[COOL_C][1];
+    }
+    else if(Temp_Set_C<TempSet_range[COOL_C][0])
+    {
+        Temp_Set_C=TempSet_range[COOL_C][0];
+    }
+
+    if(Temp_Set_F>TempSet_range[COOL_F][1])
+    {
+        Temp_Set_F=TempSet_range[COOL_F][1];
+    }
+    else if(Temp_Set_F<TempSet_range[COOL_F][0])
+    {
+        Temp_Set_F=TempSet_range[COOL_F][0];
+    }
+}
+

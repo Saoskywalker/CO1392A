@@ -203,7 +203,7 @@ void SysData_init(void)			//系统寄存器 初始化程序
     SYS_Inspect_Data_Init();
     EXV_Data_init();
     IO_data_Init();
-    REC_data_init();
+//    REC_data_init();
     timer_data_init();
 
     Buzz_Cnt=20;
@@ -326,7 +326,8 @@ void SYS_Mach_type_judge(void)
 
     if((buf==0x00)||(buf==0xff))
     {
-        Sys_EEP_SYTP=0xff;
+        // Sys_EEP_SYTP=0xff;
+        Sys_EEP_SYTP = 13;
         return;
     }
     else if(buf>TYPE_MAX)
@@ -802,7 +803,7 @@ void EEP_deal(void)
 **************************************************/
 void WdtInit(void)
 {
-    //1--1 -- 00   蒀ode Option选择ENWDT
+    //1--1 -- 00   ?可Code Option选择ENWDT
     WDTCON  = 0x10;//看门狗打开通过烧录时配置字(示波器实测850ms复位)
 }
 /*********************************************************
@@ -820,7 +821,7 @@ void Sys_Initial(void)	//	系统 初始化程序
     SysData_init();
     TimerInit();
     TouchKeyInit();
-    WdtInit();
+//    WdtInit();
     EA = 1;						//开总中断
 }
 /*********************************************************
