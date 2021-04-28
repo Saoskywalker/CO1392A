@@ -52,23 +52,60 @@ COM2->P32 |
 void IO_init(void)
 {
     //TK上的IO设置为强推挽输出1
-    P0CON = 0xFF;  //0为输入 1为输出
-    P0PH  = 0x00;  //0不使能上拉电阻 1是能上拉电阻
-    //
-    P1CON = 0xFF;
-    P1PH  = 0x00;
-    //
-    P2CON = 0xFF;
-    P2PH  = 0x00;
-    //
-    P3CON = 0xFF;
-    P3PH  = 0x00;
-    //
-    P4CON = 0xEB;
-    P4PH  = 0x00;
-    //
-    P5CON = 0xFF;
-    P5PH  = 0x00;
+
+    // P0CON = 0xFF;  //0为输入 1为输出
+    // P0PH  = 0x00;  //0不使能上拉电阻 1是能上拉电阻
+    // //
+    // P1CON = 0xFF;
+    // P1PH  = 0x00;
+    // //
+    // P2CON = 0xFF;
+    // P2PH  = 0x00;
+    // //
+    // P3CON = 0xFF;
+    // P3PH  = 0x00;
+    // //
+    // P4CON = 0xEB;
+    // P4PH  = 0x00;
+    // //
+    // P5CON = 0xFF;
+    // P5PH  = 0x00;
+
+    P0CON |= (1<<0);//SW6 输出
+    P0CON |= (1<<1);//DISP_TXD 输出
+    P0CON &= (~(1<<2));//DISP_RXD 输入
+    P0CON &= (~(1<<3));//UV_V_CHECK 输入
+    P0CON |= (1<<4);//UV灯，输出
+    P0CON |= (1<<5);//SWINGA，输出
+    P0CON |= (1<<6);//SWINGB，输出
+
+    P1CON |= (1<<0);//SEGB 输出
+    P1CON &= (~(1<<1));//DEBUG_C_RXD 输入
+    P1CON |= (1<<2);//SEGC 输出
+    P1CON |= (1<<3);//DEBUG_D_TXD 输出
+    P1CON |= (1<<4);//SEGD，输出
+    P1CON |= (1<<5);//SEGA，输出
+    P1CON |= (1<<6);//SEGE，输出
+    P1CON |= (1<<7);//SEGH，输出
+
+    P2CON &= (~(1<<0));//WIFI_RXD 输入
+    P2CON |= (1<<1);//WIFI_TXD 输出
+    P2CON |= (1<<2);//SEGF 输出
+    P2CON |= (1<<3);//LED3 输出
+    P2CON |= (1<<4);//LED4，输出
+    P2CON |= (1<<5);//LED5，输出
+    P2CON |= (1<<6);//SW8，输出
+    P2CON |= (1<<7);//SW7，输出
+
+    P4CON |= (1<<0);//COM3 输出
+    P4CON |= (1<<1);//COM4 输出
+    P4CON |= (1<<2);//LED2 输出
+    P4CON |= (1<<3);//LED1 输出
+
+    // P5CON |= (1<<0);//COM3 输出
+    // P5CON |= (1<<1);//COM4 输出
+    P5CON |= (1<<2);//SWINGC 输出
+    P5CON |= (1<<3);//SWINGD 输出
 
     P0 = 0xFF;
     P1 = 0xFF;

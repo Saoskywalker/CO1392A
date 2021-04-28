@@ -22,10 +22,13 @@ xdata UI32 exKeyValueFlag = 0;		//当前轮按键标志
 **************************************************/
 void Sys_Scan(void)
 {
+    UI32 key_tmp = 0;
     if(SOCAPI_TouchKeyStatus&0x80)	    //重要步骤2:  触摸键扫描一轮标志，是否调用TouchKeyScan()一定要根据此标志位置起后
     {
         SOCAPI_TouchKeyStatus &= 0x7f;	//重要步骤3: 清除标志位， 需要外部清除。
         exKeyValueFlag = TouchKeyScan();//按键数据处理函数
+        key_tmp = (exKeyValueFlag >> 22) & 0x07;//SW6,SW7,SW8
+        exKeyValueFlag = (exKeyValueFlag & 0x1F) | ((((key_tmp>>2)&0x01)|(((key_tmp>>1)&0x01)<<1)|(((key_tmp>>0)&0x01))<<2) << 4);
         TouchKeyRestart();				//启动下一轮转换
     }
 }

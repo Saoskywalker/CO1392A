@@ -1,3 +1,11 @@
+/*
+ * @文件内容描述: 
+ * @作者: GCE
+ * @Date: 2021-04-22 16:37:12
+ * @LastEditTime: 2021-04-28 07:59:47
+ * @最后编辑: 赵军
+ * @参考: 
+ */
 
 #ifndef _EXV_DEVICE_H
 #define _EXV_DEVICE_H
@@ -30,17 +38,17 @@
 
 
 
-#define SwingA_H   P37=1
-#define SwingA_L   P37=0
+#define SwingA_H   P05=1
+#define SwingA_L   P05=0
 
-#define SwingB_H   P34=1
-#define SwingB_L   P34=0
+#define SwingB_H   P06=1
+#define SwingB_L   P06=0
 
-#define SwingC_H   P40=1
-#define SwingC_L   P40=0
+#define SwingC_H   P52=1
+#define SwingC_L   P52=0
 
-#define SwingD_H   P41=1
-#define SwingD_L   P41=0
+#define SwingD_H   P53=1
+#define SwingD_L   P53=0
 
 
 
