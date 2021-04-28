@@ -1,12 +1,3 @@
-/*
- * @文件内容描述: 
- * @作者: GCE
- * @Date: 2021-04-22 16:37:12
- * @LastEditTime: 2021-04-28 07:59:47
- * @最后编辑: 赵军
- * @参考: 
- */
-
 #ifndef _EXV_DEVICE_H
 #define _EXV_DEVICE_H
 
