@@ -17,6 +17,7 @@ extern xdata UUI08            SYS_ms1_bit;
 
 extern xdata UUI08            SYS_ms10_bit;
 #define _ms10_for_key_deal        SYS_ms10_bit.bit_.b0
+#define _10ms_for_remote          SYS_ms10_bit.bit_.b1 
 
 extern xdata UUI08            SYS_ms20_bit;
 #define _ms20_for_key_deal  SYS_ms20_bit.bit_.b0

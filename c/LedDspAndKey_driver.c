@@ -48,14 +48,14 @@ void get_key_number(void)
     {
         return;
     }
-    //SW1->TK0
-    //SW2->TK1
-    //SW3->TK2
-    //SW4->TK3
-    //SW5->TK4
-    //SW6->TK24
-    //SW7->TK23
-    //SW8->TK22
+    //!SW1->TK0
+    //!SW2->TK1
+    //!SW3->TK2
+    //!SW4->TK3
+    //!SW5->TK4
+    //!SW6->TK24
+    //!SW7->TK23
+    //!SW8->TK22
     Sys_Scan();
     key_data=(UI08)(((exKeyValueFlag>>22)<<5) | (exKeyValueFlag)&0x1F);
 

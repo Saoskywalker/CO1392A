@@ -112,6 +112,7 @@ void IO_init(void)
     P4CON |= (1<<1);//COM4 输出
     P4CON |= (1<<2);//LED2 蓝灯输出
     P4CON |= (1<<3);//LED1 红灯输出
+    P4CON &= (~(1<<4));//红外接收头，输入
 
     // P5CON |= (1<<0);//COM3 输出
     // P5CON |= (1<<1);//COM4 输出
@@ -276,13 +277,20 @@ void prg_s_IO(void)
 **************************************************/
 void DO_output(void)
 {
-  if((power_status==OFF)&&(!_Self_Test))
-  {
-  	UVC_OFF;
-	return;
-  }
+    if((power_status==OFF)&&(!_Self_Test))
+    {
+        UVC_OFF;
+        return;
+    }
   //
-  if(UVC_para.OUT==ON) {UVC_ON;} else {UVC_OFF;}
+    if(UVC_para.OUT==ON) 
+    {
+        UVC_ON;
+    } 
+    else 
+    {
+        UVC_OFF;
+    }
 }
 
 /*************************************************

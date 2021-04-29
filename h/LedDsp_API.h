@@ -82,10 +82,15 @@ extern xdata  UUI08 LED_out_buf;
 #define LED_filter 	        LED_data_buf.bit_.b7=1            //滤网指示      无
 #define LED_CoolAir_off     LED_data_buf.bit_.b0=0            //冷气关闭      LED3 蓝灯
 #define LED_HEAT_off        LED_data_buf.bit_.b1=0            //制热关闭      LED3_红灯
-#define LED_Sleep           Display_data_buf[2].bit_.b3=1     //睡眠灯        LED6  
-#define LED_Uvc             Display_data_buf[2].bit_.b6=1     //UVC灯         LED1   
-#define LED_Mute            Display_data_buf[2].bit_.b0=1     //静音模式      LED7   
-#define LED_Swing           Display_data_buf[3].bit_.b1=1     //摆叶指示      LED11
+#define LED_Sleep_on        Display_data_buf[2].bit_.b3=1     //睡眠灯开      LED6  
+#define LED_Sleep_off       Display_data_buf[2].bit_.b3=0     //睡眠灯关      LED6
+#define LED_UvcOn           Display_data_buf[2].bit_.b6=1     //UVC灯         LED1  
+#define LED_UvcOff          Display_data_buf[2].bit_.b6=0     //UVC灯         LED1 
+#define LED_MuteOn          Display_data_buf[2].bit_.b0=1     //静音模式      LED7  
+#define LED_MuteOff         Display_data_buf[2].bit_.b0=0     //静音模式      LED7 
+#define LED_SwingOn         Display_data_buf[3].bit_.b1=1     //摆叶指示      LED11
+#define LED_SwingOff        Display_data_buf[3].bit_.b1=0     //摆叶指示      LED11
+
 
 
 //自检变量
@@ -97,7 +102,7 @@ extern xdata UI08    test_key_data;
 extern void LED_display(void);
 extern void prg_ms500_DSP(void);
 extern void LED_data_intit(void);
-// extern UI08 Verify_dat(UI08 *ptr,UI08 len);
+extern UI08 Verify_dat(UI08 *ptr,UI08 len);
 extern void disp_All(void);
 extern void dig1_2_dsp(UI08 data_buf);
 

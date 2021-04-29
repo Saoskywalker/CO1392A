@@ -1,11 +1,3 @@
-/*
- * @文件内容描述: 
- * @作者: GCE
- * @Date: 2021-04-22 16:37:12
- * @LastEditTime: 2021-04-28 12:18:03
- * @最后编辑: 赵军
- * @参考: 
- */
 //************************************************************
 //  Copyright (c) 深圳市赛元微电子有限公司
 //	文件名称	: main.c
@@ -30,8 +22,11 @@ void main(void)
         _temp_update_enb=1;
         Troom_dsp_com=Temp_room.value;
         //
+#if ((defined DEBUG_EN) && !DEBUG_EN)
         WDTCON|=0x10;//WDT_Clear
+#endif
         Temp_Deal();
+        Remote_Deal();
         LED_display();
         SYS_Sleep_deal();
         general_deal();
@@ -59,11 +54,13 @@ void main(void)
     }
     while (1)
     {
+#if ((defined DEBUG_EN) && !DEBUG_EN)
         WDTCON|=0x10;//WDT_Clear
+#endif
         key_deal();
-        // rec_decode();
         Temp_Deal();
         LED_display();
+        Remote_Deal();
         general_deal();
         IO_operate();
         Sys_Control();

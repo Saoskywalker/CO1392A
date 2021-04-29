@@ -131,6 +131,8 @@ code   UI08 Off_cycle_Timer_tab[TYPE_MAX]=
     10,        /*20*/
 };
 
+xdata ONOFF_STATUS     SYS_UVC_Status = OFF;
+
 /***********************************************************
 *函 数 名：  void SysData_init(void)
 *功能描述：  变量初始化
@@ -189,7 +191,7 @@ void SysData_init(void)			//系统寄存器 初始化程序
     minute_cont=0;
     Sys_filter_time=0;
 
-    Sys_Tpye=ONLYCOOL;
+    Sys_Tpye=HEATCOOL;
     Sys_fan_order=HIGH_MID_LOW;
     water_light_cont=0;
     Sys_EEP_SYTP=0xff;
@@ -821,7 +823,9 @@ void Sys_Initial(void)	//	系统 初始化程序
     SysData_init();
     TimerInit();
     TouchKeyInit();
-//    WdtInit();
+#if ((defined DEBUG_EN) && !DEBUG_EN)
+    WdtInit();
+#endif
     EA = 1;						//开总中断
 }
 /*********************************************************

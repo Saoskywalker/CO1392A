@@ -10,6 +10,8 @@ extern code  UI08 Off_cycle_Timer_tab[TYPE_MAX];
 #define   cool_light_down_time 3600//
 #define   heat_light_down_time 300
 
+#define   TEMP_SET_TIME     10
+
 //系统模式设置变量
 extern xdata MODE_TYPE       Mode_Set;
 extern xdata MODE_TYPE       Mode_Buf;
@@ -53,21 +55,23 @@ extern xdata UI08             sleep_Time;
 extern xdata UI08             DE_rec_time;
 extern xdata ONOFF_STATUS     LAMP_Status;
 extern xdata UI08             minute_cont;
-extern xdata UI16             Sys_filter_time;	     //室内马达运转时间
+extern xdata UI16             Sys_filter_time;	        //室内马达运转时间
+extern xdata ONOFF_STATUS     SYS_UVC_Status;     //UVC状态
 
 extern xdata UUI08            SYS_bit;
-#define     _temp_room_err   SYS_bit.bit_.b0
-#define     _temp_coil_err   SYS_bit.bit_.b1
-#define     _sys_err         SYS_bit.bit_.b2
-#define     _Flash_500ms     SYS_bit.bit_.b3
+#define     _temp_room_err   SYS_bit.bit_.b0        //室温错误标志
+#define     _temp_coil_err   SYS_bit.bit_.b1        //铜管温度错误标志
+#define     _sys_err         SYS_bit.bit_.b2        //系统错误标志
+#define     _Flash_500ms     SYS_bit.bit_.b3        //500ms闪烁标志
 #define     _DISP_En         SYS_bit.bit_.b4
 #define     _DISP_En2        SYS_bit.bit_.b5
 #define     _DISP_LED_filter SYS_bit.bit_.b6
+#define     _Self_Test_EEp   SYS_bit.bit_.b7
 
 
 extern xdata UUI08            SYS_bit1;
 #define     _Defrost_status  SYS_bit1.bit_.b0
-#define     _Write_EEP_EN    SYS_bit1.bit_.b1
+#define     _Write_EEP_EN    SYS_bit1.bit_.b1       //允许写EEPROM标志
 #define     _check_EEP_EN    SYS_bit1.bit_.b2
 #define     _Troom_dsp_com_EN  SYS_bit1.bit_.b3
 #define     _pump_sw_status  SYS_bit1.bit_.b4

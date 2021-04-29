@@ -135,6 +135,9 @@ void timer0(void)interrupt 1
     TL0 = (65536 - (1000-1))%256;    //溢出时间：时钟为Fsys，则1000*（1/Fsys）=125us;  主频8M
     TH0 = (65536 - (1000-1))/256;
     //
+
+    remote_IRQ();
+    
     communication_width_count++;
     if(!Rxd_IO)
     {

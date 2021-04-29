@@ -582,6 +582,22 @@ void temp_update_judge(void)
         _temp_update_enb=1;
     }
 }
+
+/*************************************************
+ // 函数名称    : void UVC_DC_MOTOR_Control(void)
+ // 功能描述    : UVC 控制
+ // 入口参数    : 无
+ // 出口参数    : 无
+***************************************************/
+void UVC_DC_MOTOR_Control(void)
+{
+   if(SYS_UVC_Status==ON)
+   {UVC_para.BUF=ON;}
+   else
+   {UVC_para.BUF=OFF;}
+   //关机、故障、水满 关闭
+}
+
 /***********************************************************
 *函 数 名：  void normal_logic(void)
 *功能描述：
@@ -609,6 +625,7 @@ void normal_logic(void)
         return;
     }
 
+    UVC_DC_MOTOR_Control();
     if(Mode_Set==COOL)
     {
         normal_cool();
@@ -1635,7 +1652,16 @@ void load_set(void)
     {
         DCPUMP_OFF;
     }
-    UVC_para.OUT=UVC_para.BUF;
+
+    //TODO 风机打开时  UVC才按设定运行  
+    if(fan_speed==FANOFF)
+    {
+        UVC_para.OUT=OFF;
+    }
+    else//风机打开时  UVC才按设定运行
+    {
+        UVC_para.OUT=UVC_para.BUF;
+    }
 }
 /***********************************************************
 *函 数 名：  void Sys_Control(void)

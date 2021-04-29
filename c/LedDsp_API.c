@@ -326,7 +326,9 @@ void disp_All(void)
     {
         Display_data_buf[i].byte=0xFF;//数码管和LED灯全亮
     }
-    _led_swing_disp_buf=1;
+    LED_SwingOn;
+    LED_MuteOff;
+    LED_Sleep_off;
     light_down.byte=0;
     LED_data_buf.byte=0x02;//红灯
 }
@@ -339,8 +341,8 @@ void disp_All(void)
 void  clear_all(void)
 {
     UI08 i;
-    //
-    _led_swing_disp_buf=0;
+
+    // _led_swing_disp_buf=0;
     for(i=0; i<COM_total; i++)
     {
         Display_data_buf[i].byte=0;
@@ -365,7 +367,8 @@ void LedDsp_Test(void)
         case 0:
         case 1:
             dig1_num=0;
-            _led_swing_disp_buf=0;
+            // _led_swing_disp_buf=0;
+            LED_SwingOff;
             break;
         case 2:
             LED_water;
@@ -405,7 +408,8 @@ void LedDsp_Test(void)
         case 11:
             LED_HEAT;
             LED_CoolAir_off;
-            _led_swing_disp_buf=1;
+            // _led_swing_disp_buf=1;
+            LED_SwingOn;
             break;
         case 12:
 
@@ -416,7 +420,8 @@ void LedDsp_Test(void)
             test_cont1=0;
             dig1_num=0;
             LED_out_buf.byte=0X00;
-            _led_swing_disp_buf=0;
+            // _led_swing_disp_buf=0;
+            LED_SwingOff;
             break;
         }
 
@@ -428,7 +433,7 @@ void LedDsp_Test(void)
     case 3:
     {
         //LED全亮
-        _led_swing_disp_buf=1;
+        // _led_swing_disp_buf=1;
         light_down.byte=0;
         LED_out_buf.byte=0Xff;
         LED_out_buf.bit_.b0=0;//双色LED只亮白色
@@ -470,7 +475,8 @@ void LedDsp_Test(void)
 
         dig1_num=DATA_r;
         dig2_num=BCD_tab[Soft_Version];
-        _led_swing_disp_buf=1;
+        // _led_swing_disp_buf=1;
+        LED_SwingOn;
     }
     break;
     }
@@ -606,16 +612,28 @@ void LedDsp_content(void)
     {
         if(_led_swing_out)
         {
-            _led_swing_disp_buf=1;
+            // _led_swing_disp_buf=1;
+            LED_SwingOn;
+        }
+
+        if (UVC_para.BUF==ON)
+        {
+            LED_UvcOn;
+        }   
+        else
+        {
+            LED_UvcOff;
         }
     }
     else if((Dsp_Time>0)&&(Power_Status==OFF))
     {
         if(_led_swing_enable)
         {
-            _led_swing_disp_buf=1;
-        }
+            // _led_swing_disp_buf=1;
+            LED_SwingOn;
+        }   
     }
+    
     /**********************************************************************************/
     if((Power_Status==ON)||(Timer_Setting_Time>0)||(Dsp_Time>0)||(Temp_Setting_Time>0))
     {
@@ -677,8 +695,6 @@ void LedDsp_content(void)
         }
     }
 
-
-
     /**********************************************************************************/
     if(Timer_Setting_Time>0)         //时间显示
     {
@@ -739,7 +755,6 @@ void LedDsp_content(void)
         _DISP_En=0;
     }
     /**********************************************************************************/
-
     if((power_status==OFF)
             &&(0==Timer_run)
             &&(0==Temp_Setting_Time)
@@ -779,18 +794,18 @@ void LedDsp_content(void)
  // 入口参数    : *ptr,len
  // 出口参数    : verify
 ***************************************************/
-// UI08 Verify_dat(UI08 *ptr,UI08 len)
-// {
-//     UI08 verify=0;
-//     UI08 i=0;
-//     for(i=0; i<len; i++)
-//     {
-//         verify+=*ptr;
-//         ptr++;
-//     }
-//     verify=(~verify)+1;
-//     return verify;
-// }
+//UI08 Verify_dat(UI08 *ptr,UI08 len)
+//{
+//    UI08 verify=0;
+//    UI08 i=0;
+//    for(i=0; i<len; i++)
+//    {
+//        verify+=*ptr;
+//        ptr++;
+//    }
+//    verify=(~verify)+1;
+//    return verify;
+//}
 /*************************************************
  // 函数名称    : LedDsp_Outdata
  // 功能描述    : 刷新显示缓冲区中的数据
