@@ -13,13 +13,13 @@ xdata UUI08            EXV_bit= {0}; //标志位
 xdata UI08             exv_Self_Test_timer=0;
 const UI08 step_tab_self[]= {0x00,0x08,0x04,0x02,0x01}; //步进电机测试运行数组
 
-#if 1
+#if 0
 const UI08 step_tab[]= {0x09,0x01,0x03,0x02,0x06,0x04,0x0c,0x08};
 #else
 const UI08 step_tab[]= {0x08,0x0c,0x04,0x06,0x02,0x03,0x01,0x09};
 #endif
 
-/*************************************************
+/************************************************* 
  // 函数名称    : EXV_Data_init
  // 功能描述    : 数据初始化
  // 入口参数    : 无

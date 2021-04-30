@@ -40,18 +40,18 @@
 #define COMDIG3_ON      P40 = 0   //COM3 控制LED1、LED2、LED4、LED5、LED6、LED7、LED8、LED9
 #define COMDIG3_OFF     P40 = 1
 
-#define COMDIG4_ON      P41 = 0   //COM4 控制LED10、LED11、LED12
-#define COMDIG4_OFF     P41 = 1
+#define COMDIG4_ON      P41 = 1   //COM4 控制LED10、LED11、LED12
+#define COMDIG4_OFF     P41 = 0
 
 /*受控于COM4*/  
-#define LED10_ON        P23 = 1   //LED10
-#define LED10_OFF       P23 = 0
+#define LED10_ON        P23 = 0   //LED10
+#define LED10_OFF       P23 = 1
 
-#define LED11_ON        P24 = 1   //LED11
-#define LED11_OFF       P24 = 0
+#define LED11_ON        P24 = 0   //LED11
+#define LED11_OFF       P24 = 1
 
-#define LED12_ON        P25 = 1   //LED12
-#define LED12_OFF       P25 = 0
+#define LED12_ON        P25 = 0   //LED12
+#define LED12_OFF       P25 = 1
 
 /*独立IO口控制*/    
 #define LED3_BLUE_ON    P43 = 0   //LED3蓝色

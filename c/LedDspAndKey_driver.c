@@ -173,6 +173,9 @@ void SEGNum_out(UI08 Data,UI08 com)
         if(buf.bit_.b5) {SEG_F_ON;} else {SEG_F_OFF;}
         if(buf.bit_.b6) {SEG_G_ON;} else {SEG_G_OFF;}
         if(buf.bit_.b7) {SEG_P_ON;} else {SEG_P_OFF;}
+        LED10_OFF;
+        LED11_OFF;
+        LED12_OFF;
     }
     else if(com == 3)
     {

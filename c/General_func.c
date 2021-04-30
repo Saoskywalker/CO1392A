@@ -325,12 +325,12 @@ void SYS_Mach_type_judge(void)
     return;
 #endif
     buf=IAPRead(TYPE_DATA_ADDR,IapROM);
+    // buf = 13;
 
     if((buf==0x00)||(buf==0xff))
     {
-        // Sys_EEP_SYTP=0xff;
-        Sys_EEP_SYTP = 13;
-        return;
+        Sys_EEP_SYTP=0xff;
+        return;   
     }
     else if(buf>TYPE_MAX)
     {

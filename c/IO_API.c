@@ -17,6 +17,9 @@ xdata DO_PARA  Comp_para,
       Hfan_para,
       Mfan_para,
       Lfan_para,
+      
+      
+      
       OutHfan_para,
       OutLfan_para,
       Power_para,//负载开机延时运行，摆叶例外
@@ -81,6 +84,8 @@ void IO_init(void)
     P0CON |= (1<<5);//SWINGA，输出
     P0CON |= (1<<6);//SWINGB，输出
 
+    P0PH  = 0x00;  //0不使能上拉电阻 1是能上拉电阻
+
     P1CON |= (1<<0);//SEGB 输出
     P1CON &= (~(1<<1));//DEBUG_C_RXD 输入
     P1CON |= (1<<2);//SEGC 输出
@@ -89,6 +94,8 @@ void IO_init(void)
     P1CON |= (1<<5);//SEGA，输出
     P1CON |= (1<<6);//SEGE，输出
     P1CON |= (1<<7);//SEGH，输出
+
+     P1PH  = 0x00;
 
     P2CON &= (~(1<<0));//WIFI_RXD 输入
     P2CON |= (1<<1);//WIFI_TXD 输出
@@ -99,6 +106,8 @@ void IO_init(void)
     P2CON |= (1<<6);//SW8，输出
     P2CON |= (1<<7);//SW7，输出
 
+    P2PH  = 0x00;
+
     P3CON |= (1<<0);//SEGG 输出
     P3CON |= (1<<1);//COM1 输出
     P3CON |= (1<<2);//COM2 输出
@@ -108,22 +117,29 @@ void IO_init(void)
     P3CON |= (1<<6);//SW2，输出
     P3CON |= (1<<7);//SW1，输出
 
+    P3PH  = 0x00;
+
     P4CON |= (1<<0);//COM3 输出
     P4CON |= (1<<1);//COM4 输出
     P4CON |= (1<<2);//LED2 蓝灯输出
     P4CON |= (1<<3);//LED1 红灯输出
+    P4 = 0xFF;
     P4CON &= (~(1<<4));//红外接收头，输入
+
+    P4PH  |= (1<<4);
 
     // P5CON |= (1<<0);//COM3 输出
     // P5CON |= (1<<1);//COM4 输出
     P5CON |= (1<<2);//SWINGC 输出
     P5CON |= (1<<3);//SWINGD 输出
 
-    P0 = 0xFF;
+    P5PH  = 0x00;
+
+    P0 |= (~(1<<4));
     P1 = 0xFF;
     P2 = 0xFF;
     P3 = 0xFF;
-    P4 = 0xF7;
+    P4 = 0xFF;
     P5 = 0xFF;
 
     // DCPUMP_OFF;

@@ -612,7 +612,7 @@ void key_decode(void)
         Timer_check();
         if((Dsp_Time==0)&&(Power_Status==OFF))
         {
-            break;
+            // break;
         }
         Dsp_Time=DISP_TIMER;
         CF_Status^=1;

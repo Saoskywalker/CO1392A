@@ -333,7 +333,8 @@ void normal_cool(void)
         off_cycle_mode=0;
     }
 
-    if((_Sys_lowpower==DISABLE)&&(Comp_para.OUT==OFF))
+    //if((_Sys_lowpower==DISABLE)&&(Comp_para.OUT==OFF))
+    if(Comp_para.OUT==OFF)
     {
         off_cycle_mode_control();
     }
@@ -611,6 +612,13 @@ void normal_logic(void)
     {
         return;
     }
+
+    if((Mode_Set!=COOL)||(Power_Status==OFF))
+    {
+        off_cycle_timer=0;
+        off_cycle_mode=0;
+    }
+
     if(Power_Status==OFF)
     {
         all_load_off();
@@ -618,12 +626,15 @@ void normal_logic(void)
 
         R_Heat_run_time=0;
         R_overload_status=0;
+
     }
 
     if(Power_para.on_time<2)//开机2秒后开负载，步进电机除外
     {
         return;
     }
+
+   
 
     UVC_DC_MOTOR_Control();
     if(Mode_Set==COOL)
@@ -877,6 +888,7 @@ void defrost_logic(void)
 ***************************************************/
 void Water_Full_check(void)
 {
+    #if 0
 //不带排水管机型,或者拔出排水管(按普通满水3S处理)
 //带排水管的机型(按普通满水25S处理)
     if(_water_pipe_Status==0)//不带排水管机型
@@ -895,29 +907,30 @@ void Water_Full_check(void)
         _water_pipe_Status_old=1;
         WATER_FULL_TIME=250;
     }
+    #endif
 //============================================================
 //======   满水状态判断
 //============================================================
     if(_Water_Full_status==DI_SHORT)
     {
         //.若滿水警報後,檢測到滿水開關閉合,不執行PUMP繼續打水15秒 後停止.
-        if(_Water_Full)
-        {
-            Pump_Off_delay_time=0xffff;
-        }
+        //if(_Water_Full)
+        //{
+        //    Pump_Off_delay_time=0xffff;
+        //}
         _Water_Full=0;
         Buzz_Cnt=0xff;
     }
     else//发生水满
     {
-        if((Water_Full_Time+30)>=WATER_FULL_TIME)//_Water_Full_status=DI_CUT, 电源板已经计时3S
-        {
+        //if((Water_Full_Time+30)>=WATER_FULL_TIME)//_Water_Full_status=DI_CUT, 电源板已经计时3S
+        //{
             if(!_Water_Full)
             {
                 Buzz_Cnt=0;   //蜂鸣器di十声
             }
             _Water_Full=1;
-        }
+        //}
     }
 }
 
@@ -1563,7 +1576,7 @@ void load_set(void)
             light_down_cont=0;
         }
     }
-
+/*
     if(   (light_down_cont==0)
             &&(R_overload_status==0)
             &&(Comp_para.OUT==OFF)
@@ -1572,8 +1585,9 @@ void load_set(void)
     {
         fan_speed=FANOFF;
     }
+*/
 
-
+/*
     if( (light_down_cont>0)
 //		&&(fan_speed!=FANOFF)
             &&(Comp_para.OUT==OFF)
@@ -1585,7 +1599,8 @@ void load_set(void)
         Mfan_para.OUT=OFF;
         Hfan_para.OUT=OFF;
     }
-    else if(fan_speed==FANOFF)
+    else */
+    if(fan_speed==FANOFF)
     {
         Lfan_para.OUT=OFF;
         Mfan_para.OUT=OFF;

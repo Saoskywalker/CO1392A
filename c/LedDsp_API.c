@@ -148,7 +148,7 @@ void Err_dsp(void)
 {
     if(_temp_room_err)     //温度感应器短路或者开路  E1
     {
-        dig1_num=DATA_E;
+        dig1_num=DATA_E;      
         dig2_num=DATA_1;
     }
     else if((_temp_coil_err)&&(_Tcoil_Enable))//铜管感应器短路或者开路  E2
@@ -610,7 +610,7 @@ void LedDsp_content(void)
     //================  摆页指示灯
     if(Power_Status==ON)
     {
-        if(_led_swing_out)
+        if(_led_swing_enable)
         {
             // _led_swing_disp_buf=1;
             LED_SwingOn;

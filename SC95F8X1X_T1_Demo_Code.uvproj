@@ -447,6 +447,16 @@
               <FileType>1</FileType>
               <FilePath>.\c\timer_API.c</FilePath>
             </File>
+            <File>
+              <FileName>remote_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\c\remote_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>rec_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\c\rec_api.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -22,10 +22,10 @@
 
 
 
-#define P150  7000  //maximum available
-#define P155  7000  //Default position
-#define P160  7000  //positive travel
-#define P165  5000  //negative travel
+#define P150  4500  //maximum available
+#define P155  4500  //Default position
+#define P160  4500  //positive travel
+#define P165  3000  //negative travel
 
 
 
