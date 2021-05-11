@@ -11,6 +11,8 @@ xdata UI16   Comp_Test_first_count;//上电累计时间
 xdata UI16   Comp_Test_Key_count;//按键
 xdata UI16   Comp_Test_Disp_En_Timer;//显示时间
 
+xdata UI08   CLEAR_Comp_Test_Key_Count_EN_CNT;
+
 
 void SYS_Inspect_Data_Init(void)
 {
@@ -80,6 +82,16 @@ void SYS_Inspect_s_general(void)
     if(Disp_Temp_Timer<0xff)
     {
         Disp_Temp_Timer++;
+    }
+
+    if(_Comp_Test_Key_Count_EN)//如果在进行进入压缩机强制测试模式的时候不睡眠
+    {
+        CLEAR_Comp_Test_Key_Count_EN_CNT ++;
+        if(CLEAR_Comp_Test_Key_Count_EN_CNT > 29)
+        {
+            CLEAR_Comp_Test_Key_Count_EN_CNT = 0;
+            _Comp_Test_Key_Count_EN = 0;
+        }
     }
 }
 

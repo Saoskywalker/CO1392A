@@ -31,7 +31,8 @@ void   communication_data_init(void)
 ***********************************************************/
 void  sleep_deal(void)
 {
-    if((Power_Status)||(_sys_err )||(Dsp_Time>0)||(_Self_Test))
+    if((Power_Status)||(_sys_err )||(Dsp_Time>0)||(_Self_Test)||
+        _Comp_Test_Key_Count_EN)
     {
         sleep_Time=10;
         _Sleep_status=0;

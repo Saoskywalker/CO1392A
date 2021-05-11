@@ -368,10 +368,12 @@ void LedDsp_Test(void)
         case 1:
             dig1_num=0;
             // _led_swing_disp_buf=0;
-            LED_SwingOff;
+            // LED_SwingOff;
+            LED_water;
             break;
         case 2:
-            LED_water;
+            // LED_water;
+            LED_SwingOn;
             dig1_num|=BIT_A;
             break;
         case 3:
@@ -387,11 +389,11 @@ void LedDsp_Test(void)
             dig1_num|=BIT_D;
             break;
         case 6:
-            LED_timer;
+            LED_MuteOn;
             dig1_num|=BIT_E;
             break;
         case 7:
-            LED_filter;
+            LED_Sleep_on;
             dig1_num|=BIT_F;
             break;
         case 8:
@@ -408,20 +410,19 @@ void LedDsp_Test(void)
         case 11:
             LED_HEAT;
             LED_CoolAir_off;
-            // _led_swing_disp_buf=1;
-            LED_SwingOn;
             break;
         case 12:
+            LED_timer;
+            break;
+        case 13:
             LED_UvcOn;
             break;
 
         default:
             test_cont2=0;
             test_cont1=0;
-            dig1_num=0;
-            LED_out_buf.byte=0X00;
             // _led_swing_disp_buf=0;
-            LED_SwingOff;
+            clear_all();
             break;
         }
         dig2_num=dig1_num;
@@ -474,7 +475,6 @@ void LedDsp_Test(void)
         dig1_num=DATA_r;
         dig2_num=BCD_tab[Soft_Version];
         // _led_swing_disp_buf=1;
-        LED_SwingOn;
     }
     break;
     }
