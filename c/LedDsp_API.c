@@ -484,43 +484,59 @@ void LedDsp_Test(void)
         Buz_mode(BUZZ_TYPE7);
         switch(Key_Number)
         {
-        case power_key:
+        case uvc_key:
             test_key_data|=bit0;
             break;
-        case fan_key:
+        case timer_key:
             test_key_data|=bit1;
             break;
-        case down_key:
+        case func_key:
             test_key_data|=bit2;
             break;
-        case up_key:
+        case down_key:
             test_key_data|=bit3;
             break;
-        case timer_key:
+        case up_key:
             test_key_data|=bit4;
             break;
-        case lamp_key:
+        case fan_key:
             test_key_data|=bit5;
             break;
-        case func_key:
+        case SWING_key:
             test_key_data|=bit6;
             break;
-        case SWING_key:
+        case power_key:
             test_key_data|=bit7;
             break;
         }
         Key_Number=0;
     }
-    switch(test_key_data)
+
+    //为了兼容没有UVC灯的机型
+    if (test_key_data & 0x01)
     {
-    case  0x7f:
-        test_seq=3;
-        break;
-    case  0xff:
-        test_seq=2;
-        break;
+        switch(test_key_data)
+        {
+        case  0x7f:
+            test_seq=3;
+            break;
+        case  0xff:
+            test_seq=2;
+            break;
+        }   
     }
-    //////////////////////////////////////////////////////////////////////////////////////
+    else
+    {
+        switch(test_key_data)
+        {
+        case  (0x7f >> 1):
+            test_seq=3;
+            break;
+        case  (0xff >> 1):
+            test_seq=2;
+            break;
+        } 
+    }
 }
 
 /*************************************************

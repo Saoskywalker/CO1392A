@@ -59,9 +59,6 @@ void get_key_number(void)
     Sys_Scan();
     key_data=(UI08)(((exKeyValueFlag>>22)<<5) | (exKeyValueFlag)&0x1F);
 
-    _SYS_Inspect_Key_OK=1;
-    SYS_Inspect_Key_Data=key_data;
-
     for(i=0; i<8; i++)
     {
         if(key_data&(UI08)(0x01<<i))
@@ -70,6 +67,9 @@ void get_key_number(void)
             number=i+1;
         }
     }
+
+    _SYS_Inspect_Key_OK=1;
+    SYS_Inspect_Key_Data=number;
 
     if(key_total_count==0)
     {

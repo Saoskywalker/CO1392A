@@ -39,7 +39,7 @@ void remote_selftest(void)
     IAPWrite(TYPE_DATA_ADDR,rec_data[4],IapROM);
 
    Self_Test_DATA=0xff;
-
+    SYS_Mach_type_judge();
 //    Auto_Restart=ENABLE;
    Power_Status=OFF;
    Mode_Set=COOL;
@@ -47,6 +47,7 @@ void remote_selftest(void)
    Temp_Heat_F=72;
    Temp_Cool_F=75;
    _Write_EEP_EN=1;
+
    Sys_data_write();
    test_cont2=0xff;
 //   test_cont3=0;
