@@ -696,6 +696,15 @@ void Sys_data_read_eep(void)
     {
         LAMP_Status=ON;
     }
+
+    if(EEP_data[12] == ON)
+    {
+        SYS_UVC_Status = ON;
+    }
+    else
+    {
+        SYS_UVC_Status = OFF;   
+    }
 }
 /*********************************************************
 函数名: void Sys_data_write(void)
@@ -727,6 +736,7 @@ void Sys_data_write(void)
     EEP_data[9]=(UI08)(off_cycle_Tmin/60);
     EEP_data[10]=Sys_filter_time/256;
     EEP_data[11]=Sys_filter_time%256;
+    EEP_data[12]=SYS_UVC_Status;
     EEP_data[EEP_MAX-1]=crc_check(&EEP_data[0],EEP_MAX-1);//CRC校验
     //
     IAPPageErase(SYS_DATA_ADDR,IapROM);

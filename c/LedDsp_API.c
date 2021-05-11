@@ -412,7 +412,7 @@ void LedDsp_Test(void)
             LED_SwingOn;
             break;
         case 12:
-
+            LED_UvcOn;
             break;
 
         default:
@@ -424,9 +424,7 @@ void LedDsp_Test(void)
             LED_SwingOff;
             break;
         }
-
         dig2_num=dig1_num;
-
     }
     break;
 

@@ -26,6 +26,7 @@ void main(void)
         WDTCON|=0x10;//WDT_Clear
 #endif
         Temp_Deal();
+        key_deal();
         Remote_Deal();
         LED_display();
         SYS_Sleep_deal();
