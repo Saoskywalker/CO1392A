@@ -432,11 +432,12 @@ void LedDsp_Test(void)
     case 3:
     {
         //LEDÈ«ÁÁ
-        // _led_swing_disp_buf=1;
         light_down.byte=0;
-        LED_out_buf.byte=0Xff;
-        LED_out_buf.bit_.b0=0;//Ë«É«LEDÖ»ÁÁ°×É«
-        //
+        LED_data_buf.byte = 0xff;
+        LED_HEAT_off;//ºìµÆ¹Ø±Õ
+        Display_data_buf[2].byte = 0xFF;
+        Display_data_buf[3].byte = 0xFF;
+
         if(Reda_EEP==0)
         {
             SYS_Mach_type_judge();
@@ -460,7 +461,7 @@ void LedDsp_Test(void)
     break;
     case 2:
     {
-        LED_out_buf.byte=0X00;
+        clear_all();
 
         //²âÊÔË®±Ã·´À¡
         if(INFAN_IO)
@@ -474,7 +475,7 @@ void LedDsp_Test(void)
 
         dig1_num=DATA_r;
         dig2_num=BCD_tab[Soft_Version];
-        // _led_swing_disp_buf=1;
+
     }
     break;
     }
@@ -529,10 +530,10 @@ void LedDsp_Test(void)
     {
         switch(test_key_data)
         {
-        case  (0x7f >> 1):
+        case  (0x7e):
             test_seq=3;
             break;
-        case  (0xff >> 1):
+        case  (0xfe):
             test_seq=2;
             break;
         } 
