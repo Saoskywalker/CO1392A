@@ -236,7 +236,11 @@ void SYS_type(void)
     }
     if(mach_type_tab[Sys_EEP_SYTP] & bit1)
     {
+#ifndef WAP23A
         CF_Status=_F;
+#else
+        CF_Status=_C;
+#endif
     }
     else
     {

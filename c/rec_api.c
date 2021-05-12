@@ -107,7 +107,9 @@ void cor258_inf_load(void)
 
      if(rec_buf.cf!=CF_Status)
      {
+#ifndef WAP23A
      	CF_Status= rec_buf.cf;
+#endif
         Timer_Setting_Time=0;
      }
 

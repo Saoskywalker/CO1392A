@@ -607,6 +607,7 @@ void key_decode(void)
         write_delay_time=EEP_DELAY;
     }
     break;
+#ifndef WAP23A
     case _c_f://_c_f
     {
         Timer_check();
@@ -620,6 +621,7 @@ void key_decode(void)
         write_delay_time=EEP_DELAY;
     }
     break;
+#endif
     case  EC_Fast_key:
     {
         if((_EC_Fast_Test)||(sEC_SYS.timer_key_count>=2))
