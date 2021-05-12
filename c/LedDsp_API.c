@@ -474,6 +474,7 @@ void TempRoom_dsp(void)
     {
         if(CF_Status==_C)
         {
+            
             dsp_temp=compensate_temp_C(dsp_temp);
         }
         else
@@ -481,10 +482,10 @@ void TempRoom_dsp(void)
             dsp_temp=compensate_temp_F(dsp_temp);
         }
     }
-    else
-    {
-        dsp_temp=Troom_dsp;   
-    }
+    //else
+    //{
+    //    dsp_temp=Troom_dsp;   
+    //}
 
     //if(Mode_Set==COOL)
     //{
