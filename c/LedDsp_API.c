@@ -1089,7 +1089,7 @@ void Get_LED_data(void)
     {
         if(LAMP_Status==OFF)
         {
-            Display_out_buf[i] = 0x00;
+            Display_out_buf[i].byte = 0x00;
         }
         else
         {
