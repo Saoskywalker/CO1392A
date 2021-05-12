@@ -186,6 +186,205 @@ void Err_dsp(void)
         light_down2=0;
     }
 }
+
+/*************************************************
+ // 功能描述    : 制冷模式下的温度渐变补偿，华氏度
+ // 入口参数    : 无
+ // 出口参数    : 无
+***************************************************/
+UI08 compensate_temp_F(UI08 original_temp)
+{
+    #define compensate_timer   9*60UL
+    
+    if((original_temp-3)<Temp_Set_F)
+    {
+        _compensate_disable=1;
+    }
+    else
+    {
+        _compensate_disable=0;
+    }
+
+
+    if(original_temp<=79)
+    {
+        Trom_HE_79=1;
+        _compensate_80_87=0;
+        if(Cool_compensate_status)
+        {
+            Cool_compensate_status=0;
+            compensate_delaytime=(0==compensate_delaytime)?(compensate_timer):(compensate_timer-compensate_delaytime);
+        }
+        //
+        if(compensate_delaytime>360)
+        {
+            return (original_temp-1);
+        }
+        else
+        {
+            return original_temp;
+        }
+    }
+    else if(original_temp<=87)
+    {
+        if(_compensate_disable)
+        {
+            _compensate_80_87=1;
+            Cool_compensate_status=0;
+            return original_temp;
+        }
+
+        Cool_compensate_status=1;
+
+        if((Trom_HE_79)||(Trom_HE_88)||(_compensate_80_87))
+        {
+            Trom_HE_79=0;
+            Trom_HE_88=0;
+            _compensate_80_87=0;
+            compensate_delaytime=(0==compensate_delaytime)?(compensate_timer):(compensate_timer-compensate_delaytime);
+        }
+
+        if(compensate_delaytime>360)
+        {
+            return original_temp;
+        }
+        else if(compensate_delaytime>180)
+        {
+            return (original_temp-1);
+        }
+        else if(compensate_delaytime>0)
+        {
+            return (original_temp-2);
+        }
+        else
+        {
+            return original_temp-3;
+        }
+
+    }
+    else
+    {
+        Trom_HE_88=1;
+        _compensate_80_87=0;
+        if(Cool_compensate_status)
+        {
+            Cool_compensate_status=0;
+            compensate_delaytime=(0==compensate_delaytime)?(compensate_timer):(compensate_timer-compensate_delaytime);
+        }
+        //
+        if(compensate_delaytime>360)
+        {
+            return (original_temp-3);
+        }
+        else if(compensate_delaytime>180)
+        {
+            return (original_temp-2);
+        }
+        else if(compensate_delaytime>0)
+        {
+            return (original_temp-1);
+        }
+        else
+        {
+            return original_temp;
+        }
+    }
+}
+
+/*************************************************
+ // 功能描述    : 制冷模式下的温度渐变补偿，摄氏度
+ // 入口参数    : 无
+ // 出口参数    : 无
+***************************************************/
+UI08 compensate_temp_C(UI08 original_temp)
+{
+    #define compensate_timer_C   6*60UL
+
+    if((original_temp-2)<Temp_Set_C)
+    {
+        _compensate_disable=1;
+    }
+    else
+    {
+        _compensate_disable=0;
+    }
+
+    if(original_temp<=26)
+    {
+        Trom_HE_79=1;
+        _compensate_80_87=0;
+        if(Cool_compensate_status)
+        {
+            Cool_compensate_status=0;
+            compensate_delaytime=(0==compensate_delaytime)?(compensate_timer_C):(compensate_timer_C-compensate_delaytime);
+        }
+        //
+        if(compensate_delaytime>180)
+        {
+            return (original_temp-1);
+        }
+        else
+        {
+            return original_temp;
+        }
+    }
+    else if(original_temp<=30)
+    {
+        if(_compensate_disable)
+        {
+            _compensate_80_87=1;
+            Cool_compensate_status=0;
+            return original_temp;
+        }
+
+        Cool_compensate_status=1;
+
+        if((Trom_HE_79)||(Trom_HE_88)||(_compensate_80_87))
+        {
+            Trom_HE_79=0;
+            Trom_HE_88=0;
+            _compensate_80_87=0;
+            compensate_delaytime=(0==compensate_delaytime)?(compensate_timer_C):(compensate_timer_C-compensate_delaytime);
+        }
+
+        if(compensate_delaytime>180)
+        {
+            return original_temp;
+        }
+        else if(compensate_delaytime>0)
+        {
+            return (original_temp-1);
+        }
+        else
+        {
+            return (original_temp-2);
+        }
+    }
+    else
+    {
+        Trom_HE_88=1;
+        _compensate_80_87=0;
+        if(Cool_compensate_status)
+        {
+            Cool_compensate_status=0;
+            compensate_delaytime=(0==compensate_delaytime)?(compensate_timer_C):(compensate_timer_C-compensate_delaytime);
+        }
+        //
+        if(compensate_delaytime>180)
+        {
+            return (original_temp-2);
+        }
+        else if(compensate_delaytime>0)
+        {
+            return (original_temp-1);
+        }
+        else
+        {
+            return original_temp;
+        }
+    }
+}
+
 /*************************************************
  // 函数名称    : TempSet_dsp
  // 功能描述    : 设定温度显示
@@ -262,13 +461,38 @@ void TempRoom_dsp(void)
         return;
     }
 
+    if(CF_Status==_C)
+    {
+        dsp_temp = F_C(Troom_dsp);
+    }
+    else
+    {
+        dsp_temp = Troom_dsp;
+    }
+    
+    if(Mode_Set==COOL)
+    {
+        if(CF_Status==_C)
+        {
+            dsp_temp=compensate_temp_C(dsp_temp);
+        }
+        else
+        {
+            dsp_temp=compensate_temp_F(dsp_temp);
+        }
+    }
+    else
+    {
+        dsp_temp=Troom_dsp;   
+    }
+
     //if(Mode_Set==COOL)
     //{
     //     dsp_temp=compensate_temp(Troom_dsp);
     //}
     //else
     //{
-    dsp_temp=Troom_dsp;
+    // dsp_temp=Troom_dsp;
     //}
     //在制热模式补偿温度(直接补偿7F)切换至其他模式,退出补偿温度渐变,恢复正常后，退出补偿显示
     if((!_comp_firston_in_heat)&&(_heat_temp_compensation_DSP_EN))
@@ -295,10 +519,10 @@ void TempRoom_dsp(void)
     }
 
 
-    if(CF_Status==_C)
-    {
-        dsp_temp=F_C(dsp_temp);
-    }
+//    if(CF_Status==_C)
+//    {
+//        dsp_temp=F_C(dsp_temp);
+//    }
 
     //
     if(Troom_dsp<32)
@@ -549,6 +773,7 @@ void LedDsp_Test(void)
 void LedDsp_content(void)
 {
     FANSPEED_TYPE a;
+    UI08 dsp_temp = 0;
     /**********************************************************************************/
     if(Power_Delay_Time>0)
     {
@@ -583,7 +808,28 @@ void LedDsp_content(void)
     {
         light_down4=0;
     }
-    //
+    //制冷补偿
+//    if(Mode_Set==COOL)
+//    {
+//        if(CF_Status==_C)
+//        {
+//            dsp_temp = F_C(Troom_dsp);
+//        }
+//        else
+//        {
+//            dsp_temp = Troom_dsp;
+//        }
+
+//        if(CF_Status==_C)
+//        {
+//            dsp_temp=compensate_temp_C(dsp_temp);
+//        }
+//        else
+//        {
+//            dsp_temp=compensate_temp_F(dsp_temp);
+//        }
+//        Troom_dsp=dsp_temp;
+//    }
 
     //===========
     clear_all();

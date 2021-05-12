@@ -303,7 +303,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>WAP23A</Define>
               <Undefine></Undefine>
               <IncludePath>.\h;.\lib;.\SOC_DebugTouchKey_Lib</IncludePath>
             </VariousControls>

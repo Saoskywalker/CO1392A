@@ -65,8 +65,8 @@ void main(void)
         general_deal();
         IO_operate();
         Sys_Control();
-        communication_Deal();
         SYS_Inspect_Deal();
+        communication_Deal();
         exv_control();
         SYS_Sleep_deal();
     }
