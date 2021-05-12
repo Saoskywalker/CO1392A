@@ -31,8 +31,8 @@ void main(void)
         LED_display();
         SYS_Sleep_deal();
         general_deal();
-        communication_Deal();
         SYS_Inspect_Deal();
+        communication_Deal();
         exv_control();
     }
     //EEP »úÐÍ¶ÁÈ¡

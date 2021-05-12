@@ -1076,11 +1076,26 @@ void LedDsp_content(void)
 void Get_LED_data(void)
 {
     UI08 i=0;
+    if(LAMP_Status==OFF)
+    {
+        LED_out_buf.byte = 0x00;
+    }
+    else
+    {
+        LED_out_buf.byte = LED_data_buf.byte;
+    }
+
     for(i=0;i<COM_total;i++)
     {
-        Display_out_buf[i].byte=Display_data_buf[i].byte;
+        if(LAMP_Status==OFF)
+        {
+            Display_out_buf[i] = 0x00;
+        }
+        else
+        {
+            Display_out_buf[i].byte=Display_data_buf[i].byte;
+        }  
     }
-    LED_out_buf.byte = LED_data_buf.byte;
 }
 /*************************************************
  // º¯ÊýÃû³Æ    : LED_display
