@@ -42,6 +42,11 @@ void main(void)
     Troom_update_time=3;
     _temp_update_enb=1;
     Troom_dsp_com=Temp_room.value;
+
+    IAPPageErase(SYS_DATA_ADDR,IapROM);
+    EEP_OffSet_DATA_ADDR=0;//擦除后 偏移量从0开始
+    _Write_EEP_EN = 1;
+    Sys_data_write();
     //强制测试入口
     PowerKey_Delay_Time=200;
     while(PowerKey_Delay_Time>0)
@@ -53,6 +58,7 @@ void main(void)
         exv_control();
         LED_display();
     }
+
     while (1)
     {
 #if ((defined DEBUG_EN) && !DEBUG_EN)

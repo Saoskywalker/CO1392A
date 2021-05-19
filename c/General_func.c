@@ -67,7 +67,7 @@ xdata UI08 Sys_Version_buf;//红外机型
 xdata UI08 Buzz_Cnt;//蜂鸣器响多少声
 xdata  UI08 EEP_data[EEP_MAX]= {0};
 xdata  UI08 EEP_data_last[EEP_MAX]= {0};
-static xdata UI16 EEP_OffSet_DATA_ADDR = 0;//写EEP偏移的地址(0x00~511,一页为512)
+xdata UI16 EEP_OffSet_DATA_ADDR = 0;//写EEP偏移的地址(0x00~511,一页为512)
 //================================================
 //8个数位一组
 //================================================
@@ -607,7 +607,6 @@ void Sys_data_read_eep(void)
         _Write_EEP_EN=1;
         return;
     }
-    EEP_OffSet_DATA_ADDR = i;
     //
     if(EEP_data[9]<=30)//限制 off_cycle_Tmin
     {

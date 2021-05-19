@@ -163,6 +163,7 @@ extern xdata UI08             water_light_cont;
 extern xdata UI08 Sys_EEP_SYTP;//»úÐÍ
 extern xdata UI08 Sys_Version_buf;
 extern xdata UI08 Buzz_Cnt;
+extern xdata UI16 EEP_OffSet_DATA_ADDR;
 
 
 
