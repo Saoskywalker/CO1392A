@@ -66,6 +66,8 @@ xdata UI08 Sys_EEP_SYTP;//机型
 xdata UI08 Sys_Version_buf;//红外机型
 xdata UI08 Buzz_Cnt;//蜂鸣器响多少声
 xdata  UI08 EEP_data[EEP_MAX]= {0};
+xdata  UI08 EEP_data_last[EEP_MAX]= {0};
+static xdata UI16 EEP_OffSet_DATA_ADDR = 0;//写EEP偏移的地址(0x00~511,一页为512)
 //================================================
 //8个数位一组
 //================================================
@@ -574,10 +576,29 @@ void Sys_data_read_eep(void)
     UI16 buf16=0;
     UI08 i;
     UI08 crc=0;
-    //
+    UI08 check_EEP_data=0;//检查是否存储有EEP数据
+    UI16 check_offset=0;//EEP存储的偏移量
+
+    for (i=0;i<SECTION_SIZE;i=i+EEP_MAX)
+    {
+        check_EEP_data = IAPRead(SYS_DATA_ADDR+i,IapROM);
+        if(check_EEP_data != 0xAA)//检查第一个字节
+        {
+            if(i == 0)//没有存过数据
+            {
+                break;
+            }
+            else
+            {
+                check_offset = i - EEP_MAX;
+                break;
+            }
+        }
+    }
+
     for(i=0; i<EEP_MAX; i++)
     {
-        EEP_data[i]=IAPRead(SYS_DATA_ADDR+i,IapROM);
+        EEP_data[i]=IAPRead(SYS_DATA_ADDR+i+check_offset,IapROM);
     }
     crc=crc_check(&EEP_data[0],EEP_MAX-1);//CRC校验
     //校验
@@ -721,12 +742,14 @@ void Sys_data_write(void)
 {
     UI08 i;
     UI08 crc=0;
+    UI08 same_flag = 0;
 
     if(!_Write_EEP_EN)
     {
         return;
     }
     _Write_EEP_EN=0;
+
     //
     EEP_data[0]=0xaa;
     EEP_data[1]=(UI08)(Power_Status);
@@ -742,14 +765,64 @@ void Sys_data_write(void)
     EEP_data[11]=Sys_filter_time%256;
     EEP_data[12]=SYS_UVC_Status;
     EEP_data[EEP_MAX-1]=crc_check(&EEP_data[0],EEP_MAX-1);//CRC校验
-    //
-    IAPPageErase(SYS_DATA_ADDR,IapROM);
+
+    for (i=0;i<EEP_MAX;i++)
+    {
+        if (EEP_data[i] != EEP_data_last[i])
+        {
+            same_flag = 1;//与上次数据不同
+            break;    
+        }
+    }
+
+    if (same_flag == 0)//与上一次相同
+    {
+        return;
+    }
+    
+    if(EEP_OffSet_DATA_ADDR >= (SECTION_SIZE - EEP_MAX))//31*16=496byte(一页512byte)
+    {
+        IAPPageErase(SYS_DATA_ADDR,IapROM);
+        EEP_OffSet_DATA_ADDR = 0;
+        _Write_EEP_EN = 1;
+    }
+    
     //写入
     for(i=0; i<EEP_MAX; i++)
     {
-        IAPWrite(SYS_DATA_ADDR+i,EEP_data[i],IapROM);
+        IAPWrite(SYS_DATA_ADDR+i+EEP_OffSet_DATA_ADDR,EEP_data[i],IapROM);
     }
 
+    //重新读出来校验
+    for(i=0; i<EEP_MAX; i++)
+    {
+        EEP_data_last[i]=IAPRead(SYS_DATA_ADDR+i+EEP_OffSet_DATA_ADDR,IapROM);
+    }
+
+    same_flag = 0;
+    for(i=0; i<EEP_MAX; i++)
+    {
+        if (EEP_data_last[i] != EEP_data[i])
+        {
+            same_flag = 1;
+            break;   
+        }
+    }
+
+    if (same_flag)
+    {
+        IAPPageErase(SYS_DATA_ADDR,IapROM);
+        EEP_OffSet_DATA_ADDR=0;
+        _Write_EEP_EN=1; 
+        for(i=0; i<EEP_MAX; i++)
+        {
+            EEP_data_last[i] = 0;    
+        } 
+    }
+    else
+    {
+        EEP_OffSet_DATA_ADDR=EEP_OffSet_DATA_ADDR+EEP_MAX;   //偏移到下一组
+    }
     _check_EEP_EN=1;
 }
 
@@ -766,24 +839,43 @@ void Sys_data_check(void)
     UI08 buf16=0;
     UI08 i;
     UI08 crc=0;
+    UI08 check_EEP_data=0;//检查是否存储有EEP数据
+    UI16 check_offset=0;//EEP存储的偏移量
     if(!_check_EEP_EN)
     {
         return;
     }
     _check_EEP_EN=0;
 
+    for (i=0;i<SECTION_SIZE;i=i+EEP_MAX)
+    {
+        check_EEP_data = IAPRead(SYS_DATA_ADDR+i,IapROM);
+        if(check_EEP_data != 0xAA)//检查第一个字节
+        {
+            if(i == 0)//没有存过数据
+            {
+                break;
+            }
+            else
+            {
+                check_offset = i - EEP_MAX;
+                break;
+            }
+        }
+    }
+
     //重新读出来校验
     for(i=0; i<EEP_MAX; i++)
     {
-        EEP_data[i]=IAPRead(SYS_DATA_ADDR+i,IapROM);
+        EEP_data[i]=IAPRead(SYS_DATA_ADDR+i+check_offset,IapROM);
     }
+
     crc=crc_check(&EEP_data[0],EEP_MAX-1);//CRC校验
     //校验   || 写的范围已满  擦除从新开始
     if((0xaa!=EEP_data[0])||(crc!=EEP_data[EEP_MAX-1]))
     {
         _Write_EEP_EN=1;
     }
-
 }
 /*********************************************************
 函数名: void EEP_deal(void)

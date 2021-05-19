@@ -3,7 +3,7 @@
 
 
 #define   TYPE_MAX      21     //存储数据延时
-#define   EEP_MAX       14     //存储数据延时
+#define   EEP_MAX       16     //存储数据大小
 extern code  UI16 mach_type_tab[TYPE_MAX];
 extern code  UI08 Off_cycle_Timer_tab[TYPE_MAX];
 #define   Comp_Protect_Time  180  //压缩机保护时间  180
