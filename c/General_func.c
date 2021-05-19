@@ -607,6 +607,7 @@ void Sys_data_read_eep(void)
         _Write_EEP_EN=1;
         return;
     }
+    EEP_OffSet_DATA_ADDR = i;
     //
     if(EEP_data[9]<=30)//限制 off_cycle_Tmin
     {
@@ -944,7 +945,7 @@ void Sys_Initial(void)	//	系统 初始化程序
 void general_deal(void)
 {
     prg_s_general();
-    EEP_deal();
+    // EEP_deal();
 }
 
 

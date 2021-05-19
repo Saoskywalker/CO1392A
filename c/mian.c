@@ -63,6 +63,7 @@ void main(void)
         LED_display();
         Remote_Deal();
         general_deal();
+        EEP_deal();
         IO_operate();
         Sys_Control();
         SYS_Inspect_Deal();
