@@ -574,7 +574,7 @@ void Sys_data_read_eep(void)
 {
     UI08 buf=0;
     UI16 buf16=0;
-    UI08 i;
+    UI16 i;
     UI08 crc=0;
     UI08 check_EEP_data=0;//检查是否存储有EEP数据
     UI16 check_offset=0;//EEP存储的偏移量
@@ -835,9 +835,7 @@ void Sys_data_write(void)
 **********************************************************/
 void Sys_data_check(void)
 {
-    UI08 buf=0;
-    UI08 buf16=0;
-    UI08 i;
+    UI16 i;
     UI08 crc=0;
     UI08 check_EEP_data=0;//检查是否存储有EEP数据
     UI16 check_offset=0;//EEP存储的偏移量
