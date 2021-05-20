@@ -743,13 +743,6 @@ void Sys_data_write(void)
     UI08 i;
     UI08 crc=0;
     UI08 same_flag = 0;
-
-    if(!_Write_EEP_EN)
-    {
-        return;
-    }
-    _Write_EEP_EN=0;
-
     //
     EEP_data[0]=0xaa;
     EEP_data[1]=(UI08)(Power_Status);
@@ -784,45 +777,17 @@ void Sys_data_write(void)
     {
         IAPPageErase(SYS_DATA_ADDR,IapROM);
         EEP_OffSet_DATA_ADDR = 0;
-        _Write_EEP_EN = 1;
     }
     
     //写入
     for(i=0; i<EEP_MAX; i++)
     {
         IAPWrite(SYS_DATA_ADDR+i+EEP_OffSet_DATA_ADDR,EEP_data[i],IapROM);
+        EEP_data_last[i] = EEP_data[i];
     }
 
-    //重新读出来校验
-    for(i=0; i<EEP_MAX; i++)
-    {
-        EEP_data_last[i]=IAPRead(SYS_DATA_ADDR+i+EEP_OffSet_DATA_ADDR,IapROM);
-    }
+    EEP_OffSet_DATA_ADDR=EEP_OffSet_DATA_ADDR+EEP_MAX;   //偏移到下一组
 
-    same_flag = 0;
-    for(i=0; i<EEP_MAX; i++)
-    {
-        if (EEP_data_last[i] != EEP_data[i])
-        {
-            same_flag = 1;
-            break;   
-        }
-    }
-
-    if (same_flag)
-    {
-        IAPPageErase(SYS_DATA_ADDR,IapROM);
-        EEP_OffSet_DATA_ADDR=0;
-        _Write_EEP_EN=1; 
-        for(i=0; i<EEP_MAX; i++)
-        {
-            EEP_data_last[i] = 0;    
-        } 
-    }
-    else
-    {
-        EEP_OffSet_DATA_ADDR=EEP_OffSet_DATA_ADDR+EEP_MAX;   //偏移到下一组
-    }
     _check_EEP_EN=1;
 }
 
@@ -872,7 +837,10 @@ void Sys_data_check(void)
     //校验   || 写的范围已满  擦除从新开始
     if((0xaa!=EEP_data[0])||(crc!=EEP_data[EEP_MAX-1]))
     {
-        _Write_EEP_EN=1;
+        for(i=0; i<EEP_MAX; i++)
+        {
+            EEP_data_last[i] = 0;
+        }
     }
 }
 /*********************************************************
@@ -891,14 +859,11 @@ void EEP_deal(void)
 
     _MS100_EEP_EN=0;
 
-    if(_Write_EEP_EN)
-    {
-        Sys_data_write();
-    }
-    else if(_check_EEP_EN)
+    if(_check_EEP_EN)
     {
         Sys_data_check();
     }
+    Sys_data_write();
 }
 
 /**************************************************
