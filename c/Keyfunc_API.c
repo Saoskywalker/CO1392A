@@ -656,10 +656,10 @@ void key_decode(void)
 
     case uvc_key:
     {
-        SYS_UVC_Status=(SYS_UVC_Status)?(OFF):(ON);
-  	    Buz_mode(BUZZ_TYPE7);
-        Dsp_Time=10;
-        write_delay_time=EEP_DELAY;
+        // SYS_UVC_Status=(SYS_UVC_Status)?(OFF):(ON);
+  	    // Buz_mode(BUZZ_TYPE7);
+        // Dsp_Time=10;
+        // write_delay_time=EEP_DELAY;
     }
     break;
 

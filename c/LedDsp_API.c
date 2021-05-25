@@ -554,8 +554,9 @@ void disp_All(void)
     LED_SwingOn;
     LED_MuteOff;
     LED_Sleep_off;
+    LED_UvcOff;
     light_down.byte=0;
-    LED_data_buf.byte=0x02;//ºìµÆ
+    LED_data_buf.byte=0x01;//À¶µÆ
 }
 /*************************************************
  // º¯ÊýÃû³Æ    : clear_all
@@ -632,16 +633,16 @@ void LedDsp_Test(void)
             LED_CoolAir;
             LED_HEAT_off;
             break;
+        // case 11:
+        //     LED_HEAT;
+        //     LED_CoolAir_off;
+        //     break;
         case 11:
-            LED_HEAT;
-            LED_CoolAir_off;
-            break;
-        case 12:
             LED_timer;
             break;
-        case 13:
-            LED_UvcOn;
-            break;
+        // case 12:
+        //     LED_UvcOn;
+        //     break;
 
         default:
             test_cont2=0;
@@ -662,6 +663,7 @@ void LedDsp_Test(void)
         LED_HEAT_off;//ºìµÆ¹Ø±Õ
         Display_data_buf[2].byte = 0xFF;
         Display_data_buf[3].byte = 0xFF;
+        LED_UvcOff;
 
         if(Reda_EEP==0)
         {
