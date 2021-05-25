@@ -584,8 +584,10 @@ void Sys_data_read_eep(void)
         check_EEP_data = IAPRead(SYS_DATA_ADDR+i,IapROM);
         if(check_EEP_data != 0xAA)//检查第一个字节
         {
-            if(i == 0)//没有存过数据
+            if(i == 0 && check_EEP_data != 0xFF && check_EEP_data != 0x00)//没有存过数据
             {
+                IAPPageErase(SYS_DATA_ADDR,IapROM);
+                EEP_OffSet_DATA_ADDR = 0;
                 break;
             }
             else
@@ -815,8 +817,10 @@ void Sys_data_check(void)
         check_EEP_data = IAPRead(SYS_DATA_ADDR+i,IapROM);
         if(check_EEP_data != 0xAA)//检查第一个字节
         {
-            if(i == 0)//没有存过数据
+            if(i == 0 && check_EEP_data != 0xFF && check_EEP_data != 0x00)//没有存过数据
             {
+                IAPPageErase(SYS_DATA_ADDR,IapROM);
+                EEP_OffSet_DATA_ADDR = 0;
                 break;
             }
             else
