@@ -333,8 +333,8 @@ void normal_cool(void)
         off_cycle_mode=0;
     }
 
-    //if((_Sys_lowpower==DISABLE)&&(Comp_para.OUT==OFF))
-    if(Comp_para.OUT==OFF)
+    if((_Sys_lowpower==DISABLE)&&(Comp_para.OUT==OFF))
+    // if(Comp_para.OUT==OFF)
     {
         off_cycle_mode_control();
     }
