@@ -590,64 +590,52 @@ void LedDsp_Test(void)
     {
         switch(test_cont2)
         {
-        case 0:
-        case 1:
-            dig1_num=0;
-            // _led_swing_disp_buf=0;
-            // LED_SwingOff;
+        case 11:
             LED_water;
             break;
-        case 2:
-            // LED_water;
+        case 10:
             LED_SwingOn;
-            dig1_num|=BIT_A;
+            dig1_num|=BIT_G;
             break;
-        case 3:
+        case 9:
             LED_hfan;
-            dig1_num|=BIT_B;
+            dig1_num|=BIT_F;
             break;
-        case 4:
+        case 8:
             LED_mfan;
-            dig1_num|=BIT_C;
+            dig1_num|=BIT_E;
             break;
-        case 5:
+        case 7:
             LED_lfan;
             dig1_num|=BIT_D;
             break;
         case 6:
             LED_MuteOn;
-            dig1_num|=BIT_E;
+            dig1_num|=BIT_C;
             break;
-        case 7:
+        case 5:
             LED_Sleep_on;
-            dig1_num|=BIT_F;
+            dig1_num|=BIT_B;
             break;
-        case 8:
+        case 4:
             LED_fan;
-            dig1_num|=BIT_G;
+            dig1_num|=BIT_A;
             break;
-        case 9:
+        case 3:
             LED_hum;
             break;
-        case 10:
+        case 2:
             LED_CoolAir;
             LED_HEAT_off;
             break;
-        // case 11:
-        //     LED_HEAT;
-        //     LED_CoolAir_off;
-        //     break;
-        case 11:
+        case 1:
             LED_timer;
+            dig1_num=0;
             break;
-        // case 12:
-        //     LED_UvcOn;
-        //     break;
-
         default:
             test_cont2=0;
             test_cont1=0;
-            // _led_swing_disp_buf=0;
+            dig1_num=0;
             clear_all();
             break;
         }
@@ -746,10 +734,10 @@ void LedDsp_Test(void)
         switch(test_key_data)
         {
         case  0x7f:
-            test_seq=3;
+            test_seq=2;
             break;
         case  0xff:
-            test_seq=2;
+            test_seq=3;
             break;
         }   
     }
@@ -758,10 +746,10 @@ void LedDsp_Test(void)
         switch(test_key_data)
         {
         case  (0x7e):
-            test_seq=3;
+            test_seq=2;
             break;
         case  (0xfe):
-            test_seq=2;
+            test_seq=3;
             break;
         } 
     }

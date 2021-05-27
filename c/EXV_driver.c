@@ -11,7 +11,7 @@ xdata UI08             step_cnt=0;//计数
 xdata UI16             excit_time=0;//励磁时间
 xdata UUI08            EXV_bit= {0}; //标志位
 xdata UI08             exv_Self_Test_timer=0;
-const UI08 step_tab_self[]= {0x00,0x08,0x04,0x02,0x01}; //步进电机测试运行数组
+const UI08 step_tab_self[]= {0x00,0x01,0x02,0x04,0x08}; //步进电机测试运行数组
 
 #if 0
 const UI08 step_tab[]= {0x09,0x01,0x03,0x02,0x06,0x04,0x0c,0x08};
