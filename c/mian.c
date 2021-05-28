@@ -7,13 +7,18 @@
 // 	版本		: 2015-12-25:
 //              :
 //*************************************************************
+// #define TOUCH_DYN_DEBUG     //!动态调试触摸，需添加SC95F8X1X_HighSensitiveTKDynamicDebug_S_V0.0.2.LIB
 #include "General.h"
-//#include "SOC_DebugTouchKey.h"
+#ifdef TOUCH_DYN_DEBUG
+#include "SOC_DebugTouchKey.h"
+#endif
 //*****************全局变量区***************************************************
 void main(void)
 {
     Sys_Initial();
-    //SOCAPI_DeBugTouchKey_Init();//动态库调试
+#ifdef TOUCH_DYN_DEBUG
+    SOCAPI_DeBugTouchKey_Init();//动态库调试
+#endif
     //上电全显
     while(Power_Delay_Time>0)
     {
