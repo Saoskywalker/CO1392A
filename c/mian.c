@@ -19,26 +19,26 @@ void main(void)
 {
     Sys_Initial();
 #ifdef TOUCH_DYN_DEBUG
-    SOCAPI_DeBugTouchKey_Init();//动态库调试
+    SOCAPI_DeBugTouchKey_Init(); //动态库调试
 #endif
     //上电全显
-    while(Power_Delay_Time>0)
+    while (Power_Delay_Time > 0)
     {
-        WDTCON|=0x10;//WDT_Clear
+        WDTCON |= 0x10; // WDT_Clear
         Temp_Deal();
         Key_Deal();
         LED_display();
         general_deal();
-	   // Wifi_UART_Deal();
+        // Wifi_UART_Deal();
         communication_Deal();
     }
-    //EEP 机型读取
-    //SYS_Mach_type_judge();
+    // EEP 机型读取
+    // SYS_Mach_type_judge();
     Sys_data_read_eep();
 
     while (1)
     {
-        WDTCON|=0x10;//WDT_Clear
+        WDTCON |= 0x10; // WDT_Clear
 
         Key_Deal();
         Temp_Deal();
@@ -47,8 +47,8 @@ void main(void)
         EEP_deal();
         IO_operate();
         Sys_Control();
-    	SYS_Inspect_Deal();
-    	//Wifi_UART_Deal();
+        SYS_Inspect_Deal();
+        // Wifi_UART_Deal();
         communication_Deal();
     }
 }

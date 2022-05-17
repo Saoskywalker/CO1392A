@@ -15,8 +15,6 @@
 
 #include "Led_driver.h"
 
-
-
 #include "IO_API.h"
 
 #include "Keyfunc_API.h"
@@ -39,10 +37,6 @@
 
 #include "Data_EEP.h"
 
-
-
-#define   Soft_Version 0
-
-
+#define Soft_Version 0
 
 #endif

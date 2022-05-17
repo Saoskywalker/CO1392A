@@ -1,6 +1,3 @@
 #include "General.h"
 
-unsigned char code IapCheckNum[4]={0XAA,0X55,0X55,0XAA};	//?邦D?APP?那D赤?∩DD那y℅???
-
-
-
+unsigned char code IapCheckNum[4] = {0XAA, 0X55, 0X55, 0XAA}; //?邦D?APP?那D赤?∩DD那y℅???

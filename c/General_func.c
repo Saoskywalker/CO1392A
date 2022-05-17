@@ -1,79 +1,77 @@
 #include "General.h"
 
-MCU_xdata UUI08    Sys_eep_bit={0};//EEP处理标志位
+MCU_xdata UUI08 Sys_eep_bit = {0}; // EEP处理标志位
 
-MCU_xdata UI32  M_Timer_Run=0;//定时剩余时间
-MCU_xdata UI08  M_Timer_Set=1;//定时设定时间
-MCU_xdata UI08  M_Timer_Buf=1;//定时设定时间buf
-MCU_xdata UI08  M_Timer_Point=0;//定时 point
-//MCU_xdata UI16  M_Power_Delay_Time=300;//上电延时
-MCU_xdata UI16  M_Power_Delay_Time2=300;//上电延时(进入自检)
+MCU_xdata UI32 M_Timer_Run = 0;   //定时剩余时间
+MCU_xdata UI08 M_Timer_Set = 1;   //定时设定时间
+MCU_xdata UI08 M_Timer_Buf = 1;   //定时设定时间buf
+MCU_xdata UI08 M_Timer_Point = 0; //定时 point
+// MCU_xdata UI16  M_Power_Delay_Time=300;//上电延时
+MCU_xdata UI16 M_Power_Delay_Time2 = 300; //上电延时(进入自检)
 
-MCU_xdata UI08 M_Timer_Setting_Time=0;//定时设定(确认时间)
-MCU_xdata UI08 M_Dsp_Time=0;//显示时间
-MCU_xdata UI08 Hum_dsp_com=60;//显示湿度
-MCU_xdata UI08 M_hum_update_time=0;//湿度更新时间
+MCU_xdata UI08 M_Timer_Setting_Time = 0; //定时设定(确认时间)
+MCU_xdata UI08 M_Dsp_Time = 0;           //显示时间
+MCU_xdata UI08 Hum_dsp_com = 60;         //显示湿度
+MCU_xdata UI08 M_hum_update_time = 0;    //湿度更新时间
 
-MCU_xdata UI08 M_test_seq=0;//自检
-MCU_xdata UI08 M_test_cont1=0;//自检
-MCU_xdata UI08 M_test_cont2=0;//自检
-MCU_xdata UUI08 M_sys_bit={0};//系统标志位
-MCU_xdata UUI16 M_sys_bit1={0};//系统标志位1
-MCU_xdata SYS_ERR Sys_Err;//故障
+MCU_xdata UI08 M_test_seq = 0;    //自检
+MCU_xdata UI08 M_test_cont1 = 0;  //自检
+MCU_xdata UI08 M_test_cont2 = 0;  //自检
+MCU_xdata UUI08 M_sys_bit = {0};  //系统标志位
+MCU_xdata UUI16 M_sys_bit1 = {0}; //系统标志位1
+MCU_xdata SYS_ERR Sys_Err;        //故障
 
 //
-MCU_xdata ONOFF_STATUS SYS_Power_Status=OFF;             //开关机状态
+MCU_xdata ONOFF_STATUS SYS_Power_Status = OFF; //开关机状态
 
-MCU_xdata SYS_MODE     SYS_Mode=mode_SYS_HUM;          //系统模式
-MCU_xdata SYS_MODE     SYS_Mode_Buf=mode_SYS_HUM;      //系统模式
-MCU_xdata UI08         Set_SYS_Mode_Timer=0;           //模式设定时间
+MCU_xdata SYS_MODE SYS_Mode = mode_SYS_HUM;     //系统模式
+MCU_xdata SYS_MODE SYS_Mode_Buf = mode_SYS_HUM; //系统模式
+MCU_xdata UI08 Set_SYS_Mode_Timer = 0;          //模式设定时间
 
-MCU_xdata DYR_TYPE     SYS_DYR_Tyde=DYR_STRONG;          //干衣类型
-MCU_xdata DYR_TYPE     SYS_DYR_Tyde_Buf=DYR_STRONG;      //干衣类型
-MCU_xdata UI08         Set_SYS_DYR_Tyde_timer=0;
+MCU_xdata DYR_TYPE SYS_DYR_Tyde = DYR_STRONG;     //干衣类型
+MCU_xdata DYR_TYPE SYS_DYR_Tyde_Buf = DYR_STRONG; //干衣类型
+MCU_xdata UI08 Set_SYS_DYR_Tyde_timer = 0;
 
-MCU_xdata HUM_TYPE     SYS_HUN_Tyde=USER_DEFINE_HUM;          //除湿类型
-MCU_xdata HUM_TYPE     SYS_HUN_Tyde_Buf=USER_DEFINE_HUM;      //除湿类型
-MCU_xdata UI08         SET_SYS_HUN_Tyde_Timer=0;//湿度设定(确认时间)
+MCU_xdata HUM_TYPE SYS_HUN_Tyde = USER_DEFINE_HUM;     //除湿类型
+MCU_xdata HUM_TYPE SYS_HUN_Tyde_Buf = USER_DEFINE_HUM; //除湿类型
+MCU_xdata UI08 SET_SYS_HUN_Tyde_Timer = 0;             //湿度设定(确认时间)
 
-MCU_xdata UI08         SYS_Hum_Set=0;                 //湿度设定
-MCU_xdata UI08         SYS_Hum_Set_Buf=0;             //湿度设定buf
-MCU_xdata UI08         Set_SYS_Hum_timer=0;
-MCU_xdata UI08         SYS_Hum_Point=0;                //设定湿度 point
+MCU_xdata UI08 SYS_Hum_Set = 0;     //湿度设定
+MCU_xdata UI08 SYS_Hum_Set_Buf = 0; //湿度设定buf
+MCU_xdata UI08 Set_SYS_Hum_timer = 0;
+MCU_xdata UI08 SYS_Hum_Point = 0; //设定湿度 point
 
-MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde=SILENCE_FAN;          //运行风速
-MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde_Buf=SILENCE_FAN;      //运行风速
-MCU_xdata FANSPEED_TYPE Fan_Speed_Out=OFF_FAN;             //实际运行风速
-MCU_xdata FANSPEED_TYPE Fan_Speed_Out_Buf=OFF_FAN;         //实际运行风速
-MCU_xdata FuncState     Set_Fan_State=Enable;             //是否允许风速
-MCU_xdata UI08          Set_SYS_Fan_Tyde_timer=0;
-MCU_xdata UI16          FAN_ON_timer=0;
-MCU_xdata UI16          FAN_OFF_timer=0;
+MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde = SILENCE_FAN;     //运行风速
+MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde_Buf = SILENCE_FAN; //运行风速
+MCU_xdata FANSPEED_TYPE Fan_Speed_Out = OFF_FAN;        //实际运行风速
+MCU_xdata FANSPEED_TYPE Fan_Speed_Out_Buf = OFF_FAN;    //实际运行风速
+MCU_xdata FuncState Set_Fan_State = Enable;             //是否允许风速
+MCU_xdata UI08 Set_SYS_Fan_Tyde_timer = 0;
+MCU_xdata UI16 FAN_ON_timer = 0;
+MCU_xdata UI16 FAN_OFF_timer = 0;
 
+MCU_xdata SWING_MODE SYS_Swing_Tyde = STOP_SWING;     //摆叶类型
+MCU_xdata SWING_MODE SYS_Swing_Tyde_Buf = STOP_SWING; //摆叶类型
+MCU_xdata SWING_MODE Swing_Tyde_Out = STOP_SWING;     //实际摆叶方式
+MCU_xdata SWING_MODE Swing_Tyde_Out_Buf = STOP_SWING; //实际摆叶方式
+MCU_xdata UI08 Set_SYS_Swing_Tyde_Timer = 0;
+MCU_xdata FuncState Set_Swing_State = Disable; //是否允许设置摆叶
 
-MCU_xdata SWING_MODE    SYS_Swing_Tyde=STOP_SWING;     //摆叶类型
-MCU_xdata SWING_MODE    SYS_Swing_Tyde_Buf=STOP_SWING; //摆叶类型
-MCU_xdata SWING_MODE    Swing_Tyde_Out=STOP_SWING;    //实际摆叶方式
-MCU_xdata SWING_MODE    Swing_Tyde_Out_Buf=STOP_SWING;    //实际摆叶方式
-MCU_xdata UI08          Set_SYS_Swing_Tyde_Timer=0;
-MCU_xdata FuncState     Set_Swing_State=Disable; //是否允许设置摆叶
+MCU_xdata AIR_CLEAR_MODE SYS_Air_Clear_Tyde = AUTO_AIR_CLEAR;     //空气净化类型
+MCU_xdata AIR_CLEAR_MODE SYS_Air_Clear_Tyde_Buf = AUTO_AIR_CLEAR; //空气净化类型
+MCU_xdata UI08 Set_SYS_Air_Clear_Tyde_Timer = 0;
 
-MCU_xdata AIR_CLEAR_MODE SYS_Air_Clear_Tyde=AUTO_AIR_CLEAR; //空气净化类型
-MCU_xdata AIR_CLEAR_MODE SYS_Air_Clear_Tyde_Buf=AUTO_AIR_CLEAR; //空气净化类型
-MCU_xdata UI08           Set_SYS_Air_Clear_Tyde_Timer=0;
+MCU_xdata FuncState LED_Disp_Status = ENABLE; //灯光是否打开
 
-MCU_xdata FuncState      LED_Disp_Status=ENABLE;//灯光是否打开
+MCU_xdata FuncState Buzzer_Status = ENABLE; //蜂鸣器是否使能
 
-MCU_xdata FuncState Buzzer_Status=ENABLE;//蜂鸣器是否使能
+MCU_xdata UI16 SYS_filter_time = 0;     //滤网时间
+MCU_xdata UI16 SYS_filter_time_buf = 0; //滤网时间
 
-MCU_xdata UI16  SYS_filter_time=0;//滤网时间
-MCU_xdata UI16  SYS_filter_time_buf=0;//滤网时间
-
-          UI16  Buzz_Time=0;//蜂鸣器时间
-MCU_xdata UI08  Buzz_Cnt=0;//蜂鸣器响次数
-MCU_xdata UI08  Dump_Buzz_Cnt=0;//倾倒蜂鸣器响次数
-MCU_xdata PinStatus  Buzzer_IO_Status=RESET;
-
+UI16 Buzz_Time = 0;               //蜂鸣器时间
+MCU_xdata UI08 Buzz_Cnt = 0;      //蜂鸣器响次数
+MCU_xdata UI08 Dump_Buzz_Cnt = 0; //倾倒蜂鸣器响次数
+MCU_xdata PinStatus Buzzer_IO_Status = RESET;
 
 /*************************************************
  // 函数名称    : SYSData_Rest
@@ -83,60 +81,59 @@ MCU_xdata PinStatus  Buzzer_IO_Status=RESET;
 ***************************************************/
 void SYSData_Rest(void)
 {
-   _Fast_Test=0;
-   _EC_Fast_Test=0;
+        _Fast_Test = 0;
+        _EC_Fast_Test = 0;
 
-   M_Timer_Run=0;
-   M_Timer_Set=1;
-   M_Timer_Buf=1;
+        M_Timer_Run = 0;
+        M_Timer_Set = 1;
+        M_Timer_Buf = 1;
 
-   Pump_Status=DISABLE;
+        Pump_Status = DISABLE;
 
-   SYS_Mode=mode_SYS_HUM;          //系统模式
-   SYS_Mode_Buf=mode_SYS_HUM;      //系统模式
-   Set_SYS_Mode_Timer=0;           //模式设定时间
+        SYS_Mode = mode_SYS_HUM;     //系统模式
+        SYS_Mode_Buf = mode_SYS_HUM; //系统模式
+        Set_SYS_Mode_Timer = 0;      //模式设定时间
 
-   SYS_DYR_Tyde=DYR_AUTO;          //干衣类型
-   SYS_DYR_Tyde_Buf=DYR_AUTO;      //干衣类型
-   Set_SYS_DYR_Tyde_timer=0;
+        SYS_DYR_Tyde = DYR_AUTO;     //干衣类型
+        SYS_DYR_Tyde_Buf = DYR_AUTO; //干衣类型
+        Set_SYS_DYR_Tyde_timer = 0;
 
-    SYS_HUN_Tyde=CONTINUOUS_HUM;          //除湿类型
-    SYS_HUN_Tyde_Buf=CONTINUOUS_HUM;      //除湿类型
+        SYS_HUN_Tyde = CONTINUOUS_HUM;     //除湿类型
+        SYS_HUN_Tyde_Buf = CONTINUOUS_HUM; //除湿类型
 
-    SYS_Hum_Set=0;                 //湿度设定
-    SYS_Hum_Set_Buf=0;             //湿度设定buf
-    SET_SYS_HUN_Tyde_Timer=0;//湿度设定(确认时间)
-    SYS_Hum_Point = 0;
+        SYS_Hum_Set = 0;            //湿度设定
+        SYS_Hum_Set_Buf = 0;        //湿度设定buf
+        SET_SYS_HUN_Tyde_Timer = 0; //湿度设定(确认时间)
+        SYS_Hum_Point = 0;
 
-    SYS_Fan_Tyde=SILENCE_FAN;          //运行风速
-    SYS_Fan_Tyde_Buf=SILENCE_FAN;      //运行风速
-    Set_Fan_State=ENABLE;
-    Set_SYS_Fan_Tyde_timer=0;
+        SYS_Fan_Tyde = SILENCE_FAN;     //运行风速
+        SYS_Fan_Tyde_Buf = SILENCE_FAN; //运行风速
+        Set_Fan_State = ENABLE;
+        Set_SYS_Fan_Tyde_timer = 0;
 
-    SYS_Swing_Tyde=STOP_SWING;     //摆叶类型
-    SYS_Swing_Tyde_Buf=STOP_SWING; //摆叶类型
-    Set_Swing_State=Disable;
-    Set_SYS_Swing_Tyde_Timer=0;
+        SYS_Swing_Tyde = STOP_SWING;     //摆叶类型
+        SYS_Swing_Tyde_Buf = STOP_SWING; //摆叶类型
+        Set_Swing_State = Disable;
+        Set_SYS_Swing_Tyde_Timer = 0;
 
-    SYS_Air_Clear_Tyde=AUTO_AIR_CLEAR; //空气净化类型
-    SYS_Air_Clear_Tyde_Buf=AUTO_AIR_CLEAR; //空气净化类型
-    Set_SYS_Air_Clear_Tyde_Timer=0;
+        SYS_Air_Clear_Tyde = AUTO_AIR_CLEAR;     //空气净化类型
+        SYS_Air_Clear_Tyde_Buf = AUTO_AIR_CLEAR; //空气净化类型
+        Set_SYS_Air_Clear_Tyde_Timer = 0;
 
-    Buzzer_Status=ENABLE;
+        Buzzer_Status = ENABLE;
 
-    LED_Disp_Status=ENABLE;
+        LED_Disp_Status = ENABLE;
 
-    M_Defrost_status=0;
+        M_Defrost_status = 0;
 
+        SYS_filter_time = 0;
 
-   SYS_filter_time=0;
-
-   Run_Reg.def_cont=0;
-   Run_Reg.def_time=0;
-   Run_Reg.HI_stay_time=0;
-   Run_Reg.LO_stay_time=0;
-//   M_write_delay_time=2;
-   wifi_net_led_timer=WIFI_NET_TIMER;
+        Run_Reg.def_cont = 0;
+        Run_Reg.def_time = 0;
+        Run_Reg.HI_stay_time = 0;
+        Run_Reg.LO_stay_time = 0;
+        //   M_write_delay_time=2;
+        wifi_net_led_timer = WIFI_NET_TIMER;
 }
 /*************************************************
  // 函数名称    : SYS_data_init
@@ -146,56 +143,55 @@ void SYSData_Rest(void)
 ***************************************************/
 void SYS_data_init(void)
 {
-	Adc_data_init();
-	Run_reg_init();
-        //Wifi_UART_Init();
-	io_data_init();
-	SYSData_Rest();
+        Adc_data_init();
+        Run_reg_init();
+        // Wifi_UART_Init();
+        io_data_init();
+        SYSData_Rest();
 
-	M_sys_bit.byte=0;//系统标志位
-        M_sys_bit1.word=0;//系统标志位1
+        M_sys_bit.byte = 0;  //系统标志位
+        M_sys_bit1.word = 0; //系统标志位1
 
-	//
-	Buzz_Time=BUZZ_long_time;
-	Buzz_Cnt=0;
-        Dump_Buzz_Cnt=0;
+        //
+        Buzz_Time = BUZZ_long_time;
+        Buzz_Cnt = 0;
+        Dump_Buzz_Cnt = 0;
 
-	Sys_Err.Water_Full=DISABLE;
-	Sys_Err.temp_room_err=DISABLE;
-	Sys_Err.temp_coil_err=DISABLE;
-	Sys_Err.hum_Sensor_err=DISABLE;
-	Sys_Err.comm_err=DISABLE;
-        Sys_Err.pm25_Sensor_err=DISABLE;//粉尘故障
-        Sys_Err.pan_motor_err=DISABLE;  //风机故障
+        Sys_Err.Water_Full = DISABLE;
+        Sys_Err.temp_room_err = DISABLE;
+        Sys_Err.temp_coil_err = DISABLE;
+        Sys_Err.hum_Sensor_err = DISABLE;
+        Sys_Err.comm_err = DISABLE;
+        Sys_Err.pm25_Sensor_err = DISABLE; //粉尘故障
+        Sys_Err.pan_motor_err = DISABLE;   //风机故障
 
+        Temp_room.status = AI_NORMAL;
+        Temp_coil.status = AI_NORMAL;
+        Hum_para.status = AI_NORMAL;
 
-	Temp_room.status=AI_NORMAL;
-	Temp_coil.status=AI_NORMAL;
-	Hum_para.status=AI_NORMAL;
+        Hum_para.value = 60;
+        Temp_room.value = 25 + 9;
+        Temp_coil.value = 25 + 9;
 
-	Hum_para.value=60;
-	Temp_room.value=25+9;
-	Temp_coil.value=25+9;
+        minute_bit.byte = 0;
+        s_bit.word = 0;
+        ms_bit.byte = 0;
+        ms5_bit.byte = 0;
+        ms10_bit.byte = 0;
+        ms100_bit.byte = 0;
+        ms500_bit.byte = 0;
 
-	minute_bit.byte=0;
-	s_bit.word=0;
-	ms_bit.byte=0;
-	ms5_bit.byte=0;
-	ms10_bit.byte=0;
-	ms100_bit.byte=0;
-	ms500_bit.byte=0;
+        Sys_eep_bit.byte = 0;
 
-	Sys_eep_bit.byte=0;
+        sEC_SYS.troom_c = 77;
+        sEC_SYS.tcoil_c = 77;
+        sEC_SYS.EC_protect_type = 0;
+        sEC_SYS.EC_count = 0;
+        sEC_SYS.EC_protect_byte.byte = 0;
+        sEC_SYS.EC_count_timer = 0;
+        sEC_SYS.EC_comp_timer = 0;
 
-	sEC_SYS.troom_c=77;
-	sEC_SYS.tcoil_c=77;
-	sEC_SYS.EC_protect_type=0;
-	sEC_SYS.EC_count=0;
-	sEC_SYS.EC_protect_byte.byte=0;
-	sEC_SYS.EC_count_timer=0;
-	sEC_SYS.EC_comp_timer=0;
-
-    _SYS_UVC_Status = 1;//UVC功能开启
+        _SYS_UVC_Status = 1; // UVC功能开启
 }
 /*************************************************
  // 函数名称    : prg_s_general
@@ -203,31 +199,34 @@ void SYS_data_init(void)
  // 入口参数    : 无
  // 出口参数    : 无
 ***************************************************/
-UI08  cont_200ms=0;
+UI08 cont_200ms = 0;
 void prg_ms100_general(void)
 {
-    if(_ms100_general==0)
-    {return;}
-    _ms100_general=0;
-
-    if(++cont_200ms<4)
-    {return;}
-    cont_200ms=0;
-
-     _Self_Test_wifi_TXD_en=1;
-
-	if((M__Self_Test) && (Power_Delay_Time==0) )
-	{
-		if(M_test_cont1<0xff)
-		{
-            M_test_cont1++;
-        }
-        if((M_test_cont2<0xff)&&(M_test_cont1>=8))
+        if (_ms100_general == 0)
         {
-            M_test_cont2++;
+                return;
         }
+        _ms100_general = 0;
 
-	}
+        if (++cont_200ms < 4)
+        {
+                return;
+        }
+        cont_200ms = 0;
+
+        _Self_Test_wifi_TXD_en = 1;
+
+        if ((M__Self_Test) && (Power_Delay_Time == 0))
+        {
+                if (M_test_cont1 < 0xff)
+                {
+                        M_test_cont1++;
+                }
+                if ((M_test_cont2 < 0xff) && (M_test_cont1 >= 8))
+                {
+                        M_test_cont2++;
+                }
+        }
 }
 /*************************************************
  // 函数名称    : prg_s_general
@@ -237,62 +236,64 @@ void prg_ms100_general(void)
 ***************************************************/
 void prg_s_general(void)
 {
-//   UI08  buf=0;
+        //   UI08  buf=0;
 
-   if(!_s_general)
-   {return;}
-   _s_general=0;
-
-   M_hum_update_time++;
-   if((M_hum_update_time>=3)||(Power_Delay_Time>0))
-   {
-        M_hum_update_time=0;
-        Hum_dsp_com=Hum_para.value;
-    	if(SYS_W_props.props_humidity_rec!=Hum_dsp_com)
-    	{
-               SYS_W_props.props_humidity_rec=Hum_dsp_com;
-    	}
-   }
-
-   if(Power_Delay_Time>0)
-   {
-        Power_Delay_Time--;
-   }
-
-   if(Buzz_Cnt>0)
-   {
-      	  Buzz_Cnt--;
-      	  Buzz_Time=BUZZ_long_time;
-   }
-   else if( Key_ERR_Buzz_Cnt>0)
-   {
-        Key_ERR_Buzz_Cnt--;
-        Buzz_Time=BUZZ_short_time;
-   }
-   else if(Dump_Buzz_Cnt>0)
-   {
-       	Dump_Buzz_Cnt--;
-    	Buzz_Time=BUZZ_long_time;
-   }
-   //
-
-   if(M_sleep_Time>0)
-   {
-    	M_sleep_Time--;
-    	if(M_sleep_Time==0)
-    	{
-            _Sleep_status=1;
+        if (!_s_general)
+        {
+                return;
         }
-   }
+        _s_general = 0;
 
-   if(communication_timer>0)
-   {
-        communication_timer--;
-    	if(communication_timer==0)
-    	{
-            Sys_Err.comm_err=ENABLE;
+        M_hum_update_time++;
+        if ((M_hum_update_time >= 3) || (Power_Delay_Time > 0))
+        {
+                M_hum_update_time = 0;
+                Hum_dsp_com = Hum_para.value;
+                if (SYS_W_props.props_humidity_rec != Hum_dsp_com)
+                {
+                        SYS_W_props.props_humidity_rec = Hum_dsp_com;
+                }
         }
-   }
+
+        if (Power_Delay_Time > 0)
+        {
+                Power_Delay_Time--;
+        }
+
+        if (Buzz_Cnt > 0)
+        {
+                Buzz_Cnt--;
+                Buzz_Time = BUZZ_long_time;
+        }
+        else if (Key_ERR_Buzz_Cnt > 0)
+        {
+                Key_ERR_Buzz_Cnt--;
+                Buzz_Time = BUZZ_short_time;
+        }
+        else if (Dump_Buzz_Cnt > 0)
+        {
+                Dump_Buzz_Cnt--;
+                Buzz_Time = BUZZ_long_time;
+        }
+        //
+
+        if (M_sleep_Time > 0)
+        {
+                M_sleep_Time--;
+                if (M_sleep_Time == 0)
+                {
+                        _Sleep_status = 1;
+                }
+        }
+
+        if (communication_timer > 0)
+        {
+                communication_timer--;
+                if (communication_timer == 0)
+                {
+                        Sys_Err.comm_err = ENABLE;
+                }
+        }
 }
 /*************************************************
 //名称        :	F_C
@@ -310,13 +311,13 @@ void prg_s_general(void)
 /*
 UI08 F_C(UI08 cfdata)
 {
-	UI08 a=0;
+        UI08 a=0;
       if(cfdata>32)
       {a=((cfdata-32)*10+9)/18;}
       else
       {a=((32-cfdata)*10+9)/18;}
 
- 	return 	a;
+        return 	a;
 }
 */
 /*************************************************
@@ -331,10 +332,10 @@ UI08 F_C(UI08 cfdata)
 /*
 UI08 C_F(UI08 cfdata)
 {
-	UI08 a=0;
-	a=((cfdata-9)*18+5)/10+32;
-	if (a>89)
-	{a=89;}
+        UI08 a=0;
+        a=((cfdata-9)*18+5)/10+32;
+        if (a>89)
+        {a=89;}
        return a;
 }
 */
@@ -347,8 +348,8 @@ UI08 C_F(UI08 cfdata)
 /*
 void delay(UI16 i)
 {
-	while(i)
-  	{i--;}
+        while(i)
+        {i--;}
 }
 */
 /*************************************************
@@ -359,27 +360,29 @@ void delay(UI16 i)
 ***************************************************/
 void Turn_On(void)
 {
- 	if((SYS_Power_Status)||(Sys_Err.Water_Full))
-	{return;}
+        if ((SYS_Power_Status) || (Sys_Err.Water_Full))
+        {
+                return;
+        }
 
-	//
-	SYS_Power_Status=ON;
-	M_Timer_Run=0;
-	M_Timer_Setting_Time=0;
-	_Timer_set_ok=0;
-	Set_SYS_Hum_timer=0;
-	M_Dsp_Time=10;
-//	M_write_delay_time=2;
+        //
+        SYS_Power_Status = ON;
+        M_Timer_Run = 0;
+        M_Timer_Setting_Time = 0;
+        _Timer_set_ok = 0;
+        Set_SYS_Hum_timer = 0;
+        M_Dsp_Time = 10;
+        //	M_write_delay_time=2;
         //工厂测试
-	if(test_factory==ENABLE)
-	{
-        Rest_Wifi();
-    }
+        if (test_factory == ENABLE)
+        {
+                Rest_Wifi();
+        }
         //重新配网
-	if(Wifi_net_Status_buf==e_unprov)
-	{
-	   _wifi_com_MIIO_reboot=1;
-	}
+        if (Wifi_net_Status_buf == e_unprov)
+        {
+                _wifi_com_MIIO_reboot = 1;
+        }
 }
 /*************************************************
  // 函数名称    : Turn_Off
@@ -389,29 +392,31 @@ void Turn_On(void)
 ***************************************************/
 void Turn_Off(void)
 {
-	if(SYS_Power_Status==OFF)
-	{return;}
-	SYS_Power_Status=OFF;
+        if (SYS_Power_Status == OFF)
+        {
+                return;
+        }
+        SYS_Power_Status = OFF;
 
-	//
-	M_Timer_Run=0;
-	M_Timer_Setting_Time=0;
-	_Timer_set_ok=0;
-	Set_SYS_Hum_timer=0;
-	M_Dsp_Time=0;
-//	M_write_delay_time=2;
         //
-    if(test_factory==ENABLE)
-	{
-        Rest_Wifi();
-    }
-	//防冷媒
+        M_Timer_Run = 0;
+        M_Timer_Setting_Time = 0;
+        _Timer_set_ok = 0;
+        Set_SYS_Hum_timer = 0;
+        M_Dsp_Time = 0;
+        //	M_write_delay_time=2;
+        //
+        if (test_factory == ENABLE)
+        {
+                Rest_Wifi();
+        }
+        //防冷媒
         //关机清计时  室温 >38
         sys_reg__comp_protect_stause_condition_b = FALSE;
-	sys_reg_comp_38_count_condition_b = 0;
+        sys_reg_comp_38_count_condition_b = 0;
         // 室温 >27
-	sys_reg__comp_protect_stause_condition_a = FALSE;
-	sys_reg_comp_38_count_condition_a = 0;
+        sys_reg__comp_protect_stause_condition_a = FALSE;
+        sys_reg_comp_38_count_condition_a = 0;
 }
 
 /*************************************************
@@ -422,7 +427,6 @@ void Turn_Off(void)
 ***************************************************/
 void WdtInit(void)
 {
-
 }
 /*************************************************
  // 函数名称    : Sys_Initial
@@ -432,14 +436,14 @@ void WdtInit(void)
 ***************************************************/
 void Sys_Initial(void)
 {
-    EA = 0;
-    IO_Init();
-    PWM_Init();
-    SYS_data_init();
-    TimerInit();
-    TouchKeyInit();
-    WdtInit();
-    EA = 1;
+        EA = 0;
+        IO_Init();
+        PWM_Init();
+        SYS_data_init();
+        TimerInit();
+        TouchKeyInit();
+        WdtInit();
+        EA = 1;
 }
 /*************************************************
  // 函数名称    : general_deal
@@ -449,11 +453,7 @@ void Sys_Initial(void)
 ***************************************************/
 void general_deal(void)
 {
-   prg_ms100_general();
-   prg_s_general();
-   Timer_Deal();
+        prg_ms100_general();
+        prg_s_general();
+        Timer_Deal();
 }
-
-
-
-

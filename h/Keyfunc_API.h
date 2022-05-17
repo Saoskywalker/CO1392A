@@ -1,29 +1,25 @@
-
 #ifndef __key_function_H
 #define __key_function_H
 
 #include "DataType.h"
 
-#define Dry_Clothes_key      0x01  //干衣
-#define power_key            0x02    //
-#define dry_key              0x03
-#define set_timer_key        0x04
-#define Child_key            0x06 
-#define fast_test_key        0x07
-#define UVC_key              0x08       
+#define Dry_Clothes_key 0x01 //干衣
+#define power_key 0x02       //
+#define dry_key 0x03
+#define set_timer_key 0x04
+#define Child_key 0x06
+#define fast_test_key 0x07
+#define UVC_key 0x08
 
+#define hum_and_clothes 0x05
+#define timer_and_hum 0x0C
 
-
-#define hum_and_clothes      0x05 
-#define timer_and_hum        0x0C                               
-
-
-#define LAMP_key             0x09
+#define LAMP_key 0x09
 
 //组合长按键
 
-#define self_test_key   22
-#define EC_Fast_key    30
+#define self_test_key 22
+#define EC_Fast_key 30
 #define non_key 0xff
 
 #define TK_0 0x00000001
@@ -66,22 +62,17 @@
 #define TK_30 0x40000000
 #define TK_31 0x80000000
 
+#define EEP_write_T 2
+#define Child_Lock_Disp_NUM 3
 
+extern MCU_xdata UUI08 M_Key_flag;
+#define _KEY_OK M_Key_flag.bit_.b0
 
-#define EEP_write_T  2
-#define Child_Lock_Disp_NUM  3
-
-extern MCU_xdata UUI08  M_Key_flag;
-#define   _KEY_OK   M_Key_flag.bit_.b0
-
-
-
-
-extern MCU_xdata UI08  M_Key_Number;
-extern MCU_xdata UI16  M_Key_last;
-extern MCU_xdata UI08  shake_count;
-extern MCU_const UI08  Timer_SET[6];
-extern MCU_const UI08  Hum_SET[5];
+extern MCU_xdata UI08 M_Key_Number;
+extern MCU_xdata UI16 M_Key_last;
+extern MCU_xdata UI08 shake_count;
+extern MCU_const UI08 Timer_SET[6];
+extern MCU_const UI08 Hum_SET[5];
 
 extern void prg_ms_key(void);
 extern void Rest_Key_Buzzer(void);
@@ -89,9 +80,3 @@ extern void Key_Deal(void);
 extern void prg_s_key(void);
 extern void prg_ms10_key(void);
 #endif /* __key_function_H*/
-
-
-
-
-
-

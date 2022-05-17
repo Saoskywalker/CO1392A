@@ -1,52 +1,49 @@
 #include "General.h"
 
-MCU_xdata RGB_LED_TYPE AirQ_Class_LED_buf=0;
+MCU_xdata RGB_LED_TYPE AirQ_Class_LED_buf = 0;
 
-MCU_xdata UI08   LED_data_buf[COM_total]={0xff,0xff,0xff};//LED显示data
+MCU_xdata UI08 LED_data_buf[COM_total] = {0xff, 0xff, 0xff}; // LED显示data
 
-MCU_xdata FlagStatus _Flash_500ms=SET;//50ms闪烁
-MCU_xdata UI08 Disp_Delay=0;//显示delay
-MCU_xdata UI08 Disp_set_Delay=0;//设置delay
+MCU_xdata FlagStatus _Flash_500ms = SET; // 50ms闪烁
+MCU_xdata UI08 Disp_Delay = 0;           //显示delay
+MCU_xdata UI08 Disp_set_Delay = 0;       //设置delay
 
-MCU_xdata UI08 RGB_Count=0;//RBG count
-MCU_xdata UI08 UP_disp_count=0;//显示 count
+MCU_xdata UI08 RGB_Count = 0;     // RBG count
+MCU_xdata UI08 UP_disp_count = 0; //显示 count
 
-MCU_xdata UI16  Wifi_Disp_Count=0; //wifi 显示count
-MCU_xdata UI16  Wifi_Disp_Length=0;//显示长度
-MCU_xdata UI16  wifi_net_led_timer=WIFI_NET_TIMER;//30分钟
-MCU_xdata UI08  Type_num=0;//num
-MCU_xdata UI08  test_key_data=0;//自检data
+MCU_xdata UI16 Wifi_Disp_Count = 0;                 // wifi 显示count
+MCU_xdata UI16 Wifi_Disp_Length = 0;                //显示长度
+MCU_xdata UI16 wifi_net_led_timer = WIFI_NET_TIMER; // 30分钟
+MCU_xdata UI08 Type_num = 0;                        // num
+MCU_xdata UI08 test_key_data = 0;                   //自检data
 MCU_xdata UI08 RGB_Cycle_Disp_cnt = 0;
-//wifi指示灯
-MCU_const UI08 Wifi_Disp_Tab[5][2]={
-{20,80},
-{10,0},
-{10,20},
-{10,20},
-{0,10}
-};
+// wifi指示灯
+MCU_const UI08 Wifi_Disp_Tab[5][2] = {
+    {20, 80},
+    {10, 0},
+    {10, 20},
+    {10, 20},
+    {0, 10}};
 //固件升级
-MCU_const UI08 Wifi_updating_Disp_Tab[2][2]={
-{5,10},
-{5,80}
-};
-
+MCU_const UI08 Wifi_updating_Disp_Tab[2][2] = {
+    {5, 10},
+    {5, 80}};
 
 /******************************************************************************
-*         数码管显示数据定义
-*******************************************************************************/
-MCU_const UI08 BCD_tab[]=   /*LED显示编码，用于查表*/
-{
-	(DATA_0), /*0*/
-	(DATA_1), /*1*/
-	(DATA_2), /*2*/
-	(DATA_3), /*3*/
-	(DATA_4), /*4*/
-	(DATA_5), /*5*/
-	(DATA_6), /*6*/
-	(DATA_7), /*7*/
-	(DATA_8), /*8*/
-	(DATA_9), /*9*/
+ *         数码管显示数据定义
+ *******************************************************************************/
+MCU_const UI08 BCD_tab[] = /*LED显示编码，用于查表*/
+    {
+        (DATA_0), /*0*/
+        (DATA_1), /*1*/
+        (DATA_2), /*2*/
+        (DATA_3), /*3*/
+        (DATA_4), /*4*/
+        (DATA_5), /*5*/
+        (DATA_6), /*6*/
+        (DATA_7), /*7*/
+        (DATA_8), /*8*/
+        (DATA_9), /*9*/
 
 };
 //==============================================================================
@@ -62,48 +59,53 @@ void LedDsp_Outdata(void);
  // 入口参数    : 无
  // 出口参数    : 无
 ***************************************************/
-void  LED_mS10_Deal(void)
+void LED_mS10_Deal(void)
 {
-  if(!_LED_ms10)
-  {return;}
-
-  _LED_ms10=0;
-
-  if(Child_Lock_Disp_timer>0)
+  if (!_LED_ms10)
   {
-     Child_Lock_Disp_timer--;
+    return;
+  }
+
+  _LED_ms10 = 0;
+
+  if (Child_Lock_Disp_timer > 0)
+  {
+    Child_Lock_Disp_timer--;
   }
 
   Child_Lock_1s_Count++;
-  if(Child_Lock_1s_Count>=100)
+  if (Child_Lock_1s_Count >= 100)
   {
-       Child_Lock_1s_Count=0;
-       if(Child_Lock_Disp_Count>0)
-       {
-            Child_Lock_Disp_Count--;
-	    Child_Lock_Disp_timer=50;
-       }
+    Child_Lock_1s_Count = 0;
+    if (Child_Lock_Disp_Count > 0)
+    {
+      Child_Lock_Disp_Count--;
+      Child_Lock_Disp_timer = 50;
+    }
   }
 
   Wifi_Disp_Count++;
-  if(Wifi_net_Status==e_updating)
+  if (Wifi_net_Status == e_updating)
   {
-      Wifi_Disp_Count++;
-      if(Wifi_Disp_Count>=Wifi_updating_Disp_Tab[Type_num][0]+Wifi_updating_Disp_Tab[Type_num][1])
+    Wifi_Disp_Count++;
+    if (Wifi_Disp_Count >= Wifi_updating_Disp_Tab[Type_num][0] + Wifi_updating_Disp_Tab[Type_num][1])
+    {
+      Wifi_Disp_Count = 0;
+      if (Type_num == 0)
       {
-          Wifi_Disp_Count=0;
-	  if(Type_num==0)
-	  {  Type_num=1;  }
-	  else
-	  {  Type_num=0;  }
-
+        Type_num = 1;
       }
+      else
+      {
+        Type_num = 0;
+      }
+    }
   }
-  else if(Wifi_Disp_Count>=Wifi_Disp_Length)
+  else if (Wifi_Disp_Count >= Wifi_Disp_Length)
   {
-      Wifi_Disp_Count=0;
-      Wifi_Disp_Length=Wifi_Disp_Tab[(UI08)Wifi_net_Status][0];
-      Wifi_Disp_Length=Wifi_Disp_Length+Wifi_Disp_Tab[(UI08)Wifi_net_Status][1];
+    Wifi_Disp_Count = 0;
+    Wifi_Disp_Length = Wifi_Disp_Tab[(UI08)Wifi_net_Status][0];
+    Wifi_Disp_Length = Wifi_Disp_Length + Wifi_Disp_Tab[(UI08)Wifi_net_Status][1];
   }
 }
 
@@ -115,11 +117,13 @@ void  LED_mS10_Deal(void)
 ***************************************************/
 void prg_mS500_DSP(void)
 {
-   if(!_mS500_for_LED)
-   {return;}
-   _mS500_for_LED=0;
+  if (!_mS500_for_LED)
+  {
+    return;
+  }
+  _mS500_for_LED = 0;
 
-   _Flash_500ms=(!_Flash_500ms);
+  _Flash_500ms = (!_Flash_500ms);
 }
 /*************************************************
  // 函数名称    : prg_S_DSP
@@ -129,42 +133,42 @@ void prg_mS500_DSP(void)
 ***************************************************/
 void prg_S_DSP(void)
 {
-   if(!_LED_DSP_S)
-   {return;}
-   _LED_DSP_S=0;
-
-
-  if(RGB_Cycle_Disp_cnt < 0xff)
+  if (!_LED_DSP_S)
   {
-      RGB_Cycle_Disp_cnt++;
+    return;
+  }
+  _LED_DSP_S = 0;
+
+  if (RGB_Cycle_Disp_cnt < 0xff)
+  {
+    RGB_Cycle_Disp_cnt++;
   }
 
-   if(++UP_disp_count>=5)//每5秒更新一次
-   {
-   	UP_disp_count=0;
-	if(SYS_W_props.props_temp_rec!=Temp_room.value)
-	{
-           SYS_W_props.props_temp_rec=Temp_room.value;
-	}
-        if(SYS_W_props.props_temp_coil_rec!=Temp_coil.value)
-	{
-           SYS_W_props.props_temp_coil_rec=Temp_coil.value;
-	}
-   }
+  if (++UP_disp_count >= 5) //每5秒更新一次
+  {
+    UP_disp_count = 0;
+    if (SYS_W_props.props_temp_rec != Temp_room.value)
+    {
+      SYS_W_props.props_temp_rec = Temp_room.value;
+    }
+    if (SYS_W_props.props_temp_coil_rec != Temp_coil.value)
+    {
+      SYS_W_props.props_temp_coil_rec = Temp_coil.value;
+    }
+  }
 
-   if(wifi_net_led_timer>0)
-   {
-       wifi_net_led_timer--;
-       if(wifi_net_led_timer==0)
-       {
-       	  if((Wifi_net_Status_buf!=e_cloud)||(Wifi_net_Status_buf!=e_updating))
-          {
-	  	Wifi_net_Status=e_unprov;
-		Wifi_net_Status_buf=e_unprov;
-	  }
-       }
-   }
-
+  if (wifi_net_led_timer > 0)
+  {
+    wifi_net_led_timer--;
+    if (wifi_net_led_timer == 0)
+    {
+      if ((Wifi_net_Status_buf != e_cloud) || (Wifi_net_Status_buf != e_updating))
+      {
+        Wifi_net_Status = e_unprov;
+        Wifi_net_Status_buf = e_unprov;
+      }
+    }
+  }
 }
 /*************************************************
  // 函数名称    : dig1_2_dsp
@@ -175,9 +179,8 @@ void prg_S_DSP(void)
 void dig1_2_dsp(UI08 _disp_data)
 {
 
-  dig2_num=BCD_tab[_disp_data%10];
-  dig1_num=BCD_tab[_disp_data/10];
-
+  dig2_num = BCD_tab[_disp_data % 10];
+  dig1_num = BCD_tab[_disp_data / 10];
 }
 
 /*************************************************
@@ -189,21 +192,21 @@ void dig1_2_dsp(UI08 _disp_data)
 //温湿度SENSOR故障显示E1  铜管SENSOR故障显示E2  通讯故障显示E5
 void Err_dsp(void)
 {
-	if((Sys_Err.temp_room_err)||(Sys_Err.hum_Sensor_err))//~~~~~~~~~~~~~`
-	{
-		dig1_num=DATA_E;
-		dig2_num=DATA_1;
-	}
-	else if(Sys_Err.temp_coil_err)//~~~~~~~~~~~~~~
-	{
-		dig1_num=DATA_E;
-		dig2_num=DATA_2;
-	}
-	else if(Sys_Err.comm_err)//~~~~~~~~~~~~~~
-	{
-		dig1_num=DATA_E;
-		dig2_num=DATA_5;
-	}
+  if ((Sys_Err.temp_room_err) || (Sys_Err.hum_Sensor_err)) //~~~~~~~~~~~~~`
+  {
+    dig1_num = DATA_E;
+    dig2_num = DATA_1;
+  }
+  else if (Sys_Err.temp_coil_err) //~~~~~~~~~~~~~~
+  {
+    dig1_num = DATA_E;
+    dig2_num = DATA_2;
+  }
+  else if (Sys_Err.comm_err) //~~~~~~~~~~~~~~
+  {
+    dig1_num = DATA_E;
+    dig2_num = DATA_5;
+  }
 }
 /*************************************************
  // 函数名称    : clear_all
@@ -213,12 +216,14 @@ void Err_dsp(void)
 ***************************************************/
 void clear_all(void)
 {
-  UI08 i=0;
+  UI08 i = 0;
 
-  for(i=0;i<sizeof(LED_data_buf);i++)
-  {LED_data_buf[i]=0;}
+  for (i = 0; i < sizeof(LED_data_buf); i++)
+  {
+    LED_data_buf[i] = 0;
+  }
 
-   AirQ_Class_LED_buf=0;
+  AirQ_Class_LED_buf = 0;
 }
 /*************************************************
  // 函数名称    : LedDsp_Test
@@ -385,21 +390,20 @@ void LedDsp_Test(void)
 ***************************************************/
 void Disp_All(void)
 {
-      UI08 i=0;
-      /*for(i=0;i<sizeof(LED_data_buf);i++)
-      {
-            LED_data_buf[i]=0xff;
-            Decimal_point_off;//小数点
-      }*/
-        dig1_2_dsp(88);
-        WATER_locate;
-        UVC_locate;
-       // WIFI_locate;
-        DRY_locate;
-        TIMER_locate;
-        DRY_Clothes_locate;
+  UI08 i = 0;
+  /*for(i=0;i<sizeof(LED_data_buf);i++)
+  {
+        LED_data_buf[i]=0xff;
+        Decimal_point_off;//小数点
+  }*/
+  dig1_2_dsp(88);
+  WATER_locate;
+  UVC_locate;
+  // WIFI_locate;
+  DRY_locate;
+  TIMER_locate;
+  DRY_Clothes_locate;
 }
-
 
 /*************************************************
  // 函数名称    : LedDsp_content
@@ -412,43 +416,45 @@ void LedDsp_content(void)
   //清除所有显示数据
   clear_all();
 
- if(( LED_Disp_Status==DISABLE)&&(Disp_Delay==0))
- {return;}
-
-  if(Power_Delay_Time>0)
+  if ((LED_Disp_Status == DISABLE) && (Disp_Delay == 0))
   {
-       Disp_All();
+    return;
+  }
 
-       if(RGB_Cycle_Disp_cnt<1)
-       {
-             AirQ_Class_LED_buf=ORANGE_LED;
-       }
-       else if(RGB_Cycle_Disp_cnt<2)
-       {
-            AirQ_Class_LED_buf=GREEN_LED;
-       }
-       else if(RGB_Cycle_Disp_cnt<3)
-       {
-            AirQ_Class_LED_buf=BLUE_LED;
-       }
-       else
-       {
-           RGB_Cycle_Disp_cnt = 0;
-       }
-	    return;
+  if (Power_Delay_Time > 0)
+  {
+    Disp_All();
+
+    if (RGB_Cycle_Disp_cnt < 1)
+    {
+      AirQ_Class_LED_buf = ORANGE_LED;
+    }
+    else if (RGB_Cycle_Disp_cnt < 2)
+    {
+      AirQ_Class_LED_buf = GREEN_LED;
+    }
+    else if (RGB_Cycle_Disp_cnt < 3)
+    {
+      AirQ_Class_LED_buf = BLUE_LED;
+    }
+    else
+    {
+      RGB_Cycle_Disp_cnt = 0;
+    }
+    return;
   }
 
   //进入快测显示温度
-  if((_EC_Fast_Test)&&(Disp_PWM_VALUE_TIMER<9))
+  if ((_EC_Fast_Test) && (Disp_PWM_VALUE_TIMER < 9))
   {
-      disp_pwm_temp();
-       return;
+    disp_pwm_temp();
+    return;
   }
   //进入压缩机强制测试全显
-  if(Comp_Test_Disp_En_Timer>0)
+  if (Comp_Test_Disp_En_Timer > 0)
   {
-       SYS_Inspect_Disp();
-       return;
+    SYS_Inspect_Disp();
+    return;
   }
 #if 0
   if( test_factory==ENABLE)
@@ -460,96 +466,92 @@ void LedDsp_content(void)
   }
 #endif
 
- if(Sys_Err.Water_Full)
- {
-    dig1_num=DATA_F;
-    dig2_num=DATA_U;
-    if(_Flash_500ms)
+  if (Sys_Err.Water_Full)
+  {
+    dig1_num = DATA_F;
+    dig2_num = DATA_U;
+    if (_Flash_500ms)
     {
-    	WATER_locate;
+      WATER_locate;
     }
     return;
- }
+  }
 
- if(Sys_Err.comm_err)
- {
-    dig1_num=DATA_E;
-    dig2_num=DATA_5;
+  if (Sys_Err.comm_err)
+  {
+    dig1_num = DATA_E;
+    dig2_num = DATA_5;
     return;
- }
-
-
-  if((LED_Disp_Status==DISABLE)
-    &&(Child_Lock_Disp_Count==0)
-    &&(Child_Lock_status==ENABLE))
-  {
-      return;
   }
 
-  if(Child_Lock_Disp_Count > 0)
+  if ((LED_Disp_Status == DISABLE) && (Child_Lock_Disp_Count == 0) && (Child_Lock_status == ENABLE))
   {
-  	    if(Child_Lock_Disp_timer>0)
-        {
-            Disp_All();
-            Decimal_point_off;
-            AirQ_Class_LED_buf=ALL_ON_LED;
-        }
-        return;
+    return;
   }
 
-  if(M_Timer_Run > 0)
+  if (Child_Lock_Disp_Count > 0)
   {
-       TIMER_locate;
+    if (Child_Lock_Disp_timer > 0)
+    {
+      Disp_All();
+      Decimal_point_off;
+      AirQ_Class_LED_buf = ALL_ON_LED;
+    }
+    return;
+  }
+
+  if (M_Timer_Run > 0)
+  {
+    TIMER_locate;
   }
   //============定时显示
-  if(Set_SYS_Hum_timer>0)//设定湿度显示
+  if (Set_SYS_Hum_timer > 0) //设定湿度显示
   {
-  	if(_Flash_500ms)
-  	{
-        if(SYS_Hum_Set_Buf != 0)
-        {
-            dig1_2_dsp(SYS_Hum_Set_Buf);
-        }
-        else
-        {
-           dig1_num=DATA_C;
-           dig2_num=DATA_o;
-        }
+    if (_Flash_500ms)
+    {
+      if (SYS_Hum_Set_Buf != 0)
+      {
+        dig1_2_dsp(SYS_Hum_Set_Buf);
+      }
+      else
+      {
+        dig1_num = DATA_C;
+        dig2_num = DATA_o;
+      }
     }
   }
-  else if(M_Timer_Setting_Time>0)//定时显示
+  else if (M_Timer_Setting_Time > 0) //定时显示
   {
-    if(_Flash_500ms)
-  	{
-	   dig1_2_dsp(M_Timer_Buf);
-	}
-	TIMER_locate;
+    if (_Flash_500ms)
+    {
+      dig1_2_dsp(M_Timer_Buf);
+    }
+    TIMER_locate;
   }
-  else if((SYS_Power_Status==OFF)&&(M_Timer_Run))
+  else if ((SYS_Power_Status == OFF) && (M_Timer_Run))
   {
-  	dig1_2_dsp(M_Timer_Buf);
+    dig1_2_dsp(M_Timer_Buf);
   }
-  else if(SYS_Power_Status)//房间湿度显示
+  else if (SYS_Power_Status) //房间湿度显示
   {
-       if(  (SYS_Mode_Buf==mode_SYS_HUM)
-       	  ||(SYS_Mode_Buf==mode_DRY_Clothes))
-       {
-            if(Hum_dsp_com>=90)
-            {
-               dig1_num=DATA_9;//DATA_H;  20131122
-    	       dig2_num=DATA_0;//DATA_1;
-    	    }
-    	    else if(Hum_dsp_com<=30)
-    	    {
-               dig1_num=DATA_3;//DATA_L;  20131122
-    	       dig2_num=DATA_0;//DATA_o;
-    	    }
-    	    else
-    	    {
-               dig1_2_dsp(Hum_dsp_com);
-    	    }
-    	   // dig2_num|=BIT_P;
-       }
+    if ((SYS_Mode_Buf == mode_SYS_HUM) || (SYS_Mode_Buf == mode_DRY_Clothes))
+    {
+      if (Hum_dsp_com >= 90)
+      {
+        dig1_num = DATA_9; // DATA_H;  20131122
+        dig2_num = DATA_0; // DATA_1;
+      }
+      else if (Hum_dsp_com <= 30)
+      {
+        dig1_num = DATA_3; // DATA_L;  20131122
+        dig2_num = DATA_0; // DATA_o;
+      }
+      else
+      {
+        dig1_2_dsp(Hum_dsp_com);
+      }
+      // dig2_num|=BIT_P;
+    }
   }
 #if 0
   if(Wifi_net_Status==e_updating)
@@ -566,79 +568,77 @@ void LedDsp_content(void)
 #endif
   Err_dsp();
   //
-  if(SYS_Power_Status==OFF)
+  if (SYS_Power_Status == OFF)
   {
-     return;
+    return;
   }
 
-  if(_SYS_UVC_Status) //UVC灯
+  if (_SYS_UVC_Status) // UVC灯
   {
-      UVC_locate;
+    UVC_locate;
   }
 
-  switch(SYS_Mode_Buf)
+  switch (SYS_Mode_Buf)
   {
-    case mode_SYS_HUM:       //除湿模式
+  case mode_SYS_HUM: //除湿模式
+  {
+    DRY_locate;
+  }
+  break;
+  case mode_DRY_Clothes: //干衣模式
+  {
+    DRY_Clothes_locate;
+  }
+  break;
+  }
+  /**********************************************************
+
+   機體開機運轉前1分鐘,環境狀態指示燈熄滅
+   橙色,環境濕度高於70%RH.
+  .藍色,環境濕度在40%RH~70%RH
+  .綠色,環境濕度低於40%RH
+  *****************************************************/
+  if ((SYS_RUN_timer > 59) && (!M_Defrost_status))
+  {
+    if (Hum_dsp_com < 40)
     {
-        DRY_locate;
-    }break;
-    case mode_DRY_Clothes:  //干衣模式
+      AirQ_Class_LED_buf = GREEN_LED;
+    }
+    else if (Hum_dsp_com < 70)
     {
-        DRY_Clothes_locate;
-    }break;
-
-  }
-/**********************************************************
-
- 機體開機運轉前1分鐘,環境狀態指示燈熄滅
- 橙色,環境濕度高於70%RH.
-.藍色,環境濕度在40%RH~70%RH
-.綠色,環境濕度低於40%RH
-*****************************************************/
-  if((SYS_RUN_timer > 59)&&(!M_Defrost_status))
-  {
-	    if(Hum_dsp_com<40)
-	    {
-	        AirQ_Class_LED_buf=GREEN_LED;
-	    }
-	    else if(Hum_dsp_com<70)
-	    {
-            AirQ_Class_LED_buf=BLUE_LED;
-	    }
-	    else
-	    {
-            AirQ_Class_LED_buf=ORANGE_LED;
-	    }
-
-  }
-  else if(M_Defrost_status)
-  {
-    if(_Flash_500ms)
+      AirQ_Class_LED_buf = BLUE_LED;
+    }
+    else
     {
-   	    if(Hum_dsp_com<40)
-  	    {
-  	        AirQ_Class_LED_buf=GREEN_LED;
-  	    }
-  	    else if(Hum_dsp_com<70)
-  	    {
-                AirQ_Class_LED_buf=BLUE_LED;
-  	    }
-  	    else
-  	    {
-                AirQ_Class_LED_buf=ORANGE_LED;
-  	    }
+      AirQ_Class_LED_buf = ORANGE_LED;
+    }
+  }
+  else if (M_Defrost_status)
+  {
+    if (_Flash_500ms)
+    {
+      if (Hum_dsp_com < 40)
+      {
+        AirQ_Class_LED_buf = GREEN_LED;
+      }
+      else if (Hum_dsp_com < 70)
+      {
+        AirQ_Class_LED_buf = BLUE_LED;
+      }
+      else
+      {
+        AirQ_Class_LED_buf = ORANGE_LED;
+      }
     }
   }
 
-  if(_Fast_Test)
+  if (_Fast_Test)
   {
-     if(_Flash_500ms)
-     {
-        AirQ_Class_LED_buf = ALL_ON_LED;
-     }
+    if (_Flash_500ms)
+    {
+      AirQ_Class_LED_buf = ALL_ON_LED;
+    }
   }
-   
-
 }
 /*************************************************
  // 函数名称    : LedDsp_Outdata
@@ -648,13 +648,13 @@ void LedDsp_content(void)
 ***************************************************/
 void Get_LED_data(void)
 {
-    UI08 i=0;
-	for(i=0;i<sizeof(LED_data);i++)
-    {
-       LED_data[i]=LED_data_buf[i];
-    }
+  UI08 i = 0;
+  for (i = 0; i < sizeof(LED_data); i++)
+  {
+    LED_data[i] = LED_data_buf[i];
+  }
 
-    AirQ_Class_LED_out=AirQ_Class_LED_buf; //RGB灯  环境湿度显示
+  AirQ_Class_LED_out = AirQ_Class_LED_buf; // RGB灯  环境湿度显示
 }
 /*************************************************
  // 函数名称    : LED_display
@@ -664,21 +664,19 @@ void Get_LED_data(void)
 ***************************************************/
 void LED_display(void)
 {
-	LED_mS10_Deal();
-	prg_mS500_DSP();
-	prg_S_DSP();
-    if(M__Self_Test)
-    {
-       LedDsp_Test();
-    }
-	else
-	{
-       LedDsp_content();
-    }
+  LED_mS10_Deal();
+  prg_mS500_DSP();
+  prg_S_DSP();
+  if (M__Self_Test)
+  {
+    LedDsp_Test();
+  }
+  else
+  {
+    LedDsp_content();
+  }
 
-  	Get_LED_data();
+  Get_LED_data();
 
-	RBG_out();
+  RBG_out();
 }
-
-
