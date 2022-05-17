@@ -12,37 +12,20 @@
 #ifndef __IO_API_H
 #define __IO_API_H
 
-#define              DI_read_interval    100
+#include "DataType.h"
 
-extern xdata UI08          DI_read_time;
+#define DO_total 6
 
-#define UVC_ON   P04=1
-#define UVC_OFF  P04=0
-
-#define REC_IO_VALUE P44
-
-
-/////////////////////////////////////////////////////////////
-//IO输出
-#define  DO_total 11
-
-extern xdata DO_PARA  Comp_para,
-       Way4_para,
-       Pump_para,
-       Hfan_para,
-       Mfan_para,
-       Lfan_para,
-       OutHfan_para,
-       OutLfan_para,
-       Power_para,//负载开机延时运行，摆叶例外
-       DCPUMP_para,
-       UVC_para;
-
-extern void IO_data_Init(void);
-extern void IO_init(void);
 extern void prg_s_IO(void);
+
 extern void IO_operate(void);
-extern void IO_selftest(void);
+extern void  io_data_init(void);
+
+extern MCU_xdata DO_PARA     Comp_para;//压缩机
+extern MCU_xdata DO_PARA     UVC_para;
+extern MCU_xdata DI_PARA     water_full_para;//水箱水位检测
+//extern MCU_xdata DI_PARA     pump_sw_para;//副水箱水位检测
 
 
 #endif /* __IO_API_H */
+

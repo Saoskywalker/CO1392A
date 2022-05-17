@@ -1,205 +1,126 @@
-#ifndef __GENERAL_FUNC_H
-#define __GENERAL_FUNC_H
+#ifndef __General_func_H
+#define __General_func_H
+
+#include "DataType.h"
 
 
-#define   TYPE_MAX      21     //存储数据延时
-#define   EEP_MAX       16     //存储数据大小
-extern code  UI16 mach_type_tab[TYPE_MAX];
-extern code  UI08 Off_cycle_Timer_tab[TYPE_MAX];
-#define   Comp_Protect_Time  180  //压缩机保护时间  180
-#define   cool_light_down_time 3600//
-#define   heat_light_down_time 300
+extern MCU_xdata UUI08    Sys_eep_bit;
+//#define  _check_EEP_EN   Sys_eep_bit.bit_.b0//检验使能
+//#define  _Write_EEP_EN   Sys_eep_bit.bit_.b1//
+//#define  _MS100_EEP_EN   Sys_eep_bit.bit_.b2//
 
-#define   TEMP_SET_TIME     10
+extern MCU_xdata UI32  M_Timer_Run;//定时剩余时间
+extern MCU_xdata UI08  M_Timer_Set;//定时设定时间
+extern MCU_xdata UI08  M_Timer_Buf;//定时设定时间buf
+extern MCU_xdata UI08  M_Timer_Point;//定时 point
+//extern MCU_xdata UI16  M_Power_Delay_Time;//上电延时
+extern MCU_xdata UI16  M_Power_Delay_Time2;//上电延时(进入自检)
 
-//系统模式设置变量
-extern xdata MODE_TYPE       Mode_Set;
-extern xdata MODE_TYPE       Mode_Buf;
-extern xdata UI08           Mode_Delay_Timer;
-/////////////////////////////////////////////////////////////
-extern xdata FANSPEED_TYPE    Fan_Set;
-extern xdata FANSPEED_TYPE    Fan_Buf;
-extern xdata FANSPEED_TYPE    Outfan_Speed;
-extern xdata FANSPEED_TYPE    fan_speed;
-extern xdata UI08             Fan_Delay_Timer;
-extern xdata UI08             Fan_Delay_disp;
-/////////////////////////////////////////////////////////////
-//设置温度
-extern xdata UI08  Temp_Set_C;
-extern xdata UI08  Temp_Set_F;
-extern xdata UI08  Temp_Cool_F;
-extern xdata UI08  Temp_Heat_F;
-extern xdata UI08  Temp_Setting_Time;
-/////////////////////////////////////////////////////////////
-//设置定时时间
-extern xdata UI32        Timer_run;            //定时时间 秒为单位
-extern xdata UI08        Timer_buff;           //00-24小时 时间设定临时变量
-extern xdata UI08        Timer_Setting_Time;   //设定数码管闪烁显示时间/可修改参数时间
-extern xdata UI08        Timer_set;            //00-24小时 时间设定
-extern xdata TIMER_TYPE  Timer_Type;
-/////////////////////////////////////////////////////////////
-extern xdata UI08   Key_Number;
-extern xdata UI16   Key_last;     //按键持续时间变量
-/////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-//系统公用
-extern xdata ONOFF_STATUS     Power_Status;
-extern xdata ONOFF_STATUS     rec_buf_power2;
-extern xdata UI08             write_delay_time;
-extern xdata UI08             Power_Delay_Time;      //系统开机延时
-
-extern xdata UI16             compensate_delaytime;
-extern xdata UI16             light_down_cont;//风机停后显示半亮时间  2016/3/29
-
-extern xdata UI08             sleep_Time;
-extern xdata UI08             DE_rec_time;
-extern xdata ONOFF_STATUS     LAMP_Status;
-extern xdata UI08             minute_cont;
-extern xdata UI16             Sys_filter_time;	        //室内马达运转时间
-extern xdata ONOFF_STATUS     SYS_UVC_Status;     //UVC状态
-
-extern xdata UUI08            SYS_bit;
-#define     _temp_room_err   SYS_bit.bit_.b0        //室温错误标志
-#define     _temp_coil_err   SYS_bit.bit_.b1        //铜管温度错误标志
-#define     _sys_err         SYS_bit.bit_.b2        //系统错误标志
-#define     _Flash_500ms     SYS_bit.bit_.b3        //500ms闪烁标志
-#define     _DISP_En         SYS_bit.bit_.b4
-#define     _DISP_En2        SYS_bit.bit_.b5
-#define     _DISP_LED_filter SYS_bit.bit_.b6
-#define     _Self_Test_EEp   SYS_bit.bit_.b7
+//extern MCU_xdata UI08  M_Hum_Set;//湿度设定
+//extern MCU_xdata UI08  M_Hum_Set_buf;//湿度设定buf
+//extern MCU_xdata UI08  M_Dry_Status;//干衣状态
+//extern MCU_xdata UI08  M_Swing_Status;//摆叶状态
+//extern MCU_xdata UI08  M_continuous;  //连续模式
 
 
-extern xdata UUI08            SYS_bit1;
-#define     _Defrost_status  SYS_bit1.bit_.b0
-#define     _Write_EEP_EN    SYS_bit1.bit_.b1       //允许写EEPROM标志
-#define     _check_EEP_EN    SYS_bit1.bit_.b2
-#define     _Troom_dsp_com_EN  SYS_bit1.bit_.b3
-#define     _pump_sw_status  SYS_bit1.bit_.b4
-#define     _pump_sw_buf     SYS_bit1.bit_.b5
-#define     _pump_sw_out     SYS_bit1.bit_.b6
-#define     _first_ad        SYS_bit1.bit_.b7
+//extern MCU_xdata UI08 M_Hum_Setting_Time;//湿度设定(确认时间)
+extern MCU_xdata UI08 M_Timer_Setting_Time;//定时设定(确认时间)
+extern MCU_xdata UI08 M_Dsp_Time;//显示时间
+extern MCU_xdata UI08 Hum_dsp_com;//显示湿度
+extern MCU_xdata UI08 M_hum_update_time;//湿度更新时间
 
-extern xdata UUI08            SYS_bit2;
-#define     _Water_Full         SYS_bit2.bit_.b0
-#define     _Water_Full_status   SYS_bit2.bit_.b1
-#define     _outfan_low_enable  SYS_bit2.bit_.b2
-#define     _compensate_enable  SYS_bit2.bit_.b3
-#define     _Tcoil_Enable       SYS_bit2.bit_.b4
-#define     _Sys_lowpower       SYS_bit2.bit_.b5
-#define     _Auto_Restart       SYS_bit2.bit_.b6
-#define     _temp_update_enb    SYS_bit2.bit_.b7
-
-extern xdata UUI08            SYS_bit3;
-#define     _comp_should_on     SYS_bit3.bit_.b0
-#define     _Mode_Change        SYS_bit3.bit_.b1
-#define     _Timer_set_Flag     SYS_bit3.bit_.b2
-#define     _Self_Test          SYS_bit3.bit_.b3
-#define     _Fan_set_enable     SYS_bit3.bit_.b4
-#define     _get_key_enable     SYS_bit3.bit_.b5
-#define     _led_swing_enable   SYS_bit3.bit_.b6
-#define     _led_swing_disp_buf SYS_bit3.bit_.b7
-
-extern xdata UUI08            SYS_bit4;
-//#define     _led_swing_disp     SYS_bit4.bit.b0
-#define     _led_swing_out      SYS_bit4.bit_.b1
-#define     _IICSleep_status    SYS_bit4.bit_.b2
-#define     _ADC_END_OK         SYS_bit4.bit_.b3
-#define     _ad_start           SYS_bit4.bit_.b4
-#define     _SYS_Inspect_Key_OK SYS_bit4.bit_.b5
-#define     _READ_KEY_OK        SYS_bit4.bit_.b6
-
-extern xdata UUI08            SYS_bit5;
-#define   Cool_compensate_status   SYS_bit5.bit_.b0
-#define   Trom_HE_88               SYS_bit5.bit_.b1
-#define   Trom_HE_79               SYS_bit5.bit_.b3
-#define   _compensate_disable      SYS_bit5.bit_.b4
-#define   _compensate_80_87        SYS_bit5.bit_.b5
-#define   _test_LUX_ok             SYS_bit5.bit_.b6
-#define   _first_read_IO           SYS_bit5.bit_.b7
-
-extern xdata UUI08            SYS_bit6;
-#define   _long_key_en           SYS_bit6.bit_.b0
-
-/////////////////////////////////////////////////////////////
+extern MCU_xdata UI08 M_test_seq;//自检
+extern MCU_xdata UI08 M_test_cont1;//自检
+extern MCU_xdata UI08 M_test_cont2;//自检
+extern MCU_xdata SYS_ERR Sys_Err;//故障
+extern MCU_xdata UUI08 M_sys_bit;
 
 
 
 
+extern MCU_xdata ONOFF_STATUS SYS_Power_Status;             //开关机状态
 
-/////////////////////////////////////////////////////////////
+extern MCU_xdata SYS_MODE     SYS_Mode;          //系统模式
+extern MCU_xdata SYS_MODE     SYS_Mode_Buf;      //系统模式
+extern MCU_xdata UI08         Set_SYS_Mode_Timer;           //模式设定时间
+
+extern MCU_xdata DYR_TYPE     SYS_DYR_Tyde;          //干衣类型
+extern MCU_xdata DYR_TYPE     SYS_DYR_Tyde_Buf;      //干衣类型
+extern MCU_xdata UI08         Set_SYS_DYR_Tyde_timer;
+
+extern MCU_xdata HUM_TYPE     SYS_HUN_Tyde;          //除湿类型
+extern MCU_xdata HUM_TYPE     SYS_HUN_Tyde_Buf;      //除湿类型
+extern MCU_xdata UI08         SET_SYS_HUN_Tyde_Timer;//湿度设定(确认时间)
+
+extern MCU_xdata UI08         SYS_Hum_Set;                 //湿度设定
+extern MCU_xdata UI08         SYS_Hum_Set_Buf;             //湿度设定buf
+extern MCU_xdata UI08         Set_SYS_Hum_timer;
+extern MCU_xdata UI08         SYS_Hum_Point;                //设定湿度 point
+
+extern MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde;          //运行风速
+extern MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde_Buf;      //运行风速
+extern MCU_xdata FANSPEED_TYPE Fan_Speed_Out;             //实际运行风速
+extern MCU_xdata FANSPEED_TYPE Fan_Speed_Out_Buf;         //实际运行风速
+extern MCU_xdata FuncState     Set_Fan_State;             //是否允许风速
+extern MCU_xdata UI08          Set_SYS_Fan_Tyde_timer;
+extern MCU_xdata UI16          FAN_ON_timer;
+extern MCU_xdata UI16          FAN_OFF_timer;
+
+extern MCU_xdata SWING_MODE    SYS_Swing_Tyde;     //摆叶类型
+extern MCU_xdata SWING_MODE    SYS_Swing_Tyde_Buf; //摆叶类型
+extern MCU_xdata SWING_MODE    Swing_Tyde_Out;//实际摆叶方式
+extern MCU_xdata SWING_MODE    Swing_Tyde_Out_Buf;    //实际摆叶方式
+extern MCU_xdata UI08          Set_SYS_Swing_Tyde_Timer;
+extern MCU_xdata FuncState     Set_Swing_State; //是否允许设置摆叶
+
+extern MCU_xdata AIR_CLEAR_MODE SYS_Air_Clear_Tyde; //空气净化类型
+extern MCU_xdata AIR_CLEAR_MODE SYS_Air_Clear_Tyde_Buf; //空气净化类型
+extern MCU_xdata UI08           Set_SYS_Air_Clear_Tyde_Timer;
+
+extern MCU_xdata FuncState LED_Disp_Status;
+
+extern MCU_xdata UI16  SYS_filter_time;//滤网时间
+extern MCU_xdata UI16  SYS_filter_time_buf;//滤网时间
+
+extern MCU_xdata FuncState Buzzer_Status;
+extern   UI16  Buzz_Time;//蜂鸣器时间
+extern MCU_xdata UI08  Buzz_Cnt;//蜂鸣器响次数
+extern MCU_xdata UI08  Dump_Buzz_Cnt;
+extern MCU_xdata PinStatus  Buzzer_IO_Status;
+
+#define   M__Flash_500ms      M_sys_bit.bit_.b0 //500ms闪烁
+#define   M__Fan_set_enable   M_sys_bit.bit_.b1 //风机设定使能
+#define   M_Defrost_status    M_sys_bit.bit_.b2 //除霜
+#define   M__Self_Test        M_sys_bit.bit_.b3 //自检
+#define   touch_version_read_ok        M_sys_bit.bit_.b4 //触摸芯片读取版本OK?
+#define   M_ADC_check         M_sys_bit.bit_.b5 //ADC处理  接收到数据后处理
+
+
+extern MCU_xdata UUI16 M_sys_bit1;
+#define   _Fast_Test		   M_sys_bit1.bit_.b0//快测
+#define   _Timer_set_ok		   M_sys_bit1.bit_.b3//定时设定
+#define   _SYS_UVC_Status	   M_sys_bit1.bit_.b4//UVC灯
 
 
 
-
-
-extern xdata FAN_TYPE         sys_fan_type;
-extern xdata CF_TYPE          CF_Status;         //
-
-extern xdata FORM_TYPE        Sys_Tpye;          //确定多少种运行模式变量
-extern xdata FAN_ORDER_TYPE   Sys_fan_order;
-
-extern xdata UUI08            light_down;
-extern xdata UI08             water_light_cont;
-
-
-#define light_down1 light_down.bit_.b0//待机显示--
-#define light_down2 light_down.bit_.b1//故障
-#define light_down3 light_down.bit_.b2//定时关
-#define light_down4 light_down.bit_.b3//压机关
-
-
-/////////////////////////////////////////////////////////////
-
-#define   DISP_TIMER    10     //定时、温度设置等待多久，自动确认
-#define   INIT_TIMER    8      //定时开关机初始时间
-#define   FAN_DELAY     2      //风速切换延时
-#define   MODE_DELAY    2      //模式切换延时
-#define   EEP_DELAY     2      //存储数据延时
-
-
-
-
-
-extern xdata UI08 Sys_EEP_SYTP;//机型
-extern xdata UI08 Sys_Version_buf;
-extern xdata UI08 Buzz_Cnt;
-extern xdata UI16 EEP_OffSet_DATA_ADDR;
-
-
-
-
-#define   Soft_Version 0
-
-
-
-
-extern void WdtInit(void);
-extern void Sys_Initial(void);
-extern void SysData_init(void);
-extern void SYS_Mach_type_judge(void);
-extern UI08 F_C(UI08 cfdata);
-extern UI08 C_F(UI08 cfdata);
-extern void delay(UI16 i);
-extern void EEP_deal(void);
+extern void Turn_On(void);
+extern void Turn_Off(void);
 extern void prg_s_general(void);
-extern void Sys_data_read_eep(void);
-extern void Sys_data_write(void);
+extern void prg_ms200_test(void);
+extern void Sys_Initial(void);	//	系统 初始化程序
+//extern void delay(UI16 i);
+//extern UI08 F_C(UI08 cfdata);
+//extern UI08  C_F(UI08 cfdata);
+//extern void Sys_data_write(void);
+//extern void Sys_data_read(void);
+//extern void Mach_type_judge(void);
+
+extern void SYSData_Rest(void);
 extern void general_deal(void);
-extern void Sys_filter_deal(void);
-extern void prg_minute_control(void);
-extern void prg_minute(void);
-
-
-
-
-
-
-
-
-
-
-
-
+extern void SYS_data_init(void);
 
 #endif
+
+
+
 

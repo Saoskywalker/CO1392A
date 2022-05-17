@@ -1,104 +1,129 @@
-//**********************************************************
-//文件名称: 	Control.c
-//文件描述: 	系统逻辑控制函数(威技冷气机)
-//项目名称: 	COR748
-//构	建: 	GCE 唐永强		2011/07/15
-//修	改: 	GCE XXX 		2011/07/15
-//*********************************************************/
-
 #ifndef __Control_H
 #define __Control_H
 
+#include "DataType.h"
 
-#define DCPUMP_ON     P45=1
-#define DCPUMP_OFF    P45=0
 
-//=================跟外部程序接口用到的RAM宏定义=======================
-#define mode_set 		Mode_Set
-#define _defrost 		_Defrost_status
-#define fan_set         	Fan_Set
-#define outfan_speed 		Outfan_Speed
-#define temp_set_f 		Temp_Set_F
-#define _fan_set_enb 		_Fan_set_enable
-#define power_status 		Power_Status
-#define temp_room_status   	Temp_room.status
-#define temp_coil_status   	Temp_coil.status
-#define Troom_value     Temp_room.value
-#define Tcoil_value     Temp_coil.value
 //=================需要配置变量==================================================
 #define Comp_Protect_Time  180  //压缩机保护时间
-//=========防冻结参数
-#define defreeze_Troom1   72//22C
-#define defreeze_Tcoil1   43//6C
-#define defreeze_Troom2   64//18C
-#define defreeze_Tcoil2   36//2C
-#define defreeze2_runtime_const 15*60
-//==========防冷风参数
-#define coolair_point1 86//30C(30+15)*4
-#define coolair_point2 77//25C(25+15)*4
-#define coolair_point3 68//20C(20+15)*4
-//==========过载保护参数
-#define overload_point1 131//55C(55+15)*4
-#define overload_point2 140//60C(60+15)*4
-#define overload_point3 149//65C(65+15)*4
 //===========除霜参数
-#define defrost_para1   20*60   //条件1 压缩机运行时间
-#define defrost_para2   18    //条件1 温度点 10C
-#define defrost_para3   20*60   //条件2 压缩机运行时间
-#define defrost_para4   81//27C(27+15)*4   //条件2 温度点
-#define defrost_para5   2*60   //条件2 计时
-#define defrost_para6   15*60   //条件3 压缩机运行时间
-#define defrost_para7   68//20C(20+15)*4   //条件3 温度点
-#define defrost_para8   3*60       //除霜时间
-
-//=========除湿压缩机开停时间参数
-#define comp_on_target_time_define  360,180,180     //6,3,3
-#define comp_off_target_time_define 180,360,540     //3,6,9
-
-//===================PUMP相关定义=================================
-#define  	SPEED_BUF_MAX  6		//数组带下
-#define  	INFAN_IO       (P45)		//IO口
-#define 	PUMP_PG        (15*10)		//有反馈的打水泵,满水恢复后继续打水15S(15*10=15S)
-#define 	PUMP_NO_PG     (32*10)		//无反馈的打水泵,满水恢复后继续打水35S(35*10=35S)  ==>实测35S
+#define defrost_para1   (10*60)  //压缩机运转X分钟后开始计时
+#define defrost_para2   135  //0度对应AD值  (10/(10+27.9))*1024-1=269
+#define defrost_para3   157  //5度对应AD值  (10/(10+22.47))*1024-1=314
+#define defrost_para4   (10*60)  //计时过程中X分钟判断管温
+#define defrost_para5   (19*60)  //计时过程中Y分钟判断管温
+#define defrost_para6   (20*60)  //除霜开始时间计时
+#define defrost_para7   (10)  //除霜时环境温度判断  10°
+#define defrost_para8   (7*60)  //除霜时间1
+#define defrost_para9   (7*60)  //除霜时间2
+#define defrost_para10   (4)  //第X次除霜，除霜时间延长
+#define defrost_para11   (15*60)  //第X次除霜，除霜时间延长至Y分钟
+#define defrost_para12   (15+9)  //铜管故障时，以室温判断 <15
 //==================对外接口===============================================================
-extern  xdata UUI08   Control_bit;
-extern  xdata UI08    Room_Temp;
-extern  xdata UI08   R_overload_status;
-extern xdata UI16  	      off_cycle_Tmin;         	//off cycle参数T
-extern xdata UI16  	      off_cycle_Tmin_Dsip_timer;	//off cycle参数T显示时间
-extern xdata UI08  	      PowerKey_off_cycle_Time;	//参数允许设置时间
-extern xdata UI08             off_cycle_mode;
-extern xdata UI16             off_cycle_timer;
+typedef struct
+{
+  UI16 HI_stay_time;//湿度超高运行的时间
+  UI16 LO_stay_time;//低湿度运行的时间
+  UI16 def_start_time;//除霜计时
+  UI08  def_start_count_enable;//除霜计时使能
+  UI16 def_time;//除霜计时
+  UI08  def_cont;//除霜次数
+  UI16  temp_room_point;//除霜温度点
+  DEF_TYPE  def_type;//除霜方式(A/B)
+  bool_f sensor_err;//sensor故障
+}RUN_REG;
+extern MCU_xdata RUN_REG Run_Reg;
 
-#define   _comp_firston_in_heat          Control_bit.bit_.b0
-#define   _high_temp_protect_flag        Control_bit.bit_.b1
-#define   _heat_temp_compensation        Control_bit.bit_.b2
-#define   _heat_temp_compensation_DSP_EN Control_bit.bit_.b3
+typedef struct
+{
+  UI16 on_timer;//水泵打开时间
+  UI16 off_timer;//关闭时间
+  UI08  on_count;//打开次数
+  UI08  mode;//状态
+  UI08  SW_ON_Timer;//排水马达运行时间
+  UI08  SW_OFF_Timer;//排水马达关闭时间
+  UI08  off_delay;
+}Pump_str;
+extern  MCU_xdata Pump_str Pump_type;
 
-extern xdata UI08   _Flash_for_high_temp;
+#define Pump_mode_0  0
+#define Pump_mode_1  1
+#define Pump_mode_2  2
+#define Pump_mode_3  3
 
-#define WATER_FULL_TIME    Judge_water_Full_delay_time
-
-extern  xdata UUI08 DcPump_bit;
-#define  _water_pipe_Status      DcPump_bit.bit_.b0  //排水管 0/1 ==> 未插入/插入
-#define  _Pump_Water_PG_Status   DcPump_bit.bit_.b1  //判断是否为带反馈的打水马达(带反馈的打水猛一点,打水时间就短一点)
-#define  _water_pipe_Status_old  DcPump_bit.bit_.b2  //判断是否为带反馈的打水马达(带反馈的打水猛一点,打水时间就短一点)
+#define Temp_room_para_C Temp_room.C_value
+#define Temp_coil_para_C Temp_coil.C_value
 
 
-extern xdata sEC_struct sEC_SYS;
-#define _EC_err        sEC_SYS.EC_protect_byte.bit_.b0
-#define _EC_protect    sEC_SYS.EC_protect_byte.bit_.b1
-#define _EC_Fast_Test  sEC_SYS.EC_protect_byte.bit_.b2
+extern MCU_xdata UI16 fan_force_runtime;
+extern MCU_xdata UI16  SYS_RUN_timer;
 
+extern MCU_xdata FuncState test_factory;
+extern MCU_xdata FuncState Child_Lock_status;
+extern MCU_xdata UI08            Child_Lock_Disp_Count;
+extern MCU_xdata UI08            Child_Lock_1s_Count;
+extern MCU_xdata UI16            Child_Lock_Disp_timer;
+
+
+extern MCU_xdata UI08   Key_ERR_Buzz_Cnt;
+
+
+extern MCU_xdata FuncState Pump_Status;
+extern MCU_xdata FuncState Pump_water_pipe_Status;//抽水水管是否介入
+
+extern MCU_xdata FuncState  Fan_set_enable;
+extern MCU_xdata UI16  Fan_Speed_delay;
+
+extern MCU_xdata UI08 Feel_Mode;
+//extern MCU_xdata UI08 Dump_SW;//机台倾倒开关状态
+//extern MCU_xdata UI08 Dump_Status;//机台倾倒情况
+
+extern MCU_xdata bool_f sys_reg__comp_protect_stause_condition_a;//冷媒泄漏条件2中条件a压缩机保护
+extern MCU_xdata bool_f sys_reg__comp_protect_stause_condition_b;//冷媒泄漏条件2中条件b压缩机保护
+extern MCU_xdata UI16 sys_reg_comp_38_count_condition_a;//冷媒泄漏条件2中条件a时间计数
+extern MCU_xdata UI16 sys_reg_comp_38_count_condition_b;//冷媒泄漏条件2中条件b时间计数
+extern MCU_xdata UI16 g_ec_count_timer ;
+extern MCU_xdata bool_f sys_reg__ec_err;
+
+extern MCU_xdata sEC_struct sEC_SYS;
+#define _EC_err        sEC_SYS.EC_protect_byte.bit_.b0//EC故障
+#define _EC_Fast_Test  sEC_SYS.EC_protect_byte.bit_.b1//快测
+
+///
+///
 #define ABSOLUTE_VALUE(a,b) ((a>b)?(a-b):(b-a))
 
 
-extern void prg_s_control(void);
-extern void Sys_Control(void);
-void control_data_intit(void);
-extern void   off_cycle_mode_control(void);
-extern void Clear_off_cycle_mode_Data(void);
-extern void Get_the_pump_pwm_width(void);
 
+
+extern void Pump_S_general(void);
+extern void prg_s_control(void);
+extern void prg_minute_control(void);
+extern void prg_hour_conl(void);
+extern void Sys_Control(void);
+extern void prg_200ms_control(void);
+extern void load_set_self_test(void);
+extern void Run_reg_init(void);
+extern void BUZZ_CONTROL(void);
+extern void Run_reg_init(void);
 #endif
+
+//////////////////////////////////////////////////////////
+//
+//      eeeeeeeeee       n           nn      ddddddddd
+//     ee               nnn         nn      dd       dd
+//    ee               nn   n      nn      dd        dd
+//   eeeeeeeeee       nn     n    nn      dd         dd
+//  ee               nn       n  nn      dd         dd
+// ee               nn         nnn      dd         dd
+//eeeeeeeeee       nn          nn      ddddddddddd
+//
+//Designed by Benkye.Zhang 2010.10.28
+///////////////////////////////////////////////////////
+
+
+
+
+
+
 

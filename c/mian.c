@@ -9,9 +9,11 @@
 //*************************************************************
 // #define TOUCH_DYN_DEBUG     //!动态调试触摸，需添加SC95F8X1X_HighSensitiveTKDynamicDebug_S_V0.0.2.LIB
 #include "General.h"
+
 #ifdef TOUCH_DYN_DEBUG
 #include "SOC_DebugTouchKey.h"
 #endif
+
 //*****************全局变量区***************************************************
 void main(void)
 {
@@ -22,64 +24,31 @@ void main(void)
     //上电全显
     while(Power_Delay_Time>0)
     {
-        //显示温度更新
-        Troom_update_time=3;
-        _temp_update_enb=1;
-        Troom_dsp_com=Temp_room.value;
-        //
-#if ((defined DEBUG_EN) && !DEBUG_EN)
         WDTCON|=0x10;//WDT_Clear
-#endif
         Temp_Deal();
-        key_deal();
-        Remote_Deal();
+        Key_Deal();
         LED_display();
-        SYS_Sleep_deal();
         general_deal();
-        SYS_Inspect_Deal();
+	   // Wifi_UART_Deal();
         communication_Deal();
-        exv_control();
     }
     //EEP 机型读取
-    SYS_Mach_type_judge();
+    //SYS_Mach_type_judge();
     Sys_data_read_eep();
-    //显示温度更新
-    Troom_update_time=3;
-    _temp_update_enb=1;
-    Troom_dsp_com=Temp_room.value;
-
-    IAPPageErase(SYS_DATA_ADDR,IapROM);
-    EEP_OffSet_DATA_ADDR=0;//擦除后 偏移量从0开始
-    _Write_EEP_EN = 1;
-    Sys_data_write();
-    //强制测试入口
-    PowerKey_Delay_Time=200;
-    while(PowerKey_Delay_Time>0)
-    {
-        WDTCON|=0x10;//WDT_Clear
-        Temp_Deal();
-        key_deal();
-        SYS_Inspect_Deal();
-        exv_control();
-        LED_display();
-    }
 
     while (1)
     {
-#if ((defined DEBUG_EN) && !DEBUG_EN)
         WDTCON|=0x10;//WDT_Clear
-#endif
-        key_deal();
+
+        Key_Deal();
         Temp_Deal();
         LED_display();
-        Remote_Deal();
         general_deal();
         EEP_deal();
         IO_operate();
         Sys_Control();
-        SYS_Inspect_Deal();
+    	SYS_Inspect_Deal();
+    	//Wifi_UART_Deal();
         communication_Deal();
-        exv_control();
-        SYS_Sleep_deal();
     }
 }

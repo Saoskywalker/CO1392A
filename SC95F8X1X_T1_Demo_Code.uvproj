@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
 
-  <SchemaVersion>1.1</SchemaVersion>
+  <SchemaVersion>1.0</SchemaVersion>
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
@@ -29,8 +29,6 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile></SFDFile>
-          <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -45,7 +43,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\out\</OutputDirectory>
-          <OutputName>软件可执行文件-S1321B0B_R00</OutputName>
+          <OutputName>软件可执行文件-S1321A0A_R00</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -62,8 +60,6 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopU1X>0</nStopU1X>
-            <nStopU2X>0</nStopU2X>
           </BeforeCompile>
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
@@ -98,7 +94,6 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
-          <ComprImg>1</ComprImg>
           <BankNo>65535</BankNo>
         </CommonProperty>
         <DllOption>
@@ -133,13 +128,12 @@
           <Target>
             <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
+            <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>0</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>9</TargetSelection>
@@ -168,14 +162,9 @@
             <Capability>1</Capability>
             <DriverSelection>4101</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
           <Flash2>SinOne_Chip\\SOC_Debug_Driver\SinOne_Chip_Debug_Driver.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
-          <pFcarmOut></pFcarmOut>
-          <pFcarmGrp></pFcarmGrp>
-          <pFcArmRoot></pFcArmRoot>
-          <FcArmLst>0</FcArmLst>
         </Utilities>
         <Target51>
           <Target51Misc>
@@ -337,7 +326,7 @@
             <UserClasses></UserClasses>
             <CSection></CSection>
             <UserSection></UserSection>
-            <CodeBaseAddress>0X100</CodeBaseAddress>
+            <CodeBaseAddress>0X2000</CodeBaseAddress>
             <XDataBaseAddress></XDataBaseAddress>
             <PDataBaseAddress></PDataBaseAddress>
             <BitBaseAddress></BitBaseAddress>
@@ -345,7 +334,7 @@
             <IDataBaseAddress></IDataBaseAddress>
             <Precede></Precede>
             <Stack></Stack>
-            <CodeSegmentName></CodeSegmentName>
+            <CodeSegmentName>?C_C51STARTUP(0x2100),?CO?IapCheckNum(0xFE00)</CodeSegmentName>
             <XDataSegmentName></XDataSegmentName>
             <BitSegmentName></BitSegmentName>
             <DataSegmentName></DataSegmentName>
@@ -355,7 +344,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source Group 1</GroupName>
+          <GroupName>SRC</GroupName>
           <Files>
             <File>
               <FileName>STARTUP.A51</FileName>
@@ -398,11 +387,6 @@
               <FilePath>.\c\Control.c</FilePath>
             </File>
             <File>
-              <FileName>EXV_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\c\EXV_driver.c</FilePath>
-            </File>
-            <File>
               <FileName>General_func.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\c\General_func.c</FilePath>
@@ -423,19 +407,19 @@
               <FilePath>.\c\LedDsp_API.c</FilePath>
             </File>
             <File>
-              <FileName>LedDspAndKey_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\c\LedDspAndKey_driver.c</FilePath>
-            </File>
-            <File>
               <FileName>mian.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\c\mian.c</FilePath>
             </File>
             <File>
-              <FileName>sleep_API.c</FileName>
+              <FileName>Led_driver.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\c\sleep_API.c</FilePath>
+              <FilePath>.\c\Led_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>MCU.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\c\MCU.c</FilePath>
             </File>
             <File>
               <FileName>SYS_inspect.c</FileName>
@@ -443,19 +427,144 @@
               <FilePath>.\c\SYS_inspect.c</FilePath>
             </File>
             <File>
-              <FileName>timer_API.c</FileName>
+              <FileName>timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\c\timer_API.c</FilePath>
+              <FilePath>.\c\timer.c</FilePath>
             </File>
             <File>
-              <FileName>remote_driver.c</FileName>
+              <FileName>WIFI_UART.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\c\remote_driver.c</FilePath>
+              <FilePath>.\c\WIFI_UART.c</FilePath>
             </File>
             <File>
-              <FileName>rec_api.c</FileName>
+              <FileName>WIFI_UART_Driver.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\c\rec_api.c</FilePath>
+              <FilePath>.\c\WIFI_UART_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Data_EEP.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\c\Data_EEP.C</FilePath>
+            </File>
+            <File>
+              <FileName>IapCheckNum.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\c\IapCheckNum.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>INC</GroupName>
+          <Files>
+            <File>
+              <FileName>ADC_API.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\ADC_API.h</FilePath>
+            </File>
+            <File>
+              <FileName>communication_API.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\communication_API.h</FilePath>
+            </File>
+            <File>
+              <FileName>communication_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\communication_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>Control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\Control.h</FilePath>
+            </File>
+            <File>
+              <FileName>Data_EEP.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\Data_EEP.h</FilePath>
+            </File>
+            <File>
+              <FileName>DataType.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\DataType.h</FilePath>
+            </File>
+            <File>
+              <FileName>flash.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\flash.h</FilePath>
+            </File>
+            <File>
+              <FileName>General.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\General.h</FilePath>
+            </File>
+            <File>
+              <FileName>General_func.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\General_func.h</FilePath>
+            </File>
+            <File>
+              <FileName>IO_API.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\IO_API.h</FilePath>
+            </File>
+            <File>
+              <FileName>Keyfunc_API.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\Keyfunc_API.h</FilePath>
+            </File>
+            <File>
+              <FileName>Led_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\Led_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>LedDsp_API.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\LedDsp_API.h</FilePath>
+            </File>
+            <File>
+              <FileName>MCU.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\MCU.h</FilePath>
+            </File>
+            <File>
+              <FileName>SC95F861x_C.H</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\SC95F861x_C.H</FilePath>
+            </File>
+            <File>
+              <FileName>SYS_inspect.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\SYS_inspect.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>WIFI_UART.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\WIFI_UART.h</FilePath>
+            </File>
+            <File>
+              <FileName>WIFI_UART_Driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\h\WIFI_UART_Driver.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>TOUCH_LIB</GroupName>
+          <Files>
+            <File>
+              <FileName>S_TouchKeyCFG.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lib\S_TouchKeyCFG.h</FilePath>
+            </File>
+            <File>
+              <FileName>SensorMethod.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lib\SensorMethod.h</FilePath>
             </File>
           </Files>
         </Group>

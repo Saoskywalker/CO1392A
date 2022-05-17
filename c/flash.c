@@ -50,9 +50,11 @@ UI08 IAPRead(UI16 Addr,UI08 IAPArea)
     UI08 ReadValue = 0x00;
     bit temp = EA;
     EA = 0;
+    IAPKEY = 0XF0;
     IAPADE = IAPArea;
     ReadValue = *(IapAddr+Addr); //读取的数据
     IAPADE = 0x00;               //MOVC指向ROM
+    IAPKEY = 0X00;
     EA = temp;
     return ReadValue;
 }

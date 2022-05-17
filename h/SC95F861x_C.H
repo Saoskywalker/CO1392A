@@ -81,13 +81,12 @@ sfr   ADCVL	  = 0xAE;	//ADC 结果寄存器
 sfr   ADCVH	  = 0xAF;	//ADC 结果寄存器
 
 /*PWM*/
-sfr 	PWMCON0	= 0xD1;		//PWM设置寄存器
-sfr 	PWMCFG0	= 0xD2;		//PWM设置寄存器
-sfr 	PWMCON1	= 0xD3;		//PWM控制寄存器
-sfr 	PWMCFG1	= 0xD4;		//PWM周期设置寄存器
-sfr 	PWMDFR1	= 0xD5;		//PWM3占空比设置寄存器
-sfr 	PWMFLT1	= 0xD6;		//PWM0占空比设置寄存器
-sfr 	PWMMOD	= 0xD7;		//PWM1占空比设置寄存器
+sfr   PWMMOD  = 0xD7;	//PWM模式设置寄存器
+sfr   PWMFLT  = 0xD6;	//PWM故障检测设置寄存器
+sfr   PWMDFR  = 0xD5;	//PWM死区设置寄存器
+sfr   PWMCFG  = 0xD4;	//PWM设置寄存器
+sfr   PWMCON  = 0xD3;	//PWM控制寄存器
+
 
 //
 ///*WatchDog*/

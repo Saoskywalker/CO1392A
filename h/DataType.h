@@ -1,124 +1,124 @@
-/********************************************************************************
-//文件名称:    	__DATATYPE_H
-//文件描述:    	系统 数据结构
-//项目名称:		COR748
-//构	建:    	GCE 张远泽 		2011/07/11
-//修	改:     GCE XXX       	2011/07/11
- ****************************************************************************** */
+
 #ifndef __DATATYPE_H
 #define __DATATYPE_H
-typedef	signed	  long	 SI32;
-typedef	unsigned  long	 UI32;
-typedef	signed	  short	 SI16;
-typedef	unsigned  short	 UI16;
+
+
+#define MCU_xdata  xdata
+//#define MCU_xdata
+
+
+//#define MCU_const  const
+#define MCU_const  code
+
+
+#define MCU_static   static
+//#define MCU_Static
+
+typedef	signed	  long   int	 SI32;
+typedef	unsigned  long   int	 UI32;
+typedef	signed	  short  int	 SI16;
+typedef	unsigned  short  int	 UI16;
 typedef	signed	  char	 SI08;
 typedef	unsigned  char	 UI08;
-struct bit32_def
-{
-    unsigned char    b0  :1;                                 /* 8bit access LL */
-    unsigned char    b1  :1;                                 /* 8bit access LH */
-    unsigned char    b2  :1;                                 /* 8bit access HL */
-    unsigned char    b3  :1;                                 /* 8bit access HL */
-    unsigned char    b4  :1;                                 /* 8bit access HL */
-    unsigned char    b5  :1;                                 /* 8bit access HL */
-    unsigned char    b6  :1;                                 /* 8bit access HL */
-    unsigned char    b7  :1;                                 /* 8bit access HL */
-    unsigned char    b8  :1;                                 /* 8bit access HL */
-    unsigned char    b9  :1;                                 /* 8bit access HL */
-    unsigned char    b10  :1;                                 /* 8bit access HL */
-    unsigned char    b11  :1;                                 /* 8bit access HL */
-    unsigned char    b12  :1;                                 /* 8bit access HL */
-    unsigned char    b13  :1;                                 /* 8bit access HL */
-    unsigned char    b14  :1;                                 /* 8bit access HL */
-    unsigned char    b15  :1;                                 /* 8bit access HL */
-    unsigned char    b16  :1;                                 /* 8bit access LL */
-    unsigned char    b17  :1;                                 /* 8bit access LH */
-    unsigned char    b18  :1;                                 /* 8bit access HL */
-    unsigned char    b19  :1;                                 /* 8bit access HL */
-    unsigned char    b20  :1;                                 /* 8bit access HL */
-    unsigned char    b21  :1;                                 /* 8bit access HL */
-    unsigned char    b22  :1;                                 /* 8bit access HL */
-    unsigned char    b23  :1;                                 /* 8bit access HL */
-    unsigned char    b24  :1;                                 /* 8bit access HL */
-    unsigned char    b25  :1;                                 /* 8bit access HL */
-    unsigned char    b26  :1;                                 /* 8bit access HL */
-    unsigned char    b27  :1;                                 /* 8bit access HL */
-    unsigned char    b28  :1;                                 /* 8bit access HL */
-    unsigned char    b29  :1;                                 /* 8bit access HL */
-    unsigned char    b30  :1;                                 /* 8bit access HL */
-    unsigned char    b31  :1;
-};
+struct bit32_def {
+        unsigned char    b0  :1;                                 /* 8bit access LL */
+        unsigned char    b1  :1;                                 /* 8bit access LH */
+        unsigned char    b2  :1;                                 /* 8bit access HL */
+        unsigned char    b3  :1;                                 /* 8bit access HL */
+        unsigned char    b4  :1;                                 /* 8bit access HL */
+        unsigned char    b5  :1;                                 /* 8bit access HL */
+        unsigned char    b6  :1;                                 /* 8bit access HL */
+        unsigned char    b7  :1;                                 /* 8bit access HL */
+        unsigned char    b8  :1;                                 /* 8bit access HL */
+        unsigned char    b9  :1;                                 /* 8bit access HL */
+        unsigned char    b10  :1;                                 /* 8bit access HL */
+        unsigned char    b11  :1;                                 /* 8bit access HL */
+        unsigned char    b12  :1;                                 /* 8bit access HL */
+        unsigned char    b13  :1;                                 /* 8bit access HL */
+        unsigned char    b14  :1;                                 /* 8bit access HL */
+        unsigned char    b15  :1;                                 /* 8bit access HL */
+	unsigned char    b16  :1;                                 /* 8bit access LL */
+        unsigned char    b17  :1;                                 /* 8bit access LH */
+        unsigned char    b18  :1;                                 /* 8bit access HL */
+        unsigned char    b19  :1;                                 /* 8bit access HL */
+        unsigned char    b20  :1;                                 /* 8bit access HL */
+        unsigned char    b21  :1;                                 /* 8bit access HL */
+        unsigned char    b22  :1;                                 /* 8bit access HL */
+        unsigned char    b23  :1;                                 /* 8bit access HL */
+        unsigned char    b24  :1;                                 /* 8bit access HL */
+        unsigned char    b25  :1;                                 /* 8bit access HL */
+        unsigned char    b26  :1;                                 /* 8bit access HL */
+        unsigned char    b27  :1;                                 /* 8bit access HL */
+        unsigned char    b28  :1;                                 /* 8bit access HL */
+        unsigned char    b29  :1;                                 /* 8bit access HL */
+        unsigned char    b30  :1;                                 /* 8bit access HL */
+        unsigned char    b31  :1;
+    };
 
-struct bit16_def
-{
-    unsigned char    b0  :1;                                 /* 8bit access LL */
-    unsigned char    b1  :1;                                 /* 8bit access LH */
-    unsigned char    b2  :1;                                 /* 8bit access HL */
-    unsigned char    b3  :1;                                 /* 8bit access HL */
-    unsigned char    b4  :1;                                 /* 8bit access HL */
-    unsigned char    b5  :1;                                 /* 8bit access HL */
-    unsigned char    b6  :1;                                 /* 8bit access HL */
-    unsigned char    b7  :1;                                 /* 8bit access HL */
-    unsigned char    b8  :1;                                 /* 8bit access HL */
-    unsigned char    b9  :1;                                 /* 8bit access HL */
-    unsigned char    b10  :1;                                 /* 8bit access HL */
-    unsigned char    b11  :1;                                 /* 8bit access HL */
-    unsigned char    b12  :1;                                 /* 8bit access HL */
-    unsigned char    b13  :1;                                 /* 8bit access HL */
-    unsigned char    b14  :1;                                 /* 8bit access HL */
-    unsigned char    b15  :1;                                 /* 8bit access HL */
-};
-struct bit8_def
-{
-    unsigned char    b0  :1;                                 /* 8bit access LL */
-    unsigned char    b1  :1;                                 /* 8bit access LH */
-    unsigned char    b2  :1;                                 /* 8bit access HL */
-    unsigned char    b3  :1;                                 /* 8bit access HL */
-    unsigned char    b4  :1;                                 /* 8bit access HL */
-    unsigned char    b5  :1;                                 /* 8bit access HL */
-    unsigned char    b6  :1;                                 /* 8bit access HL */
-    unsigned char    b7  :1;                                 /* 8bit access HL */
-};
+struct bit16_def {
+        unsigned char    b0  :1;                                 /* 8bit access LL */
+        unsigned char    b1  :1;                                 /* 8bit access LH */
+        unsigned char    b2  :1;                                 /* 8bit access HL */
+        unsigned char    b3  :1;                                 /* 8bit access HL */
+        unsigned char    b4  :1;                                 /* 8bit access HL */
+        unsigned char    b5  :1;                                 /* 8bit access HL */
+        unsigned char    b6  :1;                                 /* 8bit access HL */
+        unsigned char    b7  :1;                                 /* 8bit access HL */
+        unsigned char    b8  :1;                                 /* 8bit access HL */
+        unsigned char    b9  :1;                                 /* 8bit access HL */
+        unsigned char    b10  :1;                                 /* 8bit access HL */
+        unsigned char    b11  :1;                                 /* 8bit access HL */
+        unsigned char    b12  :1;                                 /* 8bit access HL */
+        unsigned char    b13  :1;                                 /* 8bit access HL */
+        unsigned char    b14  :1;                                 /* 8bit access HL */
+        unsigned char    b15  :1;                                 /* 8bit access HL */
+    };
+struct bit8_def {
+        unsigned char    b0  :1;                                 /* 8bit access LL */
+        unsigned char    b1  :1;                                 /* 8bit access LH */
+        unsigned char    b2  :1;                                 /* 8bit access HL */
+        unsigned char    b3  :1;                                 /* 8bit access HL */
+        unsigned char    b4  :1;                                 /* 8bit access HL */
+        unsigned char    b5  :1;                                 /* 8bit access HL */
+        unsigned char    b6  :1;                                 /* 8bit access HL */
+        unsigned char    b7  :1;                                 /* 8bit access HL */
+    };
+
 
 union union_uibyte
 {
-    UI08 byte;
-    struct bit8_def bit_;
+  UI08 byte;
+  struct bit8_def bit_;
 };
 ///////////////////////////////
 union	union_uiword
-{
-    /* unsigned 16bit RAM */
+{                           /* unsigned 16bit RAM */
     UI16    word;
-    struct
-    {
-        UI08	lo;                                 /* 16bit access H */
-        UI08	hi;                                 /* 16bit access L */
-    } byte;
+	struct	{
+		 UI08	lo;                                /* 16bit access L */
+		  UI08	hi;                               /* 16bit access H */
+	}byte;
 
-    struct bit16_def bit_;
+	struct bit16_def bit_;
 
 };
 /////////////////////////////////////////////
 union	union_uilword
-{
-    /* unsigned 32bit RAM */
+{                           /* unsigned 32bit RAM */
     UI32    lword;
-    struct
-    {
-        UI08	ll;                                 /* 16bit access H */
-        UI08	lh;                                 /* 16bit access L */
-        UI08	hl;                                 /* 16bit access H */
-        UI08	hh;                                 /* 16bit access L */
-    } byte;
+	struct	{
+		UI08	hh;                                 /* 16bit access L */
+		UI08	hl;                                 /* 16bit access H */
+		UI08	lh;                                 /* 16bit access L */
+		UI08	ll;                                 /* 16bit access H */
+	}byte;
 
-    struct
-    {
-        UI16	lo;                                 /* 16bit access H */
-        UI16	hi;                                 /* 16bit access L */
-    } word;
+	struct	{
+		UI16	hi;                                 /* 16bit access L */
+		UI16	lo;                                 /* 16bit access H */
+	}word;
 
-    struct bit32_def bit_;
+	struct bit32_def bit_;
 };
 
 /////////////////////////////////
@@ -134,8 +134,8 @@ typedef     union   union_uilword    UUI32;
 
 union union_sibyte
 {
-    struct bit8_def bit_;
-    SI08 byte;
+   struct bit8_def bit_;
+   SI08 byte;
 };
 
 
@@ -147,16 +147,14 @@ union union_sibyte
 //可引用为 flag_a.bit.b0  flag_a.byte.lo  flag_a.word
 
 union	union_siword
-{
-    /* unsigned 16bit RAM */
+{                           /* unsigned 16bit RAM */
     SI16    word;
-    struct
-    {
-        UI08	lo;                                 /* 16bit access L */
-        SI08	hi;                                 /* 16bit access H */
-    } byte;
+	struct	{
+		UI08	lo;                                 /* 16bit access L */
+		SI08	hi;                                 /* 16bit access H */
+	}byte;
 
-    struct bit16_def bit_;
+	struct bit16_def bit_;
 
 };
 // 定义可字节&位寻址的16位无符号数据 UUI16 flag_a
@@ -164,24 +162,21 @@ union	union_siword
 
 /////////////////////////////////////////////
 union	union_silword
-{
-    /* unsigned 32bit RAM */
+{                           /* unsigned 32bit RAM */
     SI32    lword;
-    struct
-    {
-        UI08	ll;                                 /* 16bit access L */
-        UI08	lh;                                 /* 16bit access H */
-        UI08	hl;                                 /* 16bit access L */
-        SI08	hh;                                 /* 16bit access H */
-    } byte;
+	struct	{
+		UI08	ll;                                 /* 16bit access L */
+		UI08	lh;                                 /* 16bit access H */
+		UI08	hl;                                 /* 16bit access L */
+		SI08	hh;                                 /* 16bit access H */
+	}byte;
 
-    struct
-    {
-        UI16	lo;                                 /* 16bit access L */
-        SI16	hi;                                 /* 16bit access H */
-    } word;
+	struct	{
+		UI16	lo;                                 /* 16bit access L */
+		SI16	hi;                                 /* 16bit access H */
+	}word;
 
-    struct bit32_def bit_;
+	struct bit32_def bit_;
 
 };
 
@@ -193,20 +188,20 @@ typedef     union   union_silword    USI32;
 
 
 
-#define bit0 0x00000001
-#define bit1 0x00000002
-#define bit2 0x00000004
-#define bit3 0x00000008
+#define bit0 0x01
+#define bit1 0x02
+#define bit2 0x04
+#define bit3 0x08
 
-#define bit4 0x00000010
-#define bit5 0x00000020
-#define bit6 0x00000040
-#define bit7 0x00000080
+#define bit4 0x10
+#define bit5 0x20
+#define bit6 0x40
+#define bit7 0x80
 
-#define bit8 0x00000100
-#define bit9 0x00000200
-#define bit10 0x00000400
-#define bit11 0x00000800
+#define bit8 0x0100
+#define bit9 0x0200
+#define bit10 0x0400
+#define bit11 0x0800
 
 #define bit12 0x00001000
 #define bit13 0x00002000
@@ -233,168 +228,6 @@ typedef     union   union_silword    USI32;
 #define bit30 0x40000000
 #define bit31 0x80000000
 
-
-
-typedef enum
-{
-    OFF=0,
-    ON=!OFF
-}
-ONOFF_STATUS;
-
-typedef enum
-{
-    DISABLE = 0,
-    ENABLE = !DISABLE
-} FunctionalState;
-
-
-typedef enum
-{
-    DI_SHORT=0,
-    DI_CUT=1
-}
-SHORTCUT_STATUS;
-
-typedef enum
-{
-    COOL=0,
-    DRY=1,
-    FAN=2,
-    HEAT=3
-}
-MODE_TYPE;
-//
-/*
-typedef enum
-{
-  LOW=0,
-  MID=1,
-  HIGH=2,
-  AUTO=3,
-  FANOFF=4
-}
-FANSPEED_TYPE;
-*/
-typedef enum
-{
-    HIGH=0,
-    MID=1,
-    LOW=2,
-    FANOFF=3
-} FANSPEED_TYPE;
-
-typedef enum
-{
-    SPEED2=0,
-    SPEED3=1
-} FAN_TYPE;
-
-typedef enum
-{
-    HIGH_MID_LOW=0,
-    LOW_MID_HIGH=!HIGH_MID_LOW
-} FAN_ORDER_TYPE;
-
-typedef enum
-{
-    _C=0,
-    _F=!_C
-}
-CF_TYPE;
-//
-typedef enum
-{
-    ONLYCOOL=0,
-    HEATCOOL=1
-}
-FORM_TYPE;
-
-//
-typedef enum
-{
-    POS=0,
-    NEG=!POS
-}
-POS_NEG_TYPE;
-
-typedef enum
-{
-    Hr24=0,
-    Hr12=!Hr24
-}
-TIMER_TYPE;
-
-typedef enum
-{
-    BRIGHT=0,
-    NORMAL=1,
-    REDUCED=2,
-    DARK=3
-}
-LITHT_GRADE_TYPE;
-
-typedef enum
-{
-    ALLOFF=0,
-    BLUE=1,
-    GREEN=2,
-    ORANGE=3
-}
-REAL_feel_AREA;
-
-//==============
-typedef enum
-{
-    FALSE = 0,
-    TRUE = !FALSE
-} bool;
-
-
-typedef enum
-{
-    AI_NORMAL=0,
-    AI_SHORT=1,
-    AI_CUT=(UI08)2
-} AISTATUS;
-
-typedef struct
-{
-    UI16         on_time;
-    UI16         off_time;
-    ONOFF_STATUS BUF;
-    ONOFF_STATUS OUT;
-} DO_PARA;
-
-typedef struct
-{
-    UI08      value;
-    AISTATUS  status;
-    UI16      AD_value;
-} ADC_PARA;
-
-typedef struct  AD_HUM
-{
-    UI08     value;
-    UI16     AD_value;
-    AISTATUS status;
-} ADC_PARA_HUM;
-
-
-typedef struct
-{
-    UI08  troom_c;
-    UI08  tcoil_c;
-    UI08  EC_count;
-    UI08  timer_key_count;
-    UI08  EC_protect_type;
-    UUI08 EC_protect_byte;
-    UI16  EC_count_timer;
-    UI16  EC_comp_timer;
-} sEC_struct;
-
-//----------------------------------------------------------------------------------
-// 		Number characters
 //----------------------------------------------------------------------------------
 #define 	_0000_0000	0x00
 #define 	_0000_0001	0x01
@@ -654,20 +487,179 @@ typedef struct
 #define 	_1111_1111	0xFF
 
 
+#define BUZZ_long_time  300
+#define BUZZ_short_time 150
 
+typedef enum{FALSE = 0,TRUE = !FALSE} bool_f;
+typedef enum {Disable = 0x0, Enable = 0x1} TYPE_FUNCEN;
+typedef enum {DISABLE = 0, ENABLE = !DISABLE} FuncState;
+typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, PinStatus;
+typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
+
+
+typedef enum
+{
+  OFF=0,
+  ON=!OFF
+}ONOFF_STATUS;
+
+typedef enum
+{
+  mode_DRY_Clothes=0,//干衣模式
+  mode_SYS_HUM=1,//除湿模式
+}SYS_MODE;
+//
+typedef enum
+{
+  DYR_AUTO=0,   //自动挡
+  DYR_WEAK=1,        //弱档
+  DYR_STRONG=2,     //强档
+}DYR_TYPE;
+//
+typedef enum
+{
+  AUTO_HUM=0,            //自动挡
+  USER_DEFINE_HUM=1,     //自定义
+  CONTINUOUS_HUM=2       //连续
+}HUM_TYPE;
+//
+typedef enum
+{
+  SILENCE_FAN=0,
+  LOW_FAN=1,
+  HIGH_FAN=2,
+  OFF_FAN=3
+}FANSPEED_TYPE;
+//
+typedef enum
+{
+  AUTO_SWING=0,        //自动摆
+  LEFT_RIGHT_SWING=1,  //左右摆
+  UP_DOWN_SWING=2,     //上下摆
+  STOP_SWING=3         //停止摆
+}SWING_MODE;
+//
+typedef enum
+{
+  AUTO_AIR_CLEAR=0,    //自动净化
+  WEAK_AIR_CLEAR=1,    //弱档净化
+  STRONG_AIR_CLEAR=2,  //强档净化
+}AIR_CLEAR_MODE;
+//
+
+typedef enum
+{
+  OFF_LED=0,
+  GREEN_LED=1,
+  YELLOW_LED=2,
+  RED_LED=3,
+  BLUE_LED=4,
+  ORANGE_LED=5,
+  ALL_ON_LED=6,
+}RGB_LED_TYPE;
+//
+typedef struct Config
+{
+    FuncState Auto_Restart;//掉电记忆使能
+} SYS_CONFIG;
+//
+typedef enum
+{
+  AI_NORMAL=0,
+  AI_SHORT=1,
+  AI_CUT=2
+}AISTATUS;
+//
+typedef enum
+{
+  DI_SHORT=0,
+  DI_CUT=1
+}SHORTCUT_STATUS;
+//
+typedef struct
+{
+	UI16 on_time;
+	UI16 off_time;
+	ONOFF_STATUS BUF;
+	ONOFF_STATUS OUT;
+}DO_PARA;
+//
+typedef struct
+{
+  SHORTCUT_STATUS Status;
+  UI16 short_time;
+  UI16 cut_time;
+}DI_PARA;
+//
+
+typedef struct
+{
+  UI08 C_value;
+  UI08 value;
+  UI16 AD_value;
+  UI08 status;//AISTATUS status;
+}ADC_PARA;
+
+typedef enum
+{
+  ONLYCOOL=0,
+  HEATCOOL=1
+}FORM_TYPE;
+//
+typedef enum
+{
+ _C=0,
+ _F=!_C
+}CF_TYPE;
+//
+typedef enum
+{
+  Hr24=0,
+  Hr12=!Hr24
+}TIMER_TYPE;
+//
+typedef enum
+{
+  SPEED2=0,
+  SPEED3=1
+}FAN_TYPE;
+
+typedef enum
+{
+  TYPE_A=0,
+  TYPE_B=1
+}DEF_TYPE;
+
+
+
+
+typedef struct
+{
+  FuncState Water_Full;     //水满报警
+  FuncState temp_room_err;  //室温故障
+  FuncState temp_coil_err;  //管温故障
+  //FuncState hum_cut;        //湿度传感器开路故障
+  //FuncState hum_short;      //湿度传感器短路故障
+  FuncState hum_Sensor_err;      //湿度传感器短路故障
+  FuncState comm_err;       //通信故障
+  FuncState pm25_Sensor_err;//粉尘故障
+  FuncState pan_motor_err;  //风机故障
+}SYS_ERR;
+
+
+typedef struct
+{
+UI08  troom_c;
+UI08  tcoil_c;
+UI08  timer_key_count;
+UI08  EC_protect_type;
+UI08  EC_count;
+UUI08 EC_protect_byte;
+UI16  EC_count_timer;
+UI16  EC_comp_timer;
+}sEC_struct;
 
 #endif
-//////////////////////////////////////////////////////////
-//
-//      eeeeeeeeee       n           nn      ddddddddd
-//     ee               nnn         nn      dd       dd
-//    ee               nn   n      nn      dd        dd
-//   eeeeeeeeee       nn     n    nn      dd         dd
-//  ee               nn       n  nn      dd         dd
-// ee               nn         nnn      dd         dd
-//eeeeeeeeee       nn          nn      ddddddddddd
-//Designed by Yuanze.Zhang 2010.10.28
-///////////////////////////////////////////////////////
 
 
 

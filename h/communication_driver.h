@@ -1,60 +1,32 @@
-/*
- * @æ–‡ä»¶å†…å®¹æè¿°: 
- * @ä½œè€…: GCE
- * @Date: 2021-04-22 16:37:12
- * @LastEditTime: 2021-04-28 12:33:05
- * @æœ€åç¼–è¾‘: èµµå†›
- * @å‚è€ƒ: 
- */
 
 #ifndef _COMMUNICATION_DRIVER_H
 #define _COMMUNICATION_DRIVER_H
 
-#define     COM_HEAD   15
-#define     COM_ONE    9
-#define     COM_ZERO   4
+
+#include "DataType.h"
+
+#define     rece_data_lenth  11
+#define     txd_length      5
+
+extern MCU_xdata UI08 txd_buf[txd_length];
+extern MCU_xdata UI08 rxd_buf[rece_data_lenth];
+extern MCU_xdata UI08 pulse_cnt;
 
 
-#define     rece_data_lenth  8
-#define     txd_length      8
-extern xdata UI08 txd_buf[txd_length];
-extern xdata UI08 rxd_buf[rece_data_lenth];
-
-extern xdata UI08 pulse_cnt;
-
-
-extern xdata UUI08  communication_bit1;
-#define  _txd_en       communication_bit1.bit_.b0
-#define  _txd_start    communication_bit1.bit_.b1
-#define  _txd_end      communication_bit1.bit_.b2
-#define  _txd_data     communication_bit1.bit_.b3
-#define  _Rxd_start    communication_bit1.bit_.b4
-#define  _Rxd_OK       communication_bit1.bit_.b5
-#define  _txd_tick     communication_bit1.bit_.b6
-
-#define  _Rxd_IO_     communication_bit1.bit_.b7
+extern MCU_xdata UUI08  communication_bit1;
+#define  _txd_en       communication_bit1.bit_.b0 //·¢ËÍÊ¹ÄÜ
+#define  _txd_start    communication_bit1.bit_.b1 //¿ªÊ¼·¢ËÍ
+#define  _txd_end      communication_bit1.bit_.b2 //·¢ËÍ½áÊø
+#define  _txd_data     communication_bit1.bit_.b3 //·¢ËÍÊı¾İ
+#define  _Rxd_start    communication_bit1.bit_.b4 //¿ªÊ¼½ÓÊÕ
+#define  _Rxd_OK       communication_bit1.bit_.b5 //½ÓÊÕÍê³É
+#define  _txd_tick     communication_bit1.bit_.b6 //·¢ËÍ¼ä¸ô
+#define  _Rxd_IO_buf   communication_bit1.bit_.b7 //½ÓÊÕÊı¾İµÄIO buf
 
 
-extern  UI08 communication_width_count;
-
-#define Txd_H   P01=1
-#define Txd_L   P01=0
-
-#define Rxd_IO   (P02)
-
-
-
-
-void communication_Txd_IRQ(void);
-void communication_Rxd_IRQ(void);
-
-
-void communication_Rxd_IO_init(void);
-
-void comm_data_init(void);
-
+extern void Communication_INT_Deal(void);
+extern void communication_Rxd_IO_init(void);
 #endif
-
 //////////////////////////////////////////////////////////
 //
 //      eeeeeeeeee       n           nn      ddddddddd
@@ -67,10 +39,3 @@ void comm_data_init(void);
 //
 //Designed by Benkye.Zhang 2010.10.28
 ///////////////////////////////////////////////////////
-
-
-
-
-
-
-
