@@ -29,24 +29,27 @@ void WIFI_UART_Driver_Init(void)
     US0CON0 |= 0X50; //串口设置为10位全双工异步通讯
     US0CON2 = (Fsoc / UartBaud) / 256;
     US0CON1 = (Fsoc / UartBaud) % 256;
+    IE1 |= bit0; //使能USCI0中断
 #endif
 #if (UartSelect == 2)
     OTCON |= 0XC0;
     US1CON0 |= 0X50; //串口设置为10位全双工异步通讯
     US1CON2 = (Fsoc / UartBaud) / 256;
     US1CON1 = (Fsoc / UartBaud) % 256;
+    IE2 |= bit0; //使能USCI1中断
 #endif
 #if (UartSelect == 3)
     TMCON |= 0xC0;
     US2CON0 |= 0X50; //串口设置为10位全双工异步通讯
     US2CON2 = (Fsoc / UartBaud) / 256;
     US2CON1 = (Fsoc / UartBaud) % 256;
+    IE2 |= bit1; //使能USCI2中断
 #endif
 }
 
-void UART_Txd_Data(void)
+static void UART_Txd_Data(void)
 {
-    if((uart_tx_byte < uart_tx_len) &&(uart_tx_byte < (sizeof(wifi_uart_tx_buf)))
+    if((uart_tx_byte < uart_tx_len) &&(uart_tx_byte < (sizeof(wifi_uart_tx_buf))))
     {
         UART_SFR = wifi_uart_tx_buf[uart_tx_byte];
         uart_tx_byte++;
@@ -60,7 +63,7 @@ void UART_Txd_Data(void)
     }
 }
 
-void UartInt(void) interrupt 4
+void UartInt(void) interrupt UART_INTERRUPT
 {
     if (READ_TI)
     {

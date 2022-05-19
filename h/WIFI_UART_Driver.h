@@ -3,7 +3,7 @@
 
 #include "DataType.h"
 
-#define UartSelect 0  //选择UART:0:UART0,1:USCI0,2:USCI1,3:USCI2
+#define UartSelect 1  //选择UART:0:UART0,1:USCI0,2:USCI1,3:USCI2
 #define UartBaud 9600 //波特率写入
 #define Fsoc 16000000 //主频选择
 
@@ -13,6 +13,7 @@
 #define CLEAR_RI RI = 0
 #define READ_TI TI
 #define CLEAR_TI TI = 0
+#define UART_INTERRUPT 4
 #endif
 
 #if (UartSelect == 1)
@@ -21,6 +22,7 @@
 #define CLEAR_RI US0CON0 = US0CON0 & 0XFE
 #define READ_TI US0CON0 & 0X02
 #define CLEAR_TI US0CON0 = US0CON0 & 0XFD
+#define UART_INTERRUPT 7
 #endif
 
 #if (UartSelect == 2)
@@ -29,6 +31,7 @@
 #define CLEAR_RI US1CON0 = US1CON0 & 0XFE
 #define READ_TI US1CON0 & 0X02
 #define CLEAR_TI US1CON0 = US1CON0 & 0XFD
+#define UART_INTERRUPT 15
 #endif
 
 #if (UartSelect == 3)
@@ -37,6 +40,7 @@
 #define CLEAR_RI US2CON0 = US2CON0 & 0XFE
 #define READ_TI US2CON0 & 0X02
 #define CLEAR_TI US2CON0 = US2CON0 & 0XFD
+#define UART_INTERRUPT 16
 #endif
 
 extern xdata UI08 uart_tx_len; //串口发发送数据长度

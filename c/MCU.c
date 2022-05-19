@@ -129,28 +129,3 @@ void timer0(void) interrupt 1
         Led_Scan();
     }
 }
-
-/*****************************************************
- *oˉêy??3?￡ovoid UartInt(void) interrupt 4
- *oˉêy1|?ü￡oUart?D??oˉêy
- *è??ú2?êy￡ovoid
- *3??ú2?êy￡ovoid
- *****************************************************/
-void UartInt(void) interrupt 4
-{
-    if (READ_TI)
-    {
-        CLEAR_TI;
-        Wifi_UART_Txd_Data();
-    }
-    if (READ_RI)
-    {
-        if (SYS_W_Uart.Rxd_byte >= RXD_MAX)
-        {
-            SYS_W_Uart.Rxd_byte = 0;
-        }
-        SYS_W_Uart.Rxd_buf[SYS_W_Uart.Rxd_byte++] = UART_SFR; //接收数据
-        CLEAR_RI;
-        SYS_W_Uart.Rxd_Timerout = 20;
-    }
-}
