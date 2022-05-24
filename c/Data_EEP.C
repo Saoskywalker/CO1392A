@@ -222,7 +222,6 @@ void Sys_first_data_check(void)
 
 void Sys_data_read_eep(void)
 {
-    UI08 i = 0;
     Sys_first_data_check();
     if (Sys_Memory_Data.S_data.E_Head != 0XAA)
     {
@@ -249,13 +248,6 @@ void Sys_data_read_eep(void)
 
     SYS_Hum_Set = (UI08)Sys_Memory_Data.S_data.E_SYS_Hum_Set; //湿度设定
     SYS_Hum_Set_Buf = SYS_Hum_Set;
-    for (i = 0; i < sizeof(Hum_SET); i++)
-    {
-        if (Hum_SET[i] == SYS_Hum_Set_Buf)
-        {
-            SYS_Hum_Point = i;
-        }
-    }
 
     SYS_Fan_Tyde = (FANSPEED_TYPE)Sys_Memory_Data.S_data.E_SYS_Fan_Tyde; //运行风速
     SYS_Fan_Tyde_Buf = SYS_Fan_Tyde;

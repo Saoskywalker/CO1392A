@@ -62,8 +62,7 @@
 #define TK_30 0x40000000
 #define TK_31 0x80000000
 
-#define EEP_write_T 2
-#define Child_Lock_Disp_NUM 3
+#define Child_Lock_Disp_NUM 1
 
 extern MCU_xdata UUI08 M_Key_flag;
 #define _KEY_OK M_Key_flag.bit_.b0
@@ -72,7 +71,6 @@ extern MCU_xdata UI08 M_Key_Number;
 extern MCU_xdata UI16 M_Key_last;
 extern MCU_xdata UI08 shake_count;
 extern MCU_const UI08 Timer_SET[6];
-extern MCU_const UI08 Hum_SET[5];
 
 extern void prg_ms_key(void);
 extern void Rest_Key_Buzzer(void);

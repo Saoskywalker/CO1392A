@@ -846,7 +846,7 @@ void load_set(void)
 ***************************************************/
 void HUM_Mode(void)
 {
-    if (SYS_Hum_Set == 0) //连续运转
+    if (SYS_HUN_Tyde == CONTINUOUS_HUM) //连续运转
     {
         Comp_para.BUF = ON;
     }

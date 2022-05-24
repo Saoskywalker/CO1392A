@@ -39,7 +39,6 @@ MCU_xdata UI08 SET_SYS_HUN_Tyde_Timer = 0;             //湿度设定(确认时间)
 MCU_xdata UI08 SYS_Hum_Set = 0;     //湿度设定
 MCU_xdata UI08 SYS_Hum_Set_Buf = 0; //湿度设定buf
 MCU_xdata UI08 Set_SYS_Hum_timer = 0;
-MCU_xdata UI08 SYS_Hum_Point = 0; //设定湿度 point
 
 MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde = SILENCE_FAN;     //运行风速
 MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde_Buf = SILENCE_FAN; //运行风速
@@ -104,7 +103,6 @@ void SYSData_Rest(void)
         SYS_Hum_Set = 0;            //湿度设定
         SYS_Hum_Set_Buf = 0;        //湿度设定buf
         SET_SYS_HUN_Tyde_Timer = 0; //湿度设定(确认时间)
-        SYS_Hum_Point = 0;
 
         SYS_Fan_Tyde = SILENCE_FAN;     //运行风速
         SYS_Fan_Tyde_Buf = SILENCE_FAN; //运行风速
@@ -249,10 +247,6 @@ void prg_s_general(void)
         {
                 M_hum_update_time = 0;
                 Hum_dsp_com = Hum_para.value;
-                if (SYS_W_props.props_humidity_rec != Hum_dsp_com)
-                {
-                        SYS_W_props.props_humidity_rec = Hum_dsp_com;
-                }
         }
 
         if (Power_Delay_Time > 0)
@@ -372,17 +366,7 @@ void Turn_On(void)
         _Timer_set_ok = 0;
         Set_SYS_Hum_timer = 0;
         M_Dsp_Time = 10;
-        //	M_write_delay_time=2;
-        //工厂测试
-        if (test_factory == ENABLE)
-        {
-                Rest_Wifi();
-        }
-        //重新配网
-        if (Wifi_net_Status_buf == e_unprov)
-        {
-                _wifi_com_MIIO_reboot = 1;
-        }
+
 }
 /*************************************************
  // 函数名称    : Turn_Off
@@ -406,10 +390,10 @@ void Turn_Off(void)
         M_Dsp_Time = 0;
         //	M_write_delay_time=2;
         //
-        if (test_factory == ENABLE)
-        {
-                Rest_Wifi();
-        }
+//        if (test_factory == ENABLE)
+//        {
+//                Rest_Wifi();
+//        }
         //防冷媒
         //关机清计时  室温 >38
         sys_reg__comp_protect_stause_condition_b = FALSE;
@@ -442,6 +426,7 @@ void Sys_Initial(void)
         SYS_data_init();
         TimerInit();
         TouchKeyInit();
+        tuya_init();
         WdtInit();
         EA = 1;
 }

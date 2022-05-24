@@ -50,7 +50,6 @@ extern MCU_xdata UI08 SET_SYS_HUN_Tyde_Timer; //湿度设定(确认时间)
 extern MCU_xdata UI08 SYS_Hum_Set;     //湿度设定
 extern MCU_xdata UI08 SYS_Hum_Set_Buf; //湿度设定buf
 extern MCU_xdata UI08 Set_SYS_Hum_timer;
-extern MCU_xdata UI08 SYS_Hum_Point; //设定湿度 point
 
 extern MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde;      //运行风速
 extern MCU_xdata FANSPEED_TYPE SYS_Fan_Tyde_Buf;  //运行风速

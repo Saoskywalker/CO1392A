@@ -9,7 +9,7 @@ MCU_xdata UI08 key_new = 0;                        //新键值
 MCU_xdata FuncState Set_timer_status = DISABLE;    //按键设定
 MCU_xdata UI08 key_old = 0;                        // old 键值
 MCU_const UI08 Timer_SET[6] = {1, 2, 4, 8, 12, 0}; //定时设定
-MCU_const UI08 Hum_SET[5] = {0, 40, 50, 60, 70};   //湿度设定
+static MCU_const UI08 Hum_SET[] = {0, 40, 50, 60, 70};   //湿度设定
 /* Private defines -----------------------------------------------------------*/
 
 MCU_xdata UI16 Read_key_delay = 0; //组合按键后，等待N时间后再识别按键，避免松手时识别到按键
@@ -334,7 +334,7 @@ void get_key_number(void)
         M_Key_last = 0xffff;
         shake_count = 0xff;
         Buzz_Time = BUZZ_long_time;
-        Rest_Wifi();
+        _wifi_reset_En = 1; //wifi模块复位/配网模式切换
         _KEY_OK = 1;
     }
     // UVC 打开   長按“定時設定鍵”5秒
@@ -354,7 +354,7 @@ void get_key_number(void)
         if ((M_Key_last > 5000) && (M_Key_last < 0xffff))
         {
             Buzz_Time = BUZZ_short_time;
-            _wifi_com_factory = 1;
+        //    _Wifi_factory_test = 1;
             test_factory = ENABLE;
             M_Key_last = 0xffff;
         }
@@ -370,6 +370,9 @@ void get_key_number(void)
 ***************************************************/
 void key_decode(void)
 {
+    static unsigned char SYS_Hum_Point = 255; //湿度设定点
+    unsigned char i = 0;
+
     if (Power_Delay_Time > 0)
     {
         M_Key_Number = 0x00; //期间按下无效
@@ -392,7 +395,7 @@ void key_decode(void)
     {
         if (Child_Lock_Disp_Count == 0)
         {
-            Key_ERR_Buzz_Cnt = 3;
+            Key_ERR_Buzz_Cnt = 1;
             Child_Lock_Disp_Count = Child_Lock_Disp_NUM;
             Child_Lock_Disp_timer = 50;
             Child_Lock_1s_Count = 0;
@@ -510,7 +513,6 @@ void key_decode(void)
             SYS_Mode_Buf = mode_SYS_HUM;
             Set_SYS_Mode_Timer = 20;
             Buzz_Time = BUZZ_short_time;
-            return;
         }
         if (!Set_SYS_Hum_timer) //先唤醒
         {
@@ -522,41 +524,45 @@ void key_decode(void)
         Buzz_Time = BUZZ_short_time;
         SET_SYS_HUN_Tyde_Timer = 20;
 
-        //              Set_SYS_Hum_timer=50;
-        //	      Buzz_Time=BUZZ_short_time;
-        //	      if(SYS_HUN_Tyde_Buf!=USER_DEFINE_HUM)
-        //	      {
-        SYS_HUN_Tyde_Buf = USER_DEFINE_HUM;
-        SYS_HUN_Tyde = USER_DEFINE_HUM;
-        //		 SET_SYS_HUN_Tyde_Timer=20;
-        //		 return;
-        //	      }
-
-        SYS_Hum_Point++;
-        if (SYS_Hum_Point >= sizeof(Hum_SET))
+        if (SYS_HUN_Tyde_Buf == CONTINUOUS_HUM) //SYS_Hum_Point同步, 避免遥控处理没同步
         {
             SYS_Hum_Point = 0;
         }
-        SYS_Hum_Set_Buf = Hum_SET[SYS_Hum_Point];
+        else
+        {
+            for (i = 0; i < sizeof(Hum_SET); i++)
+            {
+                if (Hum_SET[i] == SYS_Hum_Set_Buf)
+                {
+                    SYS_Hum_Point = i;
+                    break;
+                }
+            }
+        }
+
+        if (++SYS_Hum_Point >= sizeof(Hum_SET))
+        {
+            SYS_Hum_Point = 0;
+            SYS_HUN_Tyde_Buf = CONTINUOUS_HUM;
+        }
+        else
+        {
+            SYS_Hum_Set_Buf = Hum_SET[SYS_Hum_Point];
+            SYS_HUN_Tyde_Buf = USER_DEFINE_HUM;
+        }
     }
     break;
 
     case Dry_Clothes_key: //衣类干燥
     {
-        Set_SYS_DYR_Tyde_timer = 20;
         Buzz_Time = BUZZ_short_time;
         if (SYS_Mode_Buf != mode_DRY_Clothes)
         {
+            Set_SYS_DYR_Tyde_timer = 20;
             SYS_Mode_Buf = mode_DRY_Clothes;
             Set_SYS_Mode_Timer = 20;
             SYS_DYR_Tyde_Buf = DYR_STRONG;
             SYS_DYR_Tyde = DYR_STRONG;
-            return;
-        }
-        else
-        {
-            SYS_Mode_Buf = mode_SYS_HUM;
-            Set_SYS_Mode_Timer = 20;
         }
     }
     break;
