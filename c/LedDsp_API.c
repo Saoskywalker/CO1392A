@@ -84,29 +84,7 @@ void LED_mS10_Deal(void)
     }
   }
 
-  Wifi_Disp_Count++;
-  if (Wifi_net_Status == e_updating)
-  {
-    Wifi_Disp_Count++;
-    if (Wifi_Disp_Count >= Wifi_updating_Disp_Tab[Type_num][0] + Wifi_updating_Disp_Tab[Type_num][1])
-    {
-      Wifi_Disp_Count = 0;
-      if (Type_num == 0)
-      {
-        Type_num = 1;
-      }
-      else
-      {
-        Type_num = 0;
-      }
-    }
-  }
-  else if (Wifi_Disp_Count >= Wifi_Disp_Length)
-  {
-    Wifi_Disp_Count = 0;
-    Wifi_Disp_Length = Wifi_Disp_Tab[(UI08)Wifi_net_Status][0];
-    Wifi_Disp_Length = Wifi_Disp_Length + Wifi_Disp_Tab[(UI08)Wifi_net_Status][1];
-  }
+
 }
 
 /*************************************************
@@ -144,31 +122,19 @@ void prg_S_DSP(void)
     RGB_Cycle_Disp_cnt++;
   }
 
-  if (++UP_disp_count >= 5) //每5秒更新一次
-  {
-    UP_disp_count = 0;
-    if (SYS_W_props.props_temp_rec != Temp_room.value)
-    {
-      SYS_W_props.props_temp_rec = Temp_room.value;
-    }
-    if (SYS_W_props.props_temp_coil_rec != Temp_coil.value)
-    {
-      SYS_W_props.props_temp_coil_rec = Temp_coil.value;
-    }
-  }
 
-  if (wifi_net_led_timer > 0)
-  {
-    wifi_net_led_timer--;
-    if (wifi_net_led_timer == 0)
-    {
-      if ((Wifi_net_Status_buf != e_cloud) || (Wifi_net_Status_buf != e_updating))
-      {
-        Wifi_net_Status = e_unprov;
-        Wifi_net_Status_buf = e_unprov;
-      }
-    }
-  }
+//  if (wifi_net_led_timer > 0)
+//  {
+//    wifi_net_led_timer--;
+//    if (wifi_net_led_timer == 0)
+//    {
+//      if ((Wifi_net_Status_buf != e_cloud) || (Wifi_net_Status_buf != e_updating))
+//      {
+//        Wifi_net_Status = e_unprov;
+//        Wifi_net_Status_buf = e_unprov;
+//      }
+//    }
+//  }
 }
 /*************************************************
  // 函数名称    : dig1_2_dsp
@@ -398,8 +364,8 @@ void Disp_All(void)
   }*/
   dig1_2_dsp(88);
   WATER_locate;
-  UVC_locate;
-  // WIFI_locate;
+  // UVC_locate;
+  WIFI_locate;
   DRY_locate;
   TIMER_locate;
   DRY_Clothes_locate;
@@ -509,7 +475,7 @@ void LedDsp_content(void)
   {
     if (_Flash_500ms)
     {
-      if (SYS_Hum_Set_Buf != 0)
+      if (SYS_HUN_Tyde_Buf != CONTINUOUS_HUM)
       {
         dig1_2_dsp(SYS_Hum_Set_Buf);
       }
@@ -566,8 +532,15 @@ void LedDsp_content(void)
       WIFI_locate;
   }
 #endif
+
+  // wifi状态显示
+  if (WiFi_LED_Locate_buf)
+  {
+    WIFI_locate;
+  }
+
   Err_dsp();
-  //
+
   if (SYS_Power_Status == OFF)
   {
     return;

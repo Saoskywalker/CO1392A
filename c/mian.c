@@ -29,7 +29,7 @@ void main(void)
         Key_Deal();
         LED_display();
         general_deal();
-        // Wifi_UART_Deal();
+        tuya_deal();
         communication_Deal();
     }
     // EEP »úÐÍ¶ÁÈ¡
@@ -48,7 +48,7 @@ void main(void)
         IO_operate();
         Sys_Control();
         SYS_Inspect_Deal();
-        // Wifi_UART_Deal();
+        tuya_deal();
         communication_Deal();
     }
 }

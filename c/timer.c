@@ -190,7 +190,6 @@ void prg_ms1(void) //此函数放在中断程序中执行
     // prg_ms_uart();
     //_SYS_Inspect_ms=1;
     SYS_Inspect_ms_general();
-    prg_Wifi_UART_ms();
     //
     if (Buzz_Time > 0)
     {

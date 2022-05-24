@@ -7,6 +7,7 @@
 #include "SensorMethod.h"
 #include "intrins.h"
 
+#include "Data_EEP.h"
 #include "flash.h"
 
 #include "MCU.h"
@@ -31,11 +32,11 @@
 
 #include "SYS_inspect.h"
 
-//#include "WIFI_UART.h"
+#include "wifi.h"
 
 #include "WIFI_UART_Driver.h"
 
-#include "Data_EEP.h"
+#include "tuya_api.h"
 
 #define Soft_Version 0
 

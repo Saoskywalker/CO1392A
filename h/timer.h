@@ -33,6 +33,7 @@ extern MCU_xdata UUI08 ms100_bit;
 #define _ms100_EEP_EN ms100_bit.bit_.b4
 #define _ms100_for_key ms100_bit.bit_.b5
 #define _ms100_for_IO ms100_bit.bit_.b6
+#define _ms100_for_Wifi ms100_bit.bit_.b7
 //
 extern MCU_xdata UUI08 ms500_bit;
 #define _ms500_for_DSP ms500_bit.bit_.b0

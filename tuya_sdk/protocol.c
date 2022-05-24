@@ -28,7 +28,7 @@
 3:请勿在中断/定时器中断内调用上报函数
 ******************************************************************************/
 
-#include "wifi.h"
+#include "General.h"
 
 #ifdef WEATHER_ENABLE
 /**
@@ -101,7 +101,7 @@ const DOWNLOAD_CMD_S download_cmd[] =
  */
 void uart_transmit_output(unsigned char value)
 {
-    #error "请将MCU串口发送函数填入该函数,并删除该行"
+    // #error "请将MCU串口发送函数填入该函数,并删除该行"
     
 /*
     //Example:
@@ -136,7 +136,7 @@ void uart_transmit_output(unsigned char value)
  */
 void all_data_update(void)
 {
-    #error "请在此处理可下发可上报数据及只上报数据示例,处理完成后删除该行"
+    // #error "请在此处理可下发可上报数据及只上报数据示例,处理完成后删除该行"
     /*
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
     mcu_dp_bool_update(DPID_SWITCH,当前开关); //BOOL型数据上报;
@@ -173,12 +173,18 @@ static unsigned char dp_download_switch_handle(const unsigned char value[], unsi
     unsigned char switch_1;
     
     switch_1 = mcu_get_dp_download_bool(value,length);
+
     if(switch_1 == 0) {
         //bool off
+        Turn_Off();
     }else {
         //bool on
+        Turn_On();
+        fan_force_runtime = 180;
     }
-  
+    Wifi_Updata.power_status = SYS_Power_Status;
+    Buzz_Time = BUZZ_long_time;
+
     //There should be a report after processing the DP
     ret = mcu_dp_bool_update(DPID_SWITCH,switch_1);
     if(ret == SUCCESS)
@@ -201,11 +207,15 @@ static unsigned char dp_download_dehumidify_set_value_handle(const unsigned char
     unsigned long dehumidify_set_value;
     
     dehumidify_set_value = mcu_get_dp_download_value(value,length);
-    /*
-    //VALUE type data processing
-    
-    */
-    
+
+    Buzz_Time = BUZZ_short_time;
+    SYS_HUN_Tyde_Buf = USER_DEFINE_HUM;
+    SYS_HUN_Tyde = USER_DEFINE_HUM;
+    SET_SYS_HUN_Tyde_Timer = 20;
+    SYS_Hum_Set_Buf = dehumidify_set_value;
+    Set_SYS_Hum_timer = 50;
+    Wifi_Updata.hum_set = SYS_Hum_Set_Buf;
+
     //There should be a report after processing the DP
     ret = mcu_dp_value_update(DPID_DEHUMIDIFY_SET_VALUE,dehumidify_set_value);
     if(ret == SUCCESS)
@@ -226,22 +236,65 @@ static unsigned char dp_download_mode_handle(const unsigned char value[], unsign
     //示例:当前DP类型为ENUM
     unsigned char ret;
     unsigned char mode;
+    unsigned char i;
+    static unsigned char _hum = 0;
     
     mode = mcu_get_dp_download_enum(value,length);
+
     switch(mode) {
         case 0:
+        i = mode_SYS_HUM;
+        if (_hum == 0) //_hum第一次赋值
+        {
+            if (SYS_Hum_Set_Buf != 0)
+            {
+                _hum = SYS_Hum_Set_Buf;
+            }
+            else
+            {
+                _hum = 70;
+            }
+        }
+        SYS_HUN_Tyde_Buf = USER_DEFINE_HUM;
+        SYS_Hum_Set_Buf = _hum;
+        Set_SYS_Hum_timer = 50;
+        SET_SYS_HUN_Tyde_Timer = 20;
+        Wifi_Updata.hum_mode = SYS_HUN_Tyde_Buf;
         break;
         
         case 1:
+        i = mode_SYS_HUM;
+        if (SYS_HUN_Tyde_Buf != CONTINUOUS_HUM) //记录APP上的湿度设定值
+        {
+            _hum = SYS_Hum_Set_Buf;
+        }
+        else
+        {
+            _hum = 70;
+        }
+        SYS_HUN_Tyde_Buf = CONTINUOUS_HUM; //除湿连续运行
+        SYS_Hum_Set_Buf = 0; 
+        Set_SYS_Hum_timer = 50;
+        SET_SYS_HUN_Tyde_Timer = 20;
+        Wifi_Updata.hum_mode = SYS_HUN_Tyde_Buf;
         break;
         
         case 2:
+        i = mode_DRY_Clothes;
         break;
         
         default:
     
         break;
     }
+
+    if (i != SYS_Mode_Buf)
+    {
+        SYS_Mode_Buf = i;
+        Set_SYS_Mode_Timer = 20;
+        Wifi_Updata.sys_mode = SYS_Mode_Buf;
+    }
+    Buzz_Time = BUZZ_short_time;
     
     //There should be a report after processing the DP
     ret = mcu_dp_enum_update(DPID_MODE, mode);
@@ -266,12 +319,21 @@ static unsigned char dp_download_child_lock_handle(const unsigned char value[], 
     unsigned char child_lock;
     
     child_lock = mcu_get_dp_download_bool(value,length);
+
     if(child_lock == 0) {
         //bool off
+        Child_Lock_status = DISABLE;
     }else {
         //bool on
+        Child_Lock_status = ENABLE;
     }
-  
+    Rest_Key_Buzzer();
+    Child_Lock_Disp_Count = Child_Lock_Disp_NUM;
+    Child_Lock_Disp_timer = 50;
+    Child_Lock_1s_Count = 0;
+    Buzz_Time = BUZZ_short_time;
+    Wifi_Updata.child_lock_status = Child_Lock_status;
+
     //There should be a report after processing the DP
     ret = mcu_dp_bool_update(DPID_CHILD_LOCK,child_lock);
     if(ret == SUCCESS)
@@ -458,7 +520,7 @@ void mcu_write_rtctime(unsigned char time[])
  */
 void wifi_test_result(unsigned char result,unsigned char rssi)
 {
-    #error "请自行实现wifi功能测试成功/失败代码,完成后请删除该行"
+    // #error "请自行实现wifi功能测试成功/失败代码,完成后请删除该行"
     if(result == 0) {
         //测试失败
         if(rssi == 0x00) {
@@ -607,7 +669,7 @@ void get_upload_syn_result(unsigned char result)
  */
 void get_wifi_status(unsigned char result)
 {
-  #error "请自行完成获取 WIFI 状态结果代码,并删除该行"
+//   #error "请自行完成获取 WIFI 状态结果代码,并删除该行"
  
     switch(result) {
         case 0:

@@ -19,7 +19,7 @@
 
 #define SYSTEM_GLOBAL
 
-#include "wifi.h"
+#include "General.h"
 
 extern const DOWNLOAD_CMD_S download_cmd[];
 
@@ -88,10 +88,15 @@ static void wifi_uart_write_data(unsigned char *in, unsigned short len)
         return;
     }
     
-    while(len --) {
-        uart_transmit_output(*in);
-        in ++;
-    }
+    // while(len --) {
+    //     uart_transmit_output(*in);
+    //     in ++;
+    // }
+
+    uart_tx_len=len;
+    uart_tx_byte=1;
+    uart_tx_OK=0;
+    UART_SFR=*in;
 }
 
 /**
