@@ -183,6 +183,7 @@ static unsigned char dp_download_switch_handle(const unsigned char value[], unsi
         fan_force_runtime = 180;
     }
     Wifi_Updata.power_status = SYS_Power_Status;
+    Wifi_value_compare_delay = 5;
     Buzz_Time = BUZZ_long_time;
 
     //There should be a report after processing the DP
@@ -215,6 +216,7 @@ static unsigned char dp_download_dehumidify_set_value_handle(const unsigned char
     SYS_Hum_Set_Buf = dehumidify_set_value;
     Set_SYS_Hum_timer = 50;
     Wifi_Updata.hum_set = SYS_Hum_Set_Buf;
+    Wifi_value_compare_delay = 5;
 
     //There should be a report after processing the DP
     ret = mcu_dp_value_update(DPID_DEHUMIDIFY_SET_VALUE,dehumidify_set_value);
@@ -295,6 +297,7 @@ static unsigned char dp_download_mode_handle(const unsigned char value[], unsign
         Wifi_Updata.sys_mode = SYS_Mode_Buf;
     }
     Buzz_Time = BUZZ_short_time;
+    Wifi_value_compare_delay = 5;
     
     //There should be a report after processing the DP
     ret = mcu_dp_enum_update(DPID_MODE, mode);
@@ -333,6 +336,7 @@ static unsigned char dp_download_child_lock_handle(const unsigned char value[], 
     Child_Lock_1s_Count = 0;
     Buzz_Time = BUZZ_short_time;
     Wifi_Updata.child_lock_status = Child_Lock_status;
+    Wifi_value_compare_delay = 5;
 
     //There should be a report after processing the DP
     ret = mcu_dp_bool_update(DPID_CHILD_LOCK,child_lock);

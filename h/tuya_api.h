@@ -56,6 +56,7 @@ extern xdata UUI16 flag_wifi;
 #define _props_run_set flag_wifi.bit_.b11        //定时主动上报
 #define _wifi_WakeUp_En flag_wifi.bit_.b12       //激活唤醒睡眠
 
+extern xdata UI08 Wifi_value_compare_delay; // app操作后延时对比数据
 extern xdata WIFI_UPDATE Wifi_Updata;
 extern xdata UI08 M_wifi_rssi_dsp;       // wifi 信号强度
 extern xdata UI08 all_data_update_point; //全部数据上报时的计数值

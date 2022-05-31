@@ -7,6 +7,7 @@ xdata UI08 upload_filter_status = 0;
 xdata UI08 upload_defrost_status = 0;
 xdata UI08 upload_hepa_filter = 0;
 
+xdata UI08 Wifi_value_compare_delay = 0;                    //app操作后延时对比数据
 xdata WIFI_UPDATE Wifi_Updata;                              // WIFI数据更新的数据
 xdata FANSPEED_TYPE Updata_speed = OFF_FAN;                 //上传的风速
 static xdata UI08 upload_err_status = 0;                    //上传的错误状态
@@ -76,6 +77,9 @@ static void timer_s_tuya(void)
         return;
     }
     _Wifi_Uart_s = 0;
+
+    if(Wifi_value_compare_delay)
+        Wifi_value_compare_delay--;
 
     if (Wifi_Rssi_DSP_delay_time)
     {
@@ -279,6 +283,9 @@ static void data_upload(void) // wifi模块上电 全部上报一次
         return;
     }
     _ms100_for_Wifi = 0;
+
+    if (Wifi_value_compare_delay) //APP操作后延时, 避免APP图标闪烁
+        return;
 
     //检查数据更新
     if (Wifi_Updata.power_status != SYS_Power_Status) //开关状态
