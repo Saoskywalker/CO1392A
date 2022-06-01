@@ -45,7 +45,7 @@ void IO_Init(void)
     P4PH = _0000_0000;  //上拉电阻控制寄存器 0不使能上拉电阻 1是能上拉电阻
     P4 = _1111_1000;    //数据寄存器
 
-    P5CON = _0000_1110; //输入输出寄存器  1输出 0输入
+    P5CON = _0000_1100; //输入输出寄存器  1输出 0输入
     P5PH = _0000_0000;  //上拉电阻控制寄存器 0不使能上拉电阻 1是能上拉电阻
     P5 = _0000_1100;    //数据寄存器
 
@@ -80,7 +80,7 @@ void BTM_Int(void) interrupt 9
 {
     if (!(BTMCON & 0X40)) //中断标志位判断
     {
-        s_bit.word = 0xffff;
+        // s_bit.word = 0xffff;
     }
 }
 
@@ -90,9 +90,12 @@ void BTM_Int(void) interrupt 9
  *入口参数：void
  *出口参数：void
  **************************************************/
-UI08 sys_time_rj = 0;
+
 void timer0(void) interrupt 1
 {
+    static UI08 sys_time_rj = 0;
+    static UI16 cnt1s = 0;
+
     TL0 = (65536 - (2000 - 1)) % 256; //溢出时间：时钟为Fsys，则1000*（1/Fsys）=125us;  主频8M
     TH0 = (65536 - (2000 - 1)) / 256;
     //
@@ -127,5 +130,11 @@ void timer0(void) interrupt 1
         sys_time_rj = 0;
         prg_ms1();
         Led_Scan();
+
+        if (++cnt1s>=1000)
+        {
+            cnt1s = 0;
+            s_bit.word = 0xffff;
+        }
     }
 }

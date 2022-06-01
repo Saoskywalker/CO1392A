@@ -68,7 +68,7 @@ void TimerInit(void)
     ET0 = 1; //定时器0允许
     TR0 = 1; //打开定时器0
 
-    BTM_Init();
+    // BTM_Init();
 }
 
 #define PWM_CYCLE_VALUE 4000
