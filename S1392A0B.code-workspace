@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"S_TouchKeyCFG.C": "cpp",
+			"general.h": "c",
+			"timer_api.h": "c",
+			"rec_api.h": "c",
+			"Data_EEP.C": "cpp",
+			"SC95F861x_C.H": "cpp",
+			"data_eep.h": "c"
+		},
+		"files.autoSaveDelay": 30000
+	}
+}
