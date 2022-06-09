@@ -209,6 +209,11 @@ static unsigned char dp_download_dehumidify_set_value_handle(const unsigned char
     
     dehumidify_set_value = mcu_get_dp_download_value(value,length);
 
+    if (dehumidify_set_value < 40)
+        dehumidify_set_value = 40;
+    if (dehumidify_set_value > 70)
+        dehumidify_set_value = 70;
+
     Buzz_Time = BUZZ_short_time;
     SYS_HUN_Tyde_Buf = USER_DEFINE_HUM;
     SYS_HUN_Tyde = USER_DEFINE_HUM;

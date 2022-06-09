@@ -371,7 +371,7 @@ void get_key_number(void)
 void key_decode(void)
 {
     static unsigned char SYS_Hum_Point = 255; //湿度设定点
-    unsigned char i = 0;
+    unsigned char i = 0, j = 0;
 
     if (Power_Delay_Time > 0)
     {
@@ -524,6 +524,7 @@ void key_decode(void)
         Buzz_Time = BUZZ_short_time;
         SET_SYS_HUN_Tyde_Timer = 20;
 
+        j = SYS_Hum_Set_Buf - SYS_Hum_Set_Buf % 10; //防止WIFI下发的湿度设定梯度和操作板的不同
         if (SYS_HUN_Tyde_Buf == CONTINUOUS_HUM) //SYS_Hum_Point同步, 避免遥控处理没同步
         {
             SYS_Hum_Point = 0;
@@ -532,7 +533,7 @@ void key_decode(void)
         {
             for (i = 0; i < sizeof(Hum_SET); i++)
             {
-                if (Hum_SET[i] == SYS_Hum_Set_Buf)
+                if (Hum_SET[i] == j)
                 {
                     SYS_Hum_Point = i;
                     break;
