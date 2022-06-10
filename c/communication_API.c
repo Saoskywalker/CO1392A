@@ -120,12 +120,10 @@ void rxd_data_protocl(void)
     Hum_para.value = Temp_filter(Hum_para.value);
     if (rxd_buf[7] & bit7)
     {
-        Sys_Err.temp_room_err = ENABLE;
         Sys_Err.hum_Sensor_err = ENABLE;
     }
     else
     {
-        Sys_Err.temp_room_err = DISABLE;
         Sys_Err.hum_Sensor_err = DISABLE;
     }
     //接收完成  开始处理数据
@@ -197,13 +195,13 @@ void txd_data_protocol(void)
         {
             txd_buf[3] = (UI08)(HIGH_FAN_SPEED);
         }
-        else if (Fan_Speed_Out == SILENCE_FAN)
-        {
-            txd_buf[3] = (UI08)(SILENCE_FAN_SPEED);
-        }
         else if (Fan_Speed_Out == LOW_FAN)
         {
             txd_buf[3] = (UI08)(LOW_FAN_SPEED);
+        }
+        else if (Fan_Speed_Out == SILENCE_FAN)
+        {
+            txd_buf[3] = (UI08)(SILENCE_FAN_SPEED);
         }
         else
         {

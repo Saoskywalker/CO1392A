@@ -118,20 +118,24 @@ void room_temp_deal(void)
 	if (data_buf < (49 + 5))
 	{
 		Temp_room.value = 5;
+		Sys_Err.temp_room_err = ENABLE;
 	}
 	else
 	{
 		Temp_room.value = data_buf - (49);
+		Sys_Err.temp_room_err = DISABLE;
 	}
 
 	data_buf = AD_buf * 175 / 65535; //度C温度范围-45~130 ,0代表-45摄氏度
 	if (data_buf < (45 - 15))
 	{
 		Temp_room.C_value = 0;
+		Sys_Err.temp_room_err = ENABLE;
 	}
 	else
 	{
 		Temp_room.C_value = data_buf - (45 - 15);
+		Sys_Err.temp_room_err = DISABLE;
 	}
 }
 /*************************************************
@@ -151,6 +155,7 @@ void coil_temp_deal(void)
 		{
 			Temp_coil_Err_cont = 0;
 			Temp_coil.status = AI_CUT;
+			Sys_Err.temp_coil_err = ENABLE;
 			Temp_coil.value = 0;
 		}
 	}
@@ -160,6 +165,7 @@ void coil_temp_deal(void)
 		{
 			Temp_coil_Err_cont = 0;
 			Temp_coil.status = AI_SHORT;
+			Sys_Err.temp_coil_err = ENABLE;
 			Temp_coil.value = 0;
 		}
 	}
@@ -167,6 +173,7 @@ void coil_temp_deal(void)
 	{
 		Temp_coil_Err_cont = 0;
 		Temp_coil.status = AI_NORMAL;
+		Sys_Err.temp_coil_err = DISABLE;
 
 		Temp_coil.value = Temp_tab_10k_3450[data_buf - 48];
 		Temp_coil.value = 5 + ADC_lookup(Temp_coil.AD_value, Temp_tab_10k_3450, 154); //表从5F开始
