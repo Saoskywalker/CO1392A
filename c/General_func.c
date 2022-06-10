@@ -11,8 +11,8 @@ MCU_xdata UI16 M_Power_Delay_Time2 = 300; //上电延时(进入自检)
 
 MCU_xdata UI08 M_Timer_Setting_Time = 0; //定时设定(确认时间)
 MCU_xdata UI08 M_Dsp_Time = 0;           //显示时间
-MCU_xdata UI08 Hum_dsp_com = 60;         //显示湿度
-MCU_xdata UI08 M_hum_update_time = 0;    //湿度更新时间
+MCU_xdata UI08 Hum_dsp_com = 60;         //环境湿度值显示
+MCU_xdata UI08 Hum_dsp_state = 60;         //环境湿度状态显示
 
 MCU_xdata UI08 M_test_seq = 0;    //自检
 MCU_xdata UI08 M_test_cont1 = 0;  //自检
@@ -189,7 +189,7 @@ void SYS_data_init(void)
         sEC_SYS.EC_count_timer = 0;
         sEC_SYS.EC_comp_timer = 0;
 
-        _SYS_UVC_Status = 1; // UVC功能开启
+        _SYS_UVC_Status = 0;
 }
 /*************************************************
  // 函数名称    : prg_s_general
@@ -234,7 +234,7 @@ void prg_ms100_general(void)
 ***************************************************/
 void prg_s_general(void)
 {
-        //   UI08  buf=0;
+        static MCU_xdata UI08 M_hum_update_time1 = 0, M_hum_update_time2 = 0;    //湿度更新时间
 
         if (!_s_general)
         {
@@ -242,11 +242,17 @@ void prg_s_general(void)
         }
         _s_general = 0;
 
-        M_hum_update_time++;
-        if ((M_hum_update_time >= 3) || (Power_Delay_Time > 0))
+        M_hum_update_time1++;
+        if ((M_hum_update_time1 >= 3) || (Power_Delay_Time > 0))
         {
-                M_hum_update_time = 0;
+                M_hum_update_time1 = 0;
                 Hum_dsp_com = Hum_para.value;
+        }
+        M_hum_update_time2++;
+        if (M_hum_update_time2 >= 60 || Power_Delay_Time > 0)
+        {
+                M_hum_update_time2 = 0;
+                Hum_dsp_state = Hum_para.value;
         }
 
         if (Power_Delay_Time > 0)

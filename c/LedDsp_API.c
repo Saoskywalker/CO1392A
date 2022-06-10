@@ -153,26 +153,35 @@ void dig1_2_dsp(UI08 _disp_data)
  // 函数名称    : Err_dsp
  // 功能描述    : 故障显示
  // 入口参数    : 无
- // 出口参数    : 无
+ // 出口参数    : UI08
 ***************************************************/
-//温湿度SENSOR故障显示E1  铜管SENSOR故障显示E2  通讯故障显示E5
-void Err_dsp(void)
+UI08 Err_dsp(void)
 {
-  if ((Sys_Err.temp_room_err) || (Sys_Err.hum_Sensor_err)) //~~~~~~~~~~~~~`
+  if (Sys_Err.temp_room_err) //~~~~~~~~~~~~~`
   {
     dig1_num = DATA_E;
     dig2_num = DATA_1;
+    return 1;
   }
   else if (Sys_Err.temp_coil_err) //~~~~~~~~~~~~~~
   {
     dig1_num = DATA_E;
     dig2_num = DATA_2;
+    return 1;
+  }
+  else if (Sys_Err.hum_Sensor_err)
+  {
+    dig1_num = DATA_E;
+    dig2_num = DATA_3;
+    return 1;
   }
   else if (Sys_Err.comm_err) //~~~~~~~~~~~~~~
   {
     dig1_num = DATA_E;
     dig2_num = DATA_5;
+    return 1;
   }
+  return 0;
 }
 /*************************************************
  // 函数名称    : clear_all
@@ -434,8 +443,8 @@ void LedDsp_content(void)
 
   if (Sys_Err.Water_Full)
   {
-    dig1_num = DATA_F;
-    dig2_num = DATA_U;
+    // dig1_num = DATA_F;
+    // dig2_num = DATA_U;
     if (_Flash_500ms)
     {
       WATER_locate;
@@ -443,12 +452,8 @@ void LedDsp_content(void)
     return;
   }
 
-  if (Sys_Err.comm_err)
-  {
-    dig1_num = DATA_E;
-    dig2_num = DATA_5;
+  if(Err_dsp())
     return;
-  }
 
   if ((LED_Disp_Status == DISABLE) && (Child_Lock_Disp_Count == 0) && (Child_Lock_status == ENABLE))
   {
@@ -539,8 +544,6 @@ void LedDsp_content(void)
     WIFI_locate;
   }
 
-  Err_dsp();
-
   if (SYS_Power_Status == OFF)
   {
     return;
@@ -573,11 +576,11 @@ void LedDsp_content(void)
   *****************************************************/
   if ((SYS_RUN_timer > 59) && (!M_Defrost_status))
   {
-    if (Hum_dsp_com < 40)
+    if (Hum_dsp_state < 40)
     {
       AirQ_Class_LED_buf = GREEN_LED;
     }
-    else if (Hum_dsp_com < 70)
+    else if (Hum_dsp_state < 70)
     {
       AirQ_Class_LED_buf = BLUE_LED;
     }
@@ -590,11 +593,11 @@ void LedDsp_content(void)
   {
     if (_Flash_500ms)
     {
-      if (Hum_dsp_com < 40)
+      if (Hum_dsp_state < 40)
       {
         AirQ_Class_LED_buf = GREEN_LED;
       }
-      else if (Hum_dsp_com < 70)
+      else if (Hum_dsp_state < 70)
       {
         AirQ_Class_LED_buf = BLUE_LED;
       }
