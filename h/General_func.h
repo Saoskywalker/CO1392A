@@ -24,8 +24,8 @@ extern MCU_xdata UI16 M_Power_Delay_Time2; //上电延时(进入自检)
 // extern MCU_xdata UI08 M_Hum_Setting_Time;//湿度设定(确认时间)
 extern MCU_xdata UI08 M_Timer_Setting_Time; //定时设定(确认时间)
 extern MCU_xdata UI08 M_Dsp_Time;           //显示时间
-extern MCU_xdata UI08 Hum_dsp_com;          //显示湿度
-extern MCU_xdata UI08 M_hum_update_time;    //湿度更新时间
+extern MCU_xdata UI08 Hum_dsp_com;         //环境湿度值显示
+extern MCU_xdata UI08 Hum_dsp_state;         //环境湿度状态显示
 
 extern MCU_xdata UI08 M_test_seq;   //自检
 extern MCU_xdata UI08 M_test_cont1; //自检

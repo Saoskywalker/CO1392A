@@ -12,9 +12,9 @@ extern MCU_xdata UUI08 sys_bit4;
 #define _OUTFAN_ERR sys_bit4.bit_.b4       //外风机故障
 #define communication_ERR sys_bit4.bit_.b5 //通信故障
 // 200为100%
-#define SILENCE_FAN_SPEED 20 // 10  1392A没用到
-#define HIGH_FAN_SPEED 148   // 74
-#define LOW_FAN_SPEED 130    // 66
+#define SILENCE_FAN_SPEED 64 // 10  1392A没用到
+#define HIGH_FAN_SPEED 164   // 74
+#define LOW_FAN_SPEED 142    // 66
 #define OFF_FAN_SPEED 0
 
 #define SLEEP_TIMER 16

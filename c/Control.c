@@ -80,7 +80,6 @@ void Run_reg_init(void)
     Run_Reg.def_cont = 0;
     Run_Reg.temp_room_point = 0;
     Run_Reg.def_type = TYPE_A;
-    Run_Reg.sensor_err = FALSE;
 }
 /*************************************************
  // 函数名称    : Pump_100ms_general
@@ -586,7 +585,7 @@ void def_start_jude(bool_f condition1, bool_f condition2)
         }
     } // 30分钟开始计时时捕捉室温
     //
-    if ((Run_Reg.temp_room_point < defrost_para7) || (Run_Reg.sensor_err))
+    if ((Run_Reg.temp_room_point < defrost_para7) || (Sys_Err.temp_room_err) || (Sys_Err.temp_coil_err))
     {
         Run_Reg.def_type = TYPE_B;
         a = 19 * 60;
@@ -736,34 +735,13 @@ void Water_protect_deal(void)
  // 入口参数    : 无
  // 出口参数    : 无
 ***************************************************/
-#define HUM_ERR_TIMER 480
 void Sys_err_deal(void)
 {
-    if ((SYS_Power_Status) && (!M_Defrost_status))
+    if (Sys_Err.temp_room_err || Sys_Err.hum_Sensor_err || 
+        Sys_Err.temp_coil_err || Sys_Err.comm_err)
     {
-        if (Sys_Err.temp_room_err)
-        {
-            Comp_para.BUF = ON;
-        }
-
-    } //室温传感器开短路或湿度传感器开短路时，压缩机启动连续运行
-
-    if (Temp_coil.status != AI_NORMAL) //开短路
-    {
-        Sys_Err.temp_coil_err = ENABLE;
-    }
-    else
-    {
-        Sys_Err.temp_coil_err = DISABLE;
-    }
-
-    if ((Sys_Err.temp_room_err) || (Sys_Err.temp_coil_err))
-    {
-        Run_Reg.sensor_err = TRUE; //除霜相关
-    }
-    else
-    {
-        Run_Reg.sensor_err = FALSE;
+        Fan_Speed_Out_Buf = OFF_FAN;
+        Comp_para.BUF = OFF;
     }
 }
 /*************************************************
@@ -774,12 +752,12 @@ void Sys_err_deal(void)
 ***************************************************/
 void protect_logic(void)
 {
-    Sys_err_deal();
     defrost_logic();
     Ec_Protect_Deal();
     Comp_Protect_Condition_A();
     Comp_Protect_Condition_B();
     Water_protect_deal();
+    Sys_err_deal();
 }
 
 /*************************************************
@@ -867,7 +845,7 @@ void HUM_Mode(void)
     }
     else
     {
-        Fan_Speed_Out_Buf = OFF_FAN;
+        Fan_Speed_Out_Buf = SILENCE_FAN;
     }
 
     Set_Swing_State = Enable;
