@@ -420,7 +420,7 @@ void LedDsp_content(void)
   }
 
   //进入快测显示温度
-  if ((_EC_Fast_Test) && (Disp_PWM_VALUE_TIMER < 9))
+  if ((_Fast_Test) && (Disp_PWM_VALUE_TIMER < 9))
   {
     disp_pwm_temp();
     return;

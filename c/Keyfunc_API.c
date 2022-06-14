@@ -403,7 +403,9 @@ void key_decode(void)
         return;
     }
 
-    if ((Sys_Err.Water_Full == ENABLE) || (M_Defrost_status == TRUE) || ((SYS_Power_Status == OFF) && (M_Timer_Run == 0) && ((M_Key_Number != power_key) && ((M_Key_Number != set_timer_key) && (M_Key_Number != Child_key)))))
+    if ((Sys_Err.Water_Full == ENABLE) || (M_Defrost_status == TRUE) || 
+        ((SYS_Power_Status == OFF) && (M_Timer_Run == 0) && ((M_Key_Number != power_key) && 
+        ((M_Key_Number != set_timer_key) && (M_Key_Number != Child_key)))))
     {
         Key_ERR_Buzz_Cnt = 3;
         return;
@@ -431,11 +433,6 @@ void key_decode(void)
             fan_force_runtime = 180;
         }
 
-        if (_EC_Fast_Test)
-        {
-            _EC_Fast_Test = 0;
-            Comp_para.off_time = 0;
-        }
         Fan_Speed_delay = 0;
     }
     break;
@@ -617,7 +614,6 @@ void key_decode(void)
     case fast_test_key: //¿ì²â
     {
         _Fast_Test = ENABLE;
-        _EC_Fast_Test = 1;
         Buzz_Time = BUZZ_short_time;
         Disp_PWM_VALUE_TIMER = 0;
     };
