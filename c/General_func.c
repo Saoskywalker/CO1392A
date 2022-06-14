@@ -81,7 +81,6 @@ MCU_xdata PinStatus Buzzer_IO_Status = RESET;
 void SYSData_Rest(void)
 {
         _Fast_Test = 0;
-        _EC_Fast_Test = 0;
 
         M_Timer_Run = 0;
         M_Timer_Set = 1;
@@ -400,13 +399,6 @@ void Turn_Off(void)
 //        {
 //                Rest_Wifi();
 //        }
-        //防冷媒
-        //关机清计时  室温 >38
-        sys_reg__comp_protect_stause_condition_b = FALSE;
-        sys_reg_comp_38_count_condition_b = 0;
-        // 室温 >27
-        sys_reg__comp_protect_stause_condition_a = FALSE;
-        sys_reg_comp_38_count_condition_a = 0;
 }
 
 /*************************************************

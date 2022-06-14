@@ -74,22 +74,13 @@ extern MCU_xdata UI08 Feel_Mode;
 // extern MCU_xdata UI08 Dump_SW;//机台倾倒开关状态
 // extern MCU_xdata UI08 Dump_Status;//机台倾倒情况
 
-extern MCU_xdata bool_f sys_reg__comp_protect_stause_condition_a; //冷媒泄漏条件2中条件a压缩机保护
-extern MCU_xdata bool_f sys_reg__comp_protect_stause_condition_b; //冷媒泄漏条件2中条件b压缩机保护
-extern MCU_xdata UI16 sys_reg_comp_38_count_condition_a;          //冷媒泄漏条件2中条件a时间计数
-extern MCU_xdata UI16 sys_reg_comp_38_count_condition_b;          //冷媒泄漏条件2中条件b时间计数
-extern MCU_xdata UI16 g_ec_count_timer;
-extern MCU_xdata bool_f sys_reg__ec_err;
-
 extern MCU_xdata sEC_struct sEC_SYS;
 #define _EC_err sEC_SYS.EC_protect_byte.bit_.b0       // EC故障
-#define _EC_Fast_Test sEC_SYS.EC_protect_byte.bit_.b1 //快测
 
 ///
 ///
 #define ABSOLUTE_VALUE(a, b) ((a > b) ? (a - b) : (b - a))
 
-extern void Pump_S_general(void);
 extern void prg_s_control(void);
 extern void prg_minute_control(void);
 extern void prg_hour_conl(void);
