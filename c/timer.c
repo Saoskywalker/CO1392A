@@ -1,20 +1,6 @@
 #include "General.h"
 
-MCU_xdata UI08 Minute_Count = 0; //分钟count
-
-MCU_xdata UI08 ms10_cont = 0;  // 10ms计数
-MCU_xdata UI08 ms20_cont = 0;  // 20ms计数
-MCU_xdata UI08 ms100_cont = 0; // 100ms计数
-MCU_xdata UI08 ms200_cont = 0; // 200ms计数
-MCU_xdata UI08 ms500_cont = 0; // 500ms计数
-
-MCU_xdata UUI08 ms_bit = {0};     // 1ms时间片
-MCU_xdata UUI08 ms5_bit = {0};    // 5ms时间片
-MCU_xdata UUI08 ms10_bit = {0};   // 10ms时间片
-MCU_xdata UUI08 ms100_bit = {0};  // 100ms时间片
-MCU_xdata UUI08 ms500_bit = {0};  // 500ms时间片
-MCU_xdata UUI16 s_bit = {0};      // 1000ms时间片
-MCU_xdata UUI08 minute_bit = {0}; // 1min时间片
+UUI16 G_Time_Bit = {0}; // 时间片变量
 
 unsigned int xdata PWMRD_40 _at_ 0x1040;
 unsigned int xdata PWMRD_41 _at_ 0x1042;
@@ -187,6 +173,12 @@ void PWM_Init(void)
 ***************************************************/
 void prg_ms1(void) //此函数放在中断程序中执行
 {
+    static UI08 ms5_cont = 0;
+    static UI08 ms10_cont = 0;  // 10ms计数
+    static UI08 ms100_cont = 0; // 100ms计数
+    static UI08 ms200_cont = 0; // 200ms计数
+    static UI08 ms500_cont = 0; // 500ms计数
+
     // prg_ms_uart();
     //_SYS_Inspect_ms=1;
     SYS_Inspect_ms_general();
@@ -205,11 +197,15 @@ void prg_ms1(void) //此函数放在中断程序中执行
         M_Key_last++;
     }
 
-    ms_bit.byte = 0xff;
+    if (++ms5_cont >= 5)
+    {
+        ms5_cont = 0;
+        _5mS_For_SYS = 1;
+    }
     ms10_cont++;
     if (ms10_cont >= 10)
     {
-        ms10_bit.byte = 0xff;
+        _10mS_For_SYS = 1;
         ms10_cont = 0;
         ms100_cont++;
         ms200_cont++;
@@ -221,14 +217,14 @@ void prg_ms1(void) //此函数放在中断程序中执行
 
     if (ms100_cont >= 10)
     {
-        ms100_bit.byte = 0xff;
+       _100mS_For_SYS = 1;
         ms100_cont = 0;
 
         ms500_cont++;
         if (ms500_cont >= 5)
         {
             ms500_cont = 0;
-            ms500_bit.byte = 0xff;
+            _500mS_For_SYS = 1;
             _txd_tick = 1;
         }
     }
@@ -241,14 +237,16 @@ void prg_ms1(void) //此函数放在中断程序中执行
 ***************************************************/
 void Timer_Deal(void) //此函数放在主程序中执行
 {
-    if (!_Timer_second)
+    static UI08 Minute_Count = 0; //分钟count
+
+    if (!_1S_For_For_SYS)
         return;
-    _Timer_second = 0;
+
     Minute_Count++;
 
     if (Minute_Count >= 60)
     {
         Minute_Count = 0;
-        minute_bit.byte = 0xff;
+        _1Minute_For_SYS = 1;
     }
 }

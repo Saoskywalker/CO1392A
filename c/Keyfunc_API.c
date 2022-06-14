@@ -29,11 +29,10 @@ MCU_const UI32 TK_Number[4] = {
 ***************************************************/
 void prg_ms10_key(void)
 {
-    if (!_ms10_for_key)
+    if (!_10mS_For_SYS)
     {
         return;
     }
-    _ms10_for_key = 0;
     //
     if (M_Power_Delay_Time2 > 0)
     {
@@ -54,11 +53,10 @@ void prg_ms10_key(void)
 ***************************************************/
 void prg_mS100_key(void)
 {
-    if (!_ms100_for_key)
+    if (!_100mS_For_SYS)
     {
         return;
     }
-    _ms100_for_key = 0;
     //
     if (Set_SYS_Mode_Timer > 0)
     {
@@ -131,11 +129,10 @@ void prg_mS100_key(void)
 ***************************************************/
 void prg_s_key(void)
 {
-    if (!_s_for_key)
+    if (!_1S_For_For_SYS)
     {
         return;
     }
-    _s_for_key = 0;
 
     if (Disp_Delay > 0)
     {
@@ -216,11 +213,10 @@ void get_key_number(void)
     UI08 number = 0;
     UI08 key_data = 0; //°´¼üdata
                        //
-    if (!_ms10_for_key_deal)
+    if (!_10mS_For_SYS)
     {
         return;
     }
-    _ms10_for_key_deal = 0;
 
     if (Read_key_delay > 0)
     {

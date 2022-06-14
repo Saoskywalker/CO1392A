@@ -273,11 +273,10 @@ void Sys_data_read_eep(void)
 ***************************************************/
 void EEP_deal(void)
 {
-    if (!_mS500_EEP_EN)
+    if (!_500mS_For_SYS)
     {
         return;
     }
-    _mS500_EEP_EN = 0;
 
     Sys_data_check();
     Sys_data_write();

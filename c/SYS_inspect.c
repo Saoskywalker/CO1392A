@@ -51,11 +51,10 @@ void SYS_Inspect_ms_general(void)
 **********************************************************/
 void SYS_Inspect_s_general(void)
 {
-    if (!_SYS_Inspect_s)
+    if (!_1S_For_For_SYS)
     {
         return;
     }
-    _SYS_Inspect_s = 0;
 
     if (_COMP_TEST_EN)
     {

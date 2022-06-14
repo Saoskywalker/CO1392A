@@ -170,14 +170,6 @@ void SYS_data_init(void)
         Temp_room.value = 25 + 9;
         Temp_coil.value = 25 + 9;
 
-        minute_bit.byte = 0;
-        s_bit.word = 0;
-        ms_bit.byte = 0;
-        ms5_bit.byte = 0;
-        ms10_bit.byte = 0;
-        ms100_bit.byte = 0;
-        ms500_bit.byte = 0;
-
         Sys_eep_bit.byte = 0;
 
         sEC_SYS.troom_c = 77;
@@ -199,11 +191,10 @@ void SYS_data_init(void)
 UI08 cont_200ms = 0;
 void prg_ms100_general(void)
 {
-        if (_ms100_general == 0)
+        if (!_100mS_For_SYS)
         {
                 return;
         }
-        _ms100_general = 0;
 
         if (++cont_200ms < 4)
         {
@@ -235,11 +226,10 @@ void prg_s_general(void)
 {
         static MCU_xdata UI08 M_hum_update_time1 = 0, M_hum_update_time2 = 0;    //湿度更新时间
 
-        if (!_s_general)
+        if (!_1S_For_For_SYS)
         {
                 return;
         }
-        _s_general = 0;
 
         M_hum_update_time1++;
         if ((M_hum_update_time1 >= 3) || (Power_Delay_Time > 0))

@@ -24,13 +24,17 @@ void main(void)
     //上电全显
     while (Power_Delay_Time > 0)
     {
-        WDTCON |= 0x10; // WDT_Clear
-        Temp_Deal();
-        Key_Deal();
-        LED_display();
-        general_deal();
-        tuya_deal();
-        communication_Deal();
+        if (_10mS_For_SYS)
+        {
+            WDTCON |= 0x10; // WDT_Clear
+            Temp_Deal();
+            Key_Deal();
+            LED_display();
+            general_deal();
+            tuya_deal();
+            communication_Deal();
+            CLEAR_SYS_TIME_BIT();
+        }
     }
     // EEP 机型读取
     // SYS_Mach_type_judge();
@@ -38,17 +42,20 @@ void main(void)
 
     while (1)
     {
-        WDTCON |= 0x10; // WDT_Clear
-
-        Key_Deal();
-        Temp_Deal();
-        LED_display();
-        general_deal();
-        EEP_deal();
-        IO_operate();
-        Sys_Control();
-        SYS_Inspect_Deal();
-        tuya_deal();
-        communication_Deal();
+        if (_10mS_For_SYS)
+        {
+            WDTCON |= 0x10; // WDT_Clear
+            Key_Deal();
+            Temp_Deal();
+            LED_display();
+            general_deal();
+            EEP_deal();
+            IO_operate();
+            Sys_Control();
+            SYS_Inspect_Deal();
+            tuya_deal();
+            communication_Deal();
+            CLEAR_SYS_TIME_BIT();
+        }
     }
 }

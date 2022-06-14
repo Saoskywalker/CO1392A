@@ -31,11 +31,10 @@ void io_data_init(void)
 
 void prg_100mS_IO(void)
 {
-	if (!_ms100_for_IO)
+	if (!_100mS_For_SYS)
 	{
 		return;
 	}
-	_ms100_for_IO = 0;
 
 	if (water_full_para.Status)
 	{
@@ -63,11 +62,10 @@ void prg_100mS_IO(void)
 void prg_s_IO(void)
 {
 	UI08 buf = 0;
-	if (!_s_for_IO)
+	if (!_1S_For_For_SYS)
 	{
 		return;
 	}
-	_s_for_IO = 0;
 
 	if (_Fast_Test) //???fast_f
 	{

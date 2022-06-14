@@ -768,11 +768,10 @@ void Pump_100ms_general(void)
 ***************************************************/
 void prg_100ms_control(void)
 {
-    if (!_ms100_for_conl)
+    if (!_100mS_For_SYS)
     {
         return;
     }
-    _ms100_for_conl = 0;
 
     Pump_100ms_general();
 
@@ -804,11 +803,10 @@ void prg_s_control(void)
 {
     UI16 filter_en_timer = 0;
 
-    if (!_s_for_conl)
+    if (!_1S_For_For_SYS)
     {
         return;
     }
-    _s_for_conl = 0;
 
     if (hum_err_updata_delay_time) //湿度传感器故障上报延时
     {
@@ -911,11 +909,11 @@ void prg_s_control(void)
 void prg_minute_control(void)
 {
     UI08 buf = 0;
-    if (!_Control_minute)
+    if (!_1Minute_For_SYS)
     {
         return;
     }
-    _Control_minute = 0;
+
     /*if((Hum_para.value>=90)&&(Comp_para.OUT))
     {
       if(Run_Reg.HI_stay_time<0xffff)

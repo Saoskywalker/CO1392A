@@ -43,9 +43,8 @@ static void tuya_250ms_dsp(void)
     static UI08 ms1500_cnt = 0;
     static UI08 ms250_cnt = 0;
 
-    if(!_Wifi_Uart_ms10)
+    if(!_10mS_For_SYS)
         return;
-    _Wifi_Uart_ms10 = 0;
 
     if(++ms250_cnt<25)
         return;
@@ -72,11 +71,10 @@ static void timer_s_tuya(void)
 
     UI08 wifi_work_state = 0;
     //
-    if (!_Wifi_Uart_s)
+    if (!_1S_For_For_SYS)
     {
         return;
     }
-    _Wifi_Uart_s = 0;
 
     if(Wifi_value_compare_delay)
         Wifi_value_compare_delay--;
@@ -278,11 +276,10 @@ static void data_upload(void) // wifi模块上电 全部上报一次
         return;
     }
 
-    if (!_ms100_for_Wifi)
+    if (!_100mS_For_SYS)
     {
         return;
     }
-    _ms100_for_Wifi = 0;
 
     if (Wifi_value_compare_delay) //APP操作后延时, 避免APP图标闪烁
         return;

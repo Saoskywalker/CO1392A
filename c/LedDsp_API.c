@@ -61,12 +61,10 @@ void LedDsp_Outdata(void);
 ***************************************************/
 void LED_mS10_Deal(void)
 {
-  if (!_LED_ms10)
+  if (!_10mS_For_SYS)
   {
     return;
   }
-
-  _LED_ms10 = 0;
 
   if (Child_Lock_Disp_timer > 0)
   {
@@ -95,11 +93,10 @@ void LED_mS10_Deal(void)
 ***************************************************/
 void prg_mS500_DSP(void)
 {
-  if (!_mS500_for_LED)
+  if (!_500mS_For_SYS)
   {
     return;
   }
-  _mS500_for_LED = 0;
 
   _Flash_500ms = (!_Flash_500ms);
 }
@@ -111,12 +108,11 @@ void prg_mS500_DSP(void)
 ***************************************************/
 void prg_S_DSP(void)
 {
-  if (!_LED_DSP_S)
+  if (!_1S_For_For_SYS)
   {
     return;
   }
-  _LED_DSP_S = 0;
-
+  
   if (RGB_Cycle_Disp_cnt < 0xff)
   {
     RGB_Cycle_Disp_cnt++;

@@ -80,7 +80,7 @@ void BTM_Int(void) interrupt 9
 {
     if (!(BTMCON & 0X40)) //中断标志位判断
     {
-        // s_bit.word = 0xffff;
+        // _1S_For_For_SYS = 1;
     }
 }
 
@@ -134,7 +134,7 @@ void timer0(void) interrupt 1
         if (++cnt1s>=1000)
         {
             cnt1s = 0;
-            s_bit.word = 0xffff;
+            _1S_For_For_SYS = 1;
         }
     }
 }

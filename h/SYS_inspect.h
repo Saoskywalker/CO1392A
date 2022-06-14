@@ -12,7 +12,6 @@ extern MCU_xdata UI08 Comp_test_Delay_ms;
 extern MCU_xdata UI08 Disp_PWM_VALUE_TIMER;
 
 #define _SYS_Inspect_ms SYS_Inspect_bit.bit_.b0
-//#define _SYS_Inspect_s               SYS_Inspect_bit.bit_.b1 // 移到s_bit里定义
 #define _COMP_TEST_EN SYS_Inspect_bit.bit_.b2
 #define _Comp_Test_Key_Count_EN SYS_Inspect_bit.bit_.b3
 #define _SYS_Inspect_Key_OK SYS_Inspect_bit.bit_.b4
