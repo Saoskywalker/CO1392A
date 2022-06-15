@@ -16,11 +16,7 @@
 
 #define LAMP_key 0x09
 
-//组合长按键
-
-#define self_test_key 22
-#define EC_Fast_key 30
-#define non_key 0xff
+#define SELF_TEST_KEY 0X12
 
 #define TK_0 0x00000001
 #define TK_1 0x00000002
@@ -67,14 +63,13 @@
 extern MCU_xdata UUI08 M_Key_flag;
 #define _KEY_OK M_Key_flag.bit_.b0
 
-extern MCU_xdata UI08 M_Key_Number;
-extern MCU_xdata UI16 M_Key_last;
+extern MCU_xdata UI08 G_Key_Number;
 extern MCU_xdata UI08 shake_count;
 extern MCU_const UI08 Timer_SET[6];
 
-extern void prg_ms_key(void);
 extern void Rest_Key_Buzzer(void);
 extern void Key_Deal(void);
-extern void prg_s_key(void);
-extern void prg_ms10_key(void);
+
+#define Get_Key_Data(void) G_Key_Number; G_Key_Number = 0
+
 #endif /* __key_function_H*/
