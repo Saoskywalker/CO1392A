@@ -118,6 +118,10 @@ void prg_S_DSP(void)
     RGB_Cycle_Disp_cnt++;
   }
 
+  if (G_Disp_Machine_Temp_Time > 0)
+  {
+    G_Disp_Machine_Temp_Time--;
+  }
 
 //  if (wifi_net_led_timer > 0)
 //  {
@@ -132,6 +136,63 @@ void prg_S_DSP(void)
 //    }
 //  }
 }
+
+/*********************************************************
+函数名: disp_fast_test_temp
+描  述:
+输入值: 无
+输出值: 无
+返回值: 无
+**********************************************************/
+MCU_xdata UI08 G_Disp_Machine_Temp_Time = 0; //进入快测时，显示室温管温的时间
+void disp_fast_test_temp(void)
+{
+  UI08 dsp_temp = 0;
+
+  if (G_Disp_Machine_Temp_Time == 9)
+  {
+    dsp_temp = (UI08)Temp_room.C_value;
+    //
+    if (dsp_temp > 15)
+    {
+      dig1_2_dsp(dsp_temp - 15);
+    }
+    else
+    {
+      dsp_temp = 15 - dsp_temp;
+      if (dsp_temp > 9)
+      {
+        dsp_temp = 9;
+      }
+      dig1_2_dsp(dsp_temp);
+      dig1_num = DATA_neg; //-
+    }
+  }
+  else if (G_Disp_Machine_Temp_Time == 7)
+  {
+    dsp_temp = (UI08)Temp_coil.C_value;
+    //
+    if (dsp_temp > 15)
+    {
+      dig1_2_dsp(dsp_temp - 15);
+    }
+    else
+    {
+      dsp_temp = 15 - dsp_temp;
+      if (dsp_temp > 9)
+      {
+        dsp_temp = 9;
+      }
+      dig1_2_dsp(dsp_temp);
+      dig1_num = DATA_neg; //-
+    }
+  }
+  else if (G_Disp_Machine_Temp_Time == 5)
+  {
+    Disp_All();
+  }
+}
+
 /*************************************************
  // 函数名称    : dig1_2_dsp
  // 功能描述    : 显示
@@ -416,9 +477,9 @@ void LedDsp_content(void)
   }
 
   //进入快测显示温度
-  if ((_Fast_Test) && (Disp_PWM_VALUE_TIMER < 9))
+  if ((_Fast_Test) && (G_Disp_Machine_Temp_Time > 0))
   {
-    disp_pwm_temp();
+    disp_fast_test_temp();
     return;
   }
   //进入压缩机强制测试全显

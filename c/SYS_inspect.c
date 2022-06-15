@@ -7,7 +7,7 @@ MCU_xdata UI16 Comp_Test_first_count = 0;   //计时count
 MCU_xdata UI16 Comp_Test_Key_count = 0;     //计时count
 MCU_xdata UI16 Comp_Test_Disp_En_Timer = 0; //显示时间
 MCU_xdata UI08 Comp_test_Delay_ms = 0;      //测试时间
-MCU_xdata UI08 Disp_PWM_VALUE_TIMER = 0xff; //显示时间
+
 /*********************************************************
 函数名: int main(void)
 描  述: 主函数
@@ -67,11 +67,6 @@ void SYS_Inspect_s_general(void)
     {
         Comp_Test_Time = 0;
     }
-
-    if (Disp_PWM_VALUE_TIMER < 0xff)
-    {
-        Disp_PWM_VALUE_TIMER++;
-    }
 }
 
 /*********************************************************
@@ -104,7 +99,7 @@ void SYS_Inspect_Key(void)
     if (_COMP_TEST_EN)
     {
         _COMP_TEST_EN = 0;
-        Disp_PWM_VALUE_TIMER = 0;
+        G_Disp_Machine_Temp_Time = 10;
     }
     //如果 上电 200ms 内按下  则无效
     if ((Comp_Test_first_count <= 100) || (_Comp_Test_Key_First_Status))
@@ -167,66 +162,6 @@ void Comp_Test_general(void)
     else
     {
         Comp_Test_Time = 0;
-    }
-}
-
-/*********************************************************
-函数名: disp_pwm_temp
-描  述:
-输入值: 无
-输出值: 无
-返回值: 无
-**********************************************************/
-void disp_pwm_temp(void)
-{
-    UI08 dsp_temp = 0;
-
-    if ((Disp_PWM_VALUE_TIMER % 2) == 0)
-    {
-        return;
-    }
-    //
-    if (Disp_PWM_VALUE_TIMER == 1)
-    {
-        dsp_temp = (UI08)Temp_room.value;
-        //
-        if (dsp_temp > 9)
-        {
-            dig1_2_dsp(dsp_temp - 9);
-        }
-        else
-        {
-            dsp_temp = 9 - dsp_temp;
-            if (dsp_temp > 9)
-            {
-                dsp_temp = 9;
-            }
-            dig1_2_dsp(dsp_temp);
-            dig1_num = DATA_neg; //-
-        }
-    }
-    else if (Disp_PWM_VALUE_TIMER == 3)
-    {
-        dsp_temp = (UI08)Temp_coil.value;
-        //
-        if (dsp_temp > 9)
-        {
-            dig1_2_dsp(dsp_temp - 9);
-        }
-        else
-        {
-            dsp_temp = 9 - dsp_temp;
-            if (dsp_temp > 9)
-            {
-                dsp_temp = 9;
-            }
-            dig1_2_dsp(dsp_temp);
-            dig1_num = DATA_neg; //-
-        }
-    }
-    else if (Disp_PWM_VALUE_TIMER == 5)
-    {
-        Disp_All();
     }
 }
 

@@ -82,6 +82,7 @@ extern MCU_xdata UI16 wifi_net_led_timer; // 30分钟
 extern MCU_xdata UI08 _Flash_500ms;
 extern MCU_xdata UI08 Disp_Delay;
 extern MCU_xdata UI08 Disp_set_Delay;
+extern MCU_xdata UI08 G_Disp_Machine_Temp_Time; //进入快测时，显示室温管温的时间
 
 extern MCU_xdata RGB_LED_TYPE RGB_Count;
 //==============================================================================

@@ -319,6 +319,7 @@ void get_key_number(void)
         Read_key_delay = 100; //组合按键后延时读取按键
         _KEY_OK = 1;          //按键生效
     }
+
     //長按"電源鍵"5秒
     if ((M_Key_last >= 5000) && (M_Key_last <= 6000) && (key_new == power_key))
     {
@@ -333,16 +334,16 @@ void get_key_number(void)
         _wifi_reset_En = 1; //wifi模块复位/配网模式切换
         _KEY_OK = 1;
     }
-    // UVC 打开   長按“定時設定鍵”5秒
-    if ((M_Key_last >= 5000) && (M_Key_last <= 6000) && (key_new == set_timer_key))
-    {
-        M_Key_Number = UVC_key;
-        shake_count = 0xff;
-        M_Key_last = 0xffff;
-        _KEY_OK = 1;
-    }
 
-    //
+    // UVC 打开   長按“定時設定鍵”5秒
+    // if ((M_Key_last >= 5000) && (M_Key_last <= 6000) && (key_new == set_timer_key))
+    // {
+    //     M_Key_Number = UVC_key;
+    //     shake_count = 0xff;
+    //     M_Key_last = 0xffff;
+    //     _KEY_OK = 1;
+    // }
+
     //工厂测试模式
     if ((key_new == dry_key) && (SYS_Power_Status == OFF) && (Sys_Err.Water_Full == ENABLE))
     {
@@ -399,9 +400,9 @@ void key_decode(void)
         return;
     }
 
-    if ((Sys_Err.Water_Full == ENABLE) || (M_Defrost_status == TRUE) || 
-        ((SYS_Power_Status == OFF) && (M_Timer_Run == 0) && ((M_Key_Number != power_key) && 
-        ((M_Key_Number != set_timer_key) && (M_Key_Number != Child_key)))))
+    if ((Sys_Err.Water_Full == ENABLE) || 
+        (SYS_Power_Status == OFF && M_Timer_Run == 0 && M_Key_Number != power_key && 
+        M_Key_Number != set_timer_key && M_Key_Number != Child_key && M_Key_Number != fast_test_key))
     {
         Key_ERR_Buzz_Cnt = 3;
         return;
@@ -611,7 +612,7 @@ void key_decode(void)
     {
         _Fast_Test = ENABLE;
         Buzz_Time = BUZZ_short_time;
-        Disp_PWM_VALUE_TIMER = 0;
+        G_Disp_Machine_Temp_Time = 10;
     };
     break;
     }

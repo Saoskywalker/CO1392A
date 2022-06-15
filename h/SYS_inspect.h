@@ -9,7 +9,6 @@ extern MCU_xdata UI16 Comp_Test_Time;
 extern MCU_xdata UI16 Comp_Test_Key_count;
 extern MCU_xdata UI16 Comp_Test_Disp_En_Timer;
 extern MCU_xdata UI08 Comp_test_Delay_ms;
-extern MCU_xdata UI08 Disp_PWM_VALUE_TIMER;
 
 #define _SYS_Inspect_ms SYS_Inspect_bit.bit_.b0
 #define _COMP_TEST_EN SYS_Inspect_bit.bit_.b2
@@ -26,7 +25,6 @@ extern MCU_xdata UI08 Disp_PWM_VALUE_TIMER;
 #endif
 extern void SYS_Inspect_Deal(void);
 extern void SYS_Inspect_Disp(void);
-extern void disp_pwm_temp(void);
 extern void SYS_Inspect_ms_general(void);
 extern void Lcd_fill(void);
 #endif
