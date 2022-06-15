@@ -257,163 +257,138 @@ void clear_all(void)
 
   AirQ_Class_LED_buf = 0;
 }
-/*************************************************
- // 函数名称    : LedDsp_Test
- // 功能描述    : 自检显示
- // 入口参数    : 无
- // 出口参数    : 无
-***************************************************/
+
+// *****************************************************************************
+// 函数名称 : LedDsp_Test
+// 功能说明 : LED产检显示
+// 入口参数 : 无
+// 出口参数 : 无
+// 当前版本 : V1.0
+// 编写人员 : Aysi-E
+// 审核人员 :
+// 审核日期 :
+// 修改记录 :   V1.0首次发布
+// 备注     ：
+//
+// *****************************************************************************
 void LedDsp_Test(void)
 {
-#if 0
-    if(M_test_seq==0)
+  static UI08 S_Test_cont1 = 0; //自检计数
+  static UI08 test_key_data = 0;
+  static UI08 test_seq = 0;
+  UI08 key_num = 0;
+
+  if (_250mS_For_SYS)
+  {
+    if (Power_Delay_Time == 0)
     {
-         switch(M_test_cont1)
-         {
-	    case 0: clear_all();break;
-            case 1: dig1_num|=BIT_A;break;
-            case 2: dig1_num|=BIT_B;break;
-            case 3: dig1_num|=BIT_C;break;
-            case 4: dig1_num|=BIT_D;break;
-            case 5: dig1_num|=BIT_E;break;
-            case 6: dig1_num|=BIT_F;break;
-            case 7: dig1_num|=BIT_G;break;
-	    case 8: ;break;
-	    case 9: ;break;
-	    case 10: ;break;
-	    case 11: ;break;
-	    case 12: ;break;
-	    case 13: ;break;
-	    case 14: ;break;
-	    case 15: ;break;
-	    default:
-	    {
-              ;
-	    }break;
-         }
-         dig2_num=dig1_num;
-         //
-         switch(M_test_cont2)
-         {
-	    case 0: {;}break;
-            case 1: {LED_WIFI;}break;
-            case 2: {LED_CON;}break;
-            case 3: {LED_HUM;}break;
-            case 4: {LED_DYR;}break;
-            case 5: {LED_timer;}break;
-            case 6: {LED_PUMP;}break;
-            case 7: {LED_def;}break;
-	    case 8: {LED_water;}break;
-            case 9:
-	    {
-	       dutyindex[0]=8; //绿色
-               dutyindex[1]=100; //红色
-               dutyindex[2]=0;  //蓝色
-	    }break;
-	    case 10:
-	    {
-	       dutyindex[0]=8; //绿色
-               dutyindex[1]=100; //红色
-               dutyindex[2]=0;  //蓝色
-	    }break;
-	    case 11:
-	    {
-	       dutyindex[0]=8; //绿色
-               dutyindex[1]=100; //红色
-               dutyindex[2]=0;  //蓝色
-	    }break;
-            case 12:
-	    {
-	      dutyindex[0]=100; //绿色
-              dutyindex[1]=0; //红色
-              dutyindex[2]=0;  //蓝色
-	    }break;
-	    case 13:
-	    {
-	      dutyindex[0]=100; //绿色
-              dutyindex[1]=0; //红色
-              dutyindex[2]=0;  //蓝色
-	    }break;
-	    case 14:
-	    {
-	      dutyindex[0]=100; //绿色
-              dutyindex[1]=0; //红色
-              dutyindex[2]=0;  //蓝色
-	    }break;
-	    case 15:
-	    {
-	      dutyindex[0]=0;
-              dutyindex[1]=0;
-              dutyindex[2]=100;
-	    }break;
-            case 16:
-	    {
-	      dutyindex[0]=0;
-              dutyindex[1]=0;
-              dutyindex[2]=100;
-	    }break;
-	    case 17:
-	    {
-	      dutyindex[0]=0;
-              dutyindex[1]=0;
-              dutyindex[2]=100;
-	    }break;
-	    default:
-	    {
-	       dutyindex[0]=0;
-               dutyindex[1]=0;
-               dutyindex[2]=0;
-	       M_test_cont2=0;
-	       M_test_cont1=0;
-	    }break;
-        }
+      if (S_Test_cont1 < 0xff)
+        S_Test_cont1++;
     }
-    if(M_test_seq==1)
-    {
+  }
 
+  key_num = Get_Key_Data();
+
+  if (test_seq == 0) //显示检测
+  {
+    switch (S_Test_cont1)
+    {
+    case 0:
+      clear_all();
+      break;
+    case 1:
+      dig1_num |= BIT_A;
+      WIFI_locate;
+      AirQ_Class_LED_buf = RED_LED;
+      break;
+    case 2:
+      dig1_num |= BIT_B;
+      WATER_locate;
+      AirQ_Class_LED_buf = GREEN_LED;
+      break;
+    case 3:
+      dig1_num |= BIT_C;
+      UVC_locate;
+      AirQ_Class_LED_buf = BLUE_LED;
+      break;
+    case 4:
+      dig1_num |= BIT_D;
+      TIMER_locate;
+      AirQ_Class_LED_buf = ALL_ON_LED;
+      break;
+    case 5:
+      dig1_num |= BIT_E;
+      NC_LED2;
+      break;
+    case 6:
+      dig1_num |= BIT_F;
+      DRY_locate;
+      break;
+    case 7:
+      dig1_num |= BIT_G;
+      NC_LED1;
+      break;
+    case 8:
+      dig1_num |= BIT_P;
+      DRY_Clothes_locate;
+      break;
+    default:
+      S_Test_cont1 = 0;
+      break;
     }
-    //
-    if(M_test_seq==2)
+  }
+  dig2_num = dig1_num;
+
+  if (test_seq == 2) //结果显示
+  {
+    clear_all();
+
+    if (Sys_Err.comm_err)
     {
+      dig1_num = DATA_E;
+      dig2_num = DATA_5;
+    }
+    else if (G_Uart_Test_Error)
+    {
+      dig1_num = DATA_E;
+      dig2_num = DATA_6;
+    }
+    else
+    {
+      dig1_num = DATA_r;
+      dig2_num = BCD_tab[Soft_Version];
+    }
+  }
 
-		if(Sys_Err.comm_err==ENABLE)
-		{
-			dig1_num=DATA_E;
-			dig2_num=DATA_5;
-		}
-                else if(_Self_Test_wifi_err)
-                {
-			dig1_num=DATA_E;
-			dig2_num=DATA_6;
-		}
-		else
-		{
-				dig1_num=DATA_r;
-				dig2_num=BCD_tab[Soft_Version];
-	        }
-   }
-   //
+  switch (key_num) //按键检测
+  {
+  case power_key:
+    test_key_data |= bit0;
+    break;
+  case set_timer_key:
+    test_key_data |= bit1;
+    break;
+  case dry_key:
+    test_key_data |= bit2;
+    break;
+  case Dry_Clothes_key:
+    test_key_data |= bit3;
+    break;
+  default:
+    break;
+  }
 
-    switch(M_Key_Number)
-	{
-		case power_key:	        test_key_data|=bit0;break;
-		case set_hum_key:	        test_key_data|=bit1;break;
-	        case set_timer_key:         test_key_data|=bit2;break;
-	        case dry_key:	        test_key_data|=bit3;break;
-	        case LAMP_key :	        test_key_data|=bit4;break;
-		case swing_mode_key:	        test_key_data|=bit5;break;
-		case hum_mode_key:   	test_key_data|=bit6;break;
-	}
-	if(M_Key_Number)
-	{M_Buzz_Time=BUZZ_short_time;}
-	M_Key_Number=0;
-        //
-	if(test_key_data==0x3f)
-	{M_test_seq=1;}
-	else if(test_key_data==0x7f)
-	{M_test_seq=2;}
-#endif
+  if (test_key_data == 0X0F) //检测完成
+  {
+    test_seq = 2; //跳转至结果显示
+  }
+
+  if (key_num)
+  {
+    Buzz_Time = BUZZ_short_time;
+  }
 }
+
 /*************************************************
  // 函数名称    : Disp_All
  // 功能描述    : 全显
@@ -480,6 +455,15 @@ void LedDsp_content(void)
   if ((_Fast_Test) && (G_Disp_Machine_Temp_Time > 0))
   {
     disp_fast_test_temp();
+    return;
+  }
+  //显示wifi信号强度
+  if (Wifi_Rssi_DSP_delay_time)
+  {
+    if (SYS_Power_Status == ON)
+      Wifi_Rssi_DSP_delay_time = 0;
+    else
+      wifi_rssi_Dsp();
     return;
   }
   //进入压缩机强制测试全显

@@ -68,12 +68,18 @@ void UartInt(void) interrupt UART_INTERRUPT
     if (READ_TI)
     {
         CLEAR_TI;
-        UART_Txd_Data();
+        if (M__Self_Test)
+            uart_test_send_process();
+        else
+            UART_Txd_Data();
     }
 
     if (READ_RI)
     {
         CLEAR_RI;
-        uart_receive_input(UART_SFR);
+        if (M__Self_Test)
+            uart_test_receive_process(UART_SFR);
+        else
+            uart_receive_input(UART_SFR);
     }
 }

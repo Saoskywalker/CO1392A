@@ -176,7 +176,7 @@ void prg_ms1(void) //此函数放在中断程序中执行
     static UI08 ms5_cont = 0;
     static UI08 ms10_cont = 0;  // 10ms计数
     static UI08 ms100_cont = 0; // 100ms计数
-    static UI08 ms200_cont = 0; // 200ms计数
+    static UI08 ms250_cont = 0; // 200ms计数
     static UI08 ms500_cont = 0; // 500ms计数
 
     // prg_ms_uart();
@@ -192,11 +192,6 @@ void prg_ms1(void) //此函数放在中断程序中执行
         }
     }
 
-    if (M_Key_last < 0xffff)
-    {
-        M_Key_last++;
-    }
-
     if (++ms5_cont >= 5)
     {
         ms5_cont = 0;
@@ -208,11 +203,12 @@ void prg_ms1(void) //此函数放在中断程序中执行
         _10mS_For_SYS = 1;
         ms10_cont = 0;
         ms100_cont++;
-        ms200_cont++;
+        ms250_cont++;
     }
-    if (ms200_cont >= 20)
+    if (ms250_cont >= 25)
     {
-        ms200_cont = 0;
+        ms250_cont = 0;
+        _250mS_For_SYS = 1;
     }
 
     if (ms100_cont >= 10)

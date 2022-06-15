@@ -70,4 +70,9 @@ extern void tuya_init(void);
 extern void tuya_deal(void);
 extern void wifi_rssi_Dsp(void);
 
+/***********PCB生产串口检测, 外部接口********/
+extern unsigned char G_Uart_Test_Error;
+extern void uart_test_receive_process(unsigned char d);
+extern void uart_test_send_process(void);
+
 #endif

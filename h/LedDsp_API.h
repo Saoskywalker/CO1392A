@@ -69,6 +69,8 @@ extern MCU_xdata UI08 LED_data_buf[COM_total]; // LEDœ‘ ædata
 #define DRY_locate Dsp_locate(2, bit3)
 #define TIMER_locate Dsp_locate(2, bit4)
 #define DRY_Clothes_locate Dsp_locate(2, bit5)
+#define NC_LED1 Dsp_locate(2, bit6)
+#define NC_LED2 Dsp_locate(2, bit7)
 
 #define Decimal_point_off   \
   {                         \

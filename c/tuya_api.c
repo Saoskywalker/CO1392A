@@ -558,6 +558,71 @@ void tuya_init(void)
     wifi_protocol_init();
 }
 
+/*************************************************
+ // 函数名称    : Wifi_Self_Test_Deal
+ // 功能描述    : wifi 电路自检
+ // 入口参数    : 无
+ // 出口参数    : 无
+***************************************************/
+static unsigned char uart_test_send[] = {0XAA, 0X12, 0X56, 0X69};
+static unsigned char uart_test_receive[4] = {0};
+static unsigned char uart_test_rec_cnt = 10, uart_test_send_cnt = 10;
+unsigned char G_Uart_Test_Error = 0;
+static void Wifi_Self_Test_Deal(void)
+{
+    unsigned char i = 0;
+    static unsigned char overtime = 0;
+
+    //接收
+    if (uart_test_rec_cnt >= sizeof(uart_test_send))
+    {
+        //对比
+        for (i = 0; i < sizeof(uart_test_send); i++)
+        {
+            if (uart_test_receive[i] != uart_test_send[i])
+                break;
+        }
+
+        if (i == sizeof(uart_test_send))
+            overtime = 0; // b
+    }
+
+    if (!_500mS_For_SYS)
+        return;
+
+    if (++overtime >= 3)
+        G_Uart_Test_Error = 1;
+    else
+        G_Uart_Test_Error = 0;
+
+    //发送
+    if (uart_test_send_cnt >= sizeof(uart_test_send))
+    {
+        uart_test_rec_cnt = 0;
+        uart_test_send_cnt = 0;
+        uart_test_send_process();
+    }
+}
+
+void uart_test_receive_process(unsigned char d)
+{
+    if (uart_test_rec_cnt < sizeof(uart_test_send))
+    {
+        uart_test_receive[uart_test_rec_cnt] = d;
+        uart_test_rec_cnt++;
+    }
+}
+
+void uart_test_send_process(void)
+{
+    if (uart_test_send_cnt < sizeof(uart_test_send))
+    {
+        UART_SFR = uart_test_send[uart_test_send_cnt];
+        uart_test_send_cnt++;
+    }
+}
+/*************************************************/
+
 /**
  * @description: tuya模块的处理函数
  * @note: 放在主函数中调用
@@ -566,13 +631,20 @@ void tuya_init(void)
  */
 void tuya_deal(void)
 {
-    upload_data_deal();
-    tuya_250ms_dsp();
-    timer_s_tuya();
-    wifi_status_DSP();
-    wifi_uart_service();
-    all_data_update();
-    data_update_deal();
+    if (M__Self_Test)
+    {
+        Wifi_Self_Test_Deal();
+    }
+    else
+    {
+        upload_data_deal();
+        tuya_250ms_dsp();
+        timer_s_tuya();
+        wifi_status_DSP();
+        wifi_uart_service();
+        all_data_update();
+        data_update_deal();
+    }
 }
 /*************************************************
 //名称        :	wifi_rssi_dsp
@@ -592,9 +664,9 @@ void wifi_rssi_Dsp(void)
         wifi_buf = 99;
     }
     //工廠模式時,信號低於60,不點亮Wifi指示燈
-    // if (wifi_buf >= 60)
-    // {
-    //     LED_WIFI;
-    // }
+    if (wifi_buf >= 60)
+    {
+        WIFI_locate;
+    }
     dig1_2_dsp(wifi_buf);
 }
