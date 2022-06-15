@@ -179,10 +179,6 @@ void prg_ms1(void) //此函数放在中断程序中执行
     static UI08 ms250_cont = 0; // 200ms计数
     static UI08 ms500_cont = 0; // 500ms计数
 
-    // prg_ms_uart();
-    //_SYS_Inspect_ms=1;
-    SYS_Inspect_ms_general();
-    //
     if (Buzz_Time > 0)
     {
         Buzz_Time--;

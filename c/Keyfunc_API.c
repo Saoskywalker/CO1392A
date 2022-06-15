@@ -230,11 +230,12 @@ MCU_xdata UUI08 M_Key_flag = {0};
 MCU_xdata UI08 G_Key_Number = 0; //键值
 void get_key_number(void)
 {
+    static UI16 S_Comp_Test_Key_Count = 0; //用于判断压缩机强制测试模式进入按键识别   每10mS自减
     static UI16 WIFI_Self_Test_delay_time = 500;
-    static MCU_xdata UI16 M_Key_last = 0;   //按键按下时间
-    static MCU_xdata UI08 shake_count = 0;  //按键计时
-    static MCU_xdata UI08 key_new = 0;      //新键值
-    static MCU_xdata UI08 key_old = 0;      // old 键值
+    static MCU_xdata UI16 S_Key_Last = 0;     //按键按下时间
+    static MCU_xdata UI08 shake_count = 0;    //按键计时
+    static MCU_xdata UI08 key_new = 0;        //新键值
+    static MCU_xdata UI08 key_old = 0;        // old 键值
     static MCU_xdata UI16 Read_key_delay = 0; //组合按键后，等待N时间后再识别按键，避免松手时识别到按键
 
     UI08 i = 0;
@@ -247,10 +248,11 @@ void get_key_number(void)
         return;
     }
 
-    if (M_Key_last < 0xffff)
-    {
-        M_Key_last++;
-    }
+    if (S_Key_Last < 0xffff)
+        S_Key_Last++;
+
+    if (S_Comp_Test_Key_Count < 0xffff)
+        S_Comp_Test_Key_Count++;
 
     if (SYS_Power_Status == ON)
         WIFI_Self_Test_delay_time = 500;
@@ -278,9 +280,6 @@ void get_key_number(void)
         }
     }
 
-    _SYS_Inspect_Key_OK = 1;
-    SYS_Inspect_Key_Data = key_data;
-
     for (i = 0; i < 8; i++)
     {
         if (key_data & (UI08)(0x01 << i))
@@ -299,7 +298,7 @@ void get_key_number(void)
         }
 
         shake_count = 0;
-        M_Key_last = 0;
+        S_Key_Last = 0;
         return;
     }
     else if (key_total_count == 1)
@@ -325,7 +324,7 @@ void get_key_number(void)
     {
         key_new = 0;
         shake_count = 0;
-        M_Key_last = 0;
+        S_Key_Last = 0;
         return;
     }
     /////////////////////////////////////////////////////////////////////////////////
@@ -342,30 +341,30 @@ void get_key_number(void)
     }
     //快测
     /////////////////////////////////////////////////////////////////////////////////
-    if ((M_Key_last >= 500) && (M_Key_last <= 600) && (key_new == fast_test_key))
+    if ((S_Key_Last >= 500) && (S_Key_Last <= 600) && (key_new == fast_test_key))
     {
         G_Key_Number = fast_test_key;
-        M_Key_last = 0xffff;
+        S_Key_Last = 0xffff;
         Read_key_delay = 100;
         _KEY_OK = 1;
     }
 
     //童锁生效    除濕設定鍵"和"幹衣設定鍵"3秒
-    if ((M_Key_last >= 300) && (M_Key_last <= 400) && (key_new == Child_key))
+    if ((S_Key_Last >= 300) && (S_Key_Last <= 400) && (key_new == Child_key))
     {
         G_Key_Number = Child_key;
         shake_count = 0xff;   //松开短按不执行
-        M_Key_last = 0xffff;  //锁住
+        S_Key_Last = 0xffff;  //锁住
         Read_key_delay = 100; //组合按键后延时读取按键
         _KEY_OK = 1;          //按键生效
     }
 
     // UVC 打开   長按“定時設定鍵”5秒
-    // if ((M_Key_last >= 500) && (M_Key_last <= 600) && (key_new == set_timer_key))
+    // if ((S_Key_Last >= 500) && (S_Key_Last <= 600) && (key_new == set_timer_key))
     // {
     //     G_Key_Number = UVC_key;
     //     shake_count = 0xff;
-    //     M_Key_last = 0xffff;
+    //     S_Key_Last = 0xffff;
     //     Read_key_delay = 100; //组合按键后延时读取按键
     //     _KEY_OK = 1;
     // }
@@ -375,19 +374,33 @@ void get_key_number(void)
     {
         G_Key_Number = SELF_TEST_KEY;
         shake_count = 0xff;
-        M_Key_last = 0xffff;
+        S_Key_Last = 0xffff;
+        Read_key_delay = 100; //组合按键后延时读取按键
+        _KEY_OK = 1;
+    }
+
+    if ((S_Key_Last == 2000)                                   //
+        && (key_new == power_key)                              //
+        && (S_Comp_Test_Key_Count > S_Key_Last)                //
+        && ((S_Comp_Test_Key_Count - S_Key_Last) > 10)         //上电前10ms按下视为无效
+        && ((S_Comp_Test_Key_Count - S_Key_Last) < (300 - 10)) //需要在上电全显示期间
+    )
+    {
+        G_Key_Number = COMP_TEST_KEY;
+        shake_count = 0xff;
+        S_Key_Last = 0xffff;
         Read_key_delay = 100; //组合按键后延时读取按键
         _KEY_OK = 1;
     }
 
     //長按"電源鍵"5秒
-    // if ((M_Key_last >= 500) && (M_Key_last <= 600) && (key_new == power_key))
+    // if ((S_Key_Last >= 500) && (S_Key_Last <= 600) && (key_new == power_key))
     // {
     //     if ((Child_Lock_status == ENABLE) || (Sys_Err.Water_Full == ENABLE))
     //     {
     //         return;
     //     }
-    //     M_Key_last = 0xffff;
+    //     S_Key_Last = 0xffff;
     //     shake_count = 0xff;
     //     Read_key_delay = 100; //组合按键后延时读取按键
     //     Buzz_Time = BUZZ_long_time;
@@ -406,10 +419,10 @@ void get_key_number(void)
     if ((WIFI_Self_Test_delay_time) && (key_new == dry_key) && (SYS_Power_Status == OFF))
     {
         WIFI_Self_Test_delay_time = 500;
-        if (M_Key_last >= 500)
+        if (S_Key_Last >= 500)
         {
             WIFI_Self_Test_delay_time = 0;
-            M_Key_last = 0xffff;
+            S_Key_Last = 0xffff;
             shake_count = 0xff;
             Read_key_delay = 100; //组合按键后延时读取按键
             Buzz_Time = BUZZ_long_time;
@@ -463,7 +476,7 @@ void key_decode(void)
         return;
     }
 
-    if (key_num != SELF_TEST_KEY)
+    if (key_num != SELF_TEST_KEY && key_num != COMP_TEST_KEY)
     {
         if ((Sys_Err.Water_Full == ENABLE) ||
             (SYS_Power_Status == OFF && M_Timer_Run == 0 && key_num != power_key &&
@@ -691,6 +704,13 @@ void key_decode(void)
             //自检写入系统默认参数
             SYSData_Rest();
         }
+    }
+    break;
+    case COMP_TEST_KEY:
+    {
+        Turn_On(); //因触摸按键是松开有效，  所以在进入强制模式时将其开机
+        G_Comp_Test_EN = 1;
+        Buzz_Time = BUZZ_long_time;
     }
     break;
     default: break;

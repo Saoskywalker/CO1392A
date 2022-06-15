@@ -467,20 +467,8 @@ void LedDsp_content(void)
     return;
   }
   //进入压缩机强制测试全显
-  if (Comp_Test_Disp_En_Timer > 0)
-  {
-    SYS_Inspect_Disp();
+  if (SYS_Inspect_Disp())
     return;
-  }
-#if 0
-  if( test_factory==ENABLE)
-  {
-      if(Wifi_Disp_Count<Wifi_Disp_Tab[(UI08)(Wifi_net_Status)][0])
-      {
-         WIFI_locate;
-      }
-  }
-#endif
 
   if (Sys_Err.Water_Full)
   {

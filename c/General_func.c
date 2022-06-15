@@ -383,12 +383,8 @@ void Turn_Off(void)
         _Timer_set_ok = 0;
         Set_SYS_Hum_timer = 0;
         M_Dsp_Time = 0;
-        //	M_write_delay_time=2;
-        //
-//        if (test_factory == ENABLE)
-//        {
-//                Rest_Wifi();
-//        }
+
+        G_Comp_Test_EN = 0; //ÍË³öÑ¹Ëõ»ú²âÊÔ
 }
 
 /*************************************************

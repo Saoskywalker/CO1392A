@@ -1,46 +1,8 @@
 #include "General.h"
 
-MCU_xdata UUI08 SYS_Inspect_bit = {0};      // Inspect变量标志位
-MCU_xdata UI16 SYS_Inspect_Key_Data = 0;    //按键data
-MCU_xdata UI16 Comp_Test_Time = 0;          //压缩机测试时间
-MCU_xdata UI16 Comp_Test_first_count = 0;   //计时count
-MCU_xdata UI16 Comp_Test_Key_count = 0;     //计时count
-MCU_xdata UI16 Comp_Test_Disp_En_Timer = 0; //显示时间
-MCU_xdata UI08 Comp_test_Delay_ms = 0;      //测试时间
-
-/*********************************************************
-函数名: int main(void)
-描  述: 主函数
-输入值: 无
-输出值: 无
-返回值: 无
-**********************************************************/
-void SYS_Inspect_ms_general(void)
-{
-    /*if(!_SYS_Inspect_ms)
-    {return;}
-   _SYS_Inspect_ms=0;*/
-
-    if (Comp_Test_Key_count < 0Xffff)
-    {
-        Comp_Test_Key_count++;
-    }
-
-    if (Comp_Test_Disp_En_Timer > 0)
-    {
-        Comp_Test_Disp_En_Timer--;
-    }
-
-    if (Comp_Test_first_count < 0xffff)
-    {
-        Comp_Test_first_count++;
-    }
-    //
-    if (Comp_test_Delay_ms > 0)
-    {
-        Comp_test_Delay_ms--;
-    }
-}
+UI08 G_Comp_Test_EN = 0;          //开启压缩机测试
+static UI08 Comp_Test_Disp_En_Timer = 0; //进入测试显示一段时间
+static UI16 S_Comp_Test_Time = 0;        //计时
 
 /*********************************************************
 函数名: SYS_Inspect_s_general
@@ -49,147 +11,121 @@ void SYS_Inspect_ms_general(void)
 输出值: 无
 返回值: 无
 **********************************************************/
-void SYS_Inspect_s_general(void)
+static void SYS_Inspect_s_general(void)
 {
     if (!_1S_For_For_SYS)
     {
         return;
     }
 
-    if (_COMP_TEST_EN)
+    if (G_Comp_Test_EN)
     {
-        if (Comp_Test_Time < 0Xffff)
-        {
-            Comp_Test_Time++;
-        }
+        if (S_Comp_Test_Time < 0Xffff)
+            S_Comp_Test_Time++;
+        if (Comp_Test_Disp_En_Timer < 0Xffff)
+            Comp_Test_Disp_En_Timer++;
     }
     else
     {
-        Comp_Test_Time = 0;
+        S_Comp_Test_Time = 0;
+        Comp_Test_Disp_En_Timer = 0;
     }
 }
 
-/*********************************************************
-函数名: SYS_Inspect_Key
-描  述:
-输入值: 无
-输出值: 无
-返回值: 无
-**********************************************************/
-void SYS_Inspect_Key(void)
+// *****************************************************************************
+// 函数名称 : Comp_Test_General
+// 功能说明 : 压缩机强制测试模式逻辑
+// 入口参数 :
+// 出口参数 : 无
+// 当前版本 : V1.0
+// 编写人员 : 许荣乾
+// 审核人员 :
+// 审核日期 :
+// 修改记录 :   V1.0首次发布
+// 备注     ：
+//
+// *****************************************************************************
+static void Comp_Test_General(void)
 {
-    if (!_SYS_Inspect_Key_OK)
+    static UI08 s_comp_test_step = 0;
+
+    if ((SYS_Power_Status == OFF) //机台关机
+        || (Sys_Err.Water_Full)   //机台发生水满
+        || (Sys_Err.comm_err)     //通信故障
+    )
     {
-        return;
+        G_Comp_Test_EN = 0;
     }
-    _SYS_Inspect_Key_OK = 0;
-    //不是powerkey按下 则退出
-    if (SYS_Inspect_Key_Data != (0x01 << (power_key - 1)))
+
+    if (!G_Comp_Test_EN)
     {
-        Comp_Test_Key_count = 0;
-        _Comp_Test_Key_Count_EN = 0;
-        return;
-    }
-    //
-    if ((Comp_Test_Key_count < 100) || (Comp_Test_Key_count == 0xffff))
-    {
-        return;
-    }
-    //
-    if (_COMP_TEST_EN)
-    {
-        _COMP_TEST_EN = 0;
-        G_Disp_Machine_Temp_Time = 10;
-    }
-    //如果 上电 200ms 内按下  则无效
-    if ((Comp_Test_first_count <= 100) || (_Comp_Test_Key_First_Status))
-    {
-        _Comp_Test_Key_First_Status = 1;
+        Comp_Test_Disp_En_Timer = 0;
+        S_Comp_Test_Time = 0;
+        s_comp_test_step = 0;
         return;
     }
 
-    if (Power_Delay_Time > 0)
+    switch (s_comp_test_step)
     {
-        _Comp_Test_Key_Count_EN = 1;
-    }
-
-    if ((Comp_Test_Key_count > (1000 * 20)) && (Comp_Test_Key_count < 0xffff) && (_Comp_Test_Key_Count_EN))
-    //&&(M_Power_Status==ON)
-    {
-        Turn_On(); //因CORA0-1273A是按键弹开有效  所以只能放在进入强制模式时将其开机
-                   //
-        _COMP_TEST_EN = 1;
-        _Comp_Test_Key_Count_EN = 0;
-        Comp_Test_Disp_En_Timer = 2000;
-        Comp_Test_Key_count = 0xffff;
-        Buzz_Time = BUZZ_long_time;
-    }
-}
-
-/*********************************************************
-函数名: Comp_Test_general
-描  述:
-输入值: 无
-输出值: 无
-返回值: 无
-**********************************************************/
-void Comp_Test_general(void)
-{
-    if (!_COMP_TEST_EN)
-    {
-        Comp_Test_Time = 0;
-        return;
-    }
-
-    if ((Sys_Err.Water_Full) || (Sys_Err.comm_err))
-    {
-        Comp_para.OUT = OFF;
-        Fan_Speed_Out_Buf = OFF_FAN;
-        _COMP_TEST_EN = 0;
-        return;
-    }
-
-    if (Comp_Test_Time < COMP_TEST_ON_TIME)
+    case 0:
     {
         Comp_para.OUT = ON;
         Fan_Speed_Out_Buf = HIGH_FAN;
+
+        if (S_Comp_Test_Time >= COMP_TEST_ON_TIME)
+        {
+            S_Comp_Test_Time = 0;
+            s_comp_test_step = 1;
+        }
     }
-    else if (Comp_Test_Time < (COMP_TEST_ON_TIME + COMP_TEST_OFF_TIME))
+    break;
+    case 1:
     {
         Comp_para.OUT = OFF;
         Fan_Speed_Out_Buf = OFF_FAN;
+
+        if (S_Comp_Test_Time >= COMP_TEST_OFF_TIME)
+        {
+            S_Comp_Test_Time = 0;
+            s_comp_test_step = 0;
+        }
     }
-    else
-    {
-        Comp_Test_Time = 0;
+    break;
     }
 }
 
 /*********************************************************
 函数名: SYS_Inspect_Disp
-描  述:
+描  述: 进入测试时显示一段时间
 输入值: 无
 输出值: 无
 返回值: 无
 **********************************************************/
-void SYS_Inspect_Disp(void)
+UI08 SYS_Inspect_Disp(void)
 {
-    if (Comp_Test_Disp_En_Timer > 0)
+    if (!G_Comp_Test_EN)
+        return 0;
+
+    if (Comp_Test_Disp_En_Timer <= 1)
     {
         Disp_All();
+        return 1;
+    }
+    else
+    {
+        return 0;
     }
 }
+
 /*********************************************************
 函数名: SYS_Inspect_Deal
-描  述:
+描  述: 测试输出处理
 输入值: 无
 输出值: 无
 返回值: 无
 **********************************************************/
 void SYS_Inspect_Deal(void)
 {
-    // SYS_Inspect_ms_general();
     SYS_Inspect_s_general();
-    SYS_Inspect_Key();
-    Comp_Test_general();
+    Comp_Test_General();
 }
