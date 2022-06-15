@@ -563,7 +563,10 @@ void data_handle(unsigned short offset)
             result = wifi_data_process_buf[offset + DATA_START];
             rssi = wifi_data_process_buf[offset + DATA_START + 1];
             wifi_test_result(result, rssi);
-        break;
+            //恢复出厂默认配网方式
+            mcu_set_wifi_mode(SMART_CONFIG);
+            Wifi_Rssi_DSP_delay_time = 180; //显示信号强度180S
+            break;
 #endif
 
 #ifdef WEATHER_ENABLE
