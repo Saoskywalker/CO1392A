@@ -18,6 +18,7 @@
 
 #define SELF_TEST_KEY 0X12
 #define COMP_TEST_KEY 0XF8
+#define WIFI_RESET_KEY 0XF9
 
 #define TK_0 0x00000001
 #define TK_1 0x00000002

@@ -1229,7 +1229,9 @@ void load_set(void)
     }
     else
     {
-        if ((Comp_para.on_time < Comp_Protect_Time) && (Comp_para.OUT == ON) && (SYS_Power_Status) && (water_full_para.Status == DI_SHORT)) // 20140807
+        if ((Comp_para.on_time < Comp_Protect_Time) && (Comp_para.OUT == ON) && (SYS_Power_Status) &&
+            (water_full_para.Status == DI_SHORT) && (Sys_Err.temp_room_err == DISABLE) && (Sys_Err.hum_Sensor_err == DISABLE) &&
+            (Sys_Err.temp_coil_err == DISABLE) && (Sys_Err.comm_err == DISABLE) && (comp_high2_error_flag == 0)) // 20140807
         {
             Comp_para.OUT = ON;
         }

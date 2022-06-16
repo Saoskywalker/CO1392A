@@ -394,19 +394,14 @@ void get_key_number(void)
     }
 
     //長按"電源鍵"5秒
-    // if ((S_Key_Last >= 500) && (S_Key_Last <= 600) && (key_new == power_key))
-    // {
-    //     if ((Child_Lock_status == ENABLE) || (Sys_Err.Water_Full == ENABLE))
-    //     {
-    //         return;
-    //     }
-    //     S_Key_Last = 0xffff;
-    //     shake_count = 0xff;
-    //     Read_key_delay = 100; //组合按键后延时读取按键
-    //     Buzz_Time = BUZZ_long_time;
-    //     _wifi_reset_En = 1; //wifi模块复位/配网模式切换
-    //     _KEY_OK = 1;
-    // }
+    if ((S_Key_Last >= 500) && (S_Key_Last <= 600) && (key_new == power_key))
+    {
+        G_Key_Number = WIFI_RESET_KEY;
+        shake_count = 0xff;
+        S_Key_Last = 0xffff;
+        Read_key_delay = 100; //组合按键后延时读取按键
+        _KEY_OK = 1;
+    }
 
     /*
     威技wifi模块产测进入判断
@@ -480,7 +475,8 @@ void key_decode(void)
     {
         if ((Sys_Err.Water_Full == ENABLE) ||
             (SYS_Power_Status == OFF && M_Timer_Run == 0 && key_num != power_key &&
-             key_num != set_timer_key && key_num != Child_key && key_num != fast_test_key))
+             key_num != set_timer_key && key_num != Child_key && key_num != fast_test_key &&
+             key_num != WIFI_RESET_KEY))
         {
             Key_ERR_Buzz_Cnt = 3;
             return;
@@ -696,8 +692,8 @@ void key_decode(void)
     break;
     case SELF_TEST_KEY:
     {
-        //为防止用户误触发, 进入PCB生产自检时, 铜管和室温温要拔掉, 水满正常
-        if (Sys_Err.temp_room_err && Sys_Err.temp_coil_err && Sys_Err.Water_Full == DISABLE)
+        //为防止用户误触发, 进入PCB生产自检时, 铜管和吐出管温要拔掉, 水满正常
+        if (Sys_Err.temp_coil_err && Sys_Err.Water_Full == DISABLE)
         {
             Buzz_Time = BUZZ_long_time;
             M__Self_Test = 1;
@@ -711,6 +707,12 @@ void key_decode(void)
         Turn_On(); //因触摸按键是松开有效，  所以在进入强制模式时将其开机
         G_Comp_Test_EN = 1;
         Buzz_Time = BUZZ_long_time;
+    }
+    break;
+    case WIFI_RESET_KEY:
+    {
+        Buzz_Time = BUZZ_short_time;
+        _wifi_reset_En = 1; // wifi模块复位/配网模式切换
     }
     break;
     default: break;
