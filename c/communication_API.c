@@ -12,7 +12,16 @@ MCU_xdata UI08 M_sleep_Time = 10;         //Ë¯ÃßÊ±¼ä
 
 void sleep_deal(void)
 {
-    if ((SYS_Power_Status) || (M_Dsp_Time > 0) || (M__Self_Test))
+    UI08 err_check = 0;
+
+    //¹ÊÕÏÊ±, ½ûÖ¹Ë¯Ãß
+    if (Sys_Err.temp_room_err || Sys_Err.hum_Sensor_err ||
+        Sys_Err.temp_coil_err || Sys_Err.comm_err || Sys_Err.Water_Full)
+    {
+        err_check = 1;
+    }
+
+    if ((SYS_Power_Status) || (M_Dsp_Time > 0) || (M__Self_Test) || (err_check))
     {
         M_sleep_Time = 10;
         _Sleep_status = 0;
