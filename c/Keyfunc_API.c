@@ -478,7 +478,7 @@ void key_decode(void)
              key_num != set_timer_key && key_num != Child_key && key_num != fast_test_key &&
              key_num != WIFI_RESET_KEY))
         {
-            Key_ERR_Buzz_Cnt = 3;
+            // Key_ERR_Buzz_Cnt = 3;
             return;
         }
     }
@@ -487,6 +487,7 @@ void key_decode(void)
     {
     case power_key:
     {
+        G_Disp_SA_Time = 3;
         Buzz_Time = BUZZ_long_time;
         if (_Fast_Test)
         {
@@ -510,6 +511,7 @@ void key_decode(void)
     break;
     case set_timer_key:
     {
+        G_Disp_SA_Time = 3;
         Disp_set_Delay = 10;
         Buzz_Time = BUZZ_short_time;
         if (M_Timer_Setting_Time > 0)
@@ -577,6 +579,7 @@ void key_decode(void)
 
     case dry_key: //除湿
     {
+        G_Disp_SA_Time = 3;
         if (SYS_Mode_Buf != mode_SYS_HUM) //其他模式转过来
         {
             SYS_Mode_Buf = mode_SYS_HUM;
@@ -625,6 +628,7 @@ void key_decode(void)
 
     case Dry_Clothes_key: //衣类干燥
     {
+        G_Disp_SA_Time = 3;
         Buzz_Time = BUZZ_short_time;
         if (SYS_Mode_Buf != mode_DRY_Clothes)
         {

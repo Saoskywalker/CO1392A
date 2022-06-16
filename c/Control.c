@@ -33,8 +33,6 @@ MCU_xdata UI08 temp_err_updata_delay_time = 180; //温度传感器故障上报延时
 
 MCU_xdata UI16 fan_force_runtime = 180; //风扇强制运行一段时间
 
-//////
-MCU_xdata sEC_struct sEC_SYS;
 MCU_const UI08 HUM_Feel_Code[][2] = {
     {0, 40},   // 35
     {39, 70},  // 55
@@ -705,6 +703,53 @@ static void High_Temperature_Protection2(void)
     }
 }
 
+// *****************************************************************************
+// 函数名称 : Comp_OverLoad
+// 功能说明 : 压缩机过载保护
+// 入口参数 : 无
+// 出口参数 : 无
+// 当前版本 : V1.0
+// 编写人员 : 许荣乾
+// 审核人员 :
+// 审核日期 :
+// 修改记录 :   V1.0首次发布
+// 备注     ：
+//
+// *****************************************************************************
+UI08 Comp_SA_EN = DISABLE; // SA保护标志
+UI08 G_Comp_Overtime_Protect_Flag = ENABLE; //压缩机连续运行停机功能标记
+static void Comp_OverLoad(void)
+{
+    if ((SYS_Power_Status == OFF) || (Comp_SA_EN == ENABLE))
+        G_Work_Para.on_time = 0;
+
+    if (G_Comp_Overtime_Protect_Flag)
+    {
+        if (G_Work_Para.on_time >= 3600UL * 12) //连续运行12小时停止
+        {
+            G_Work_Para.on_time = 0;
+            G_Work_Para.off_time = 0;
+            Comp_SA_EN = ENABLE;
+        }
+
+        if (G_Work_Para.off_time >= 3600)
+        {
+            Comp_SA_EN = DISABLE;
+        }
+
+        if (Comp_SA_EN == ENABLE)
+        {
+            Comp_para.BUF = OFF;
+        }
+    }
+    else
+    {
+        Comp_SA_EN = DISABLE;
+        G_Work_Para.on_time = 0;
+        G_Work_Para.off_time = 0;
+    }
+}
+
 /*************************************************
  // 函数名称    : Run_reg_init
  // 功能描述    : 变量初始化
@@ -802,11 +847,17 @@ void prg_100ms_control(void)
 void prg_s_control(void)
 {
     UI16 filter_en_timer = 0;
+    UI08 num = 0;
 
     if (!_1S_For_For_SYS)
     {
         return;
     }
+
+    if (_Fast_Test)
+        num = 60;
+    else
+        num = 1;
 
     if (hum_err_updata_delay_time) //湿度传感器故障上报延时
     {
@@ -863,7 +914,12 @@ void prg_s_control(void)
 
     Ec_Protect1_timer();
     Ec_Protect2_timer();
-    //
+
+    if (G_Work_Para.on_time < 0XFF00)
+        G_Work_Para.on_time += num;
+    if (G_Work_Para.off_time < 0XFF00)
+        G_Work_Para.off_time += num;
+
     if (_Fast_Test == ENABLE)
     {
         filter_Minute_Count = 60;
@@ -1182,7 +1238,6 @@ void Sys_err_deal(void)
 void protect_logic(void)
 {
     defrost_logic();
-    Sys_err_deal();
 
 #ifdef REFRIGERANT_LEAKAGE_2016
     Ec_Protect_Deal();
@@ -1201,6 +1256,8 @@ void protect_logic(void)
         High_Temperature_Protection2();
     }
 
+    Sys_err_deal();
+    Comp_OverLoad();
     Water_protect_deal();
 }
 

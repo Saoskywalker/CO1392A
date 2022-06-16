@@ -38,6 +38,7 @@ extern MCU_xdata ONOFF_STATUS SYS_Power_Status; //开关机状态
 extern MCU_xdata SYS_MODE SYS_Mode;       //系统模式
 extern MCU_xdata SYS_MODE SYS_Mode_Buf;   //系统模式
 extern MCU_xdata UI08 Set_SYS_Mode_Timer; //模式设定时间
+extern UI08 G_Disp_SA_Time;
 
 extern MCU_xdata DYR_TYPE SYS_DYR_Tyde;     //干衣类型
 extern MCU_xdata DYR_TYPE SYS_DYR_Tyde_Buf; //干衣类型

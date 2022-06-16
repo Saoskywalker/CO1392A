@@ -23,6 +23,7 @@ extern void io_data_init(void);
 
 extern MCU_xdata DO_PARA Comp_para; //压缩机
 extern MCU_xdata DO_PARA UVC_para;
+extern MCU_xdata DO_PARA G_Work_Para; //工作时间
 extern MCU_xdata DI_PARA water_full_para; //水箱水位检测
 // extern MCU_xdata DI_PARA     pump_sw_para;//副水箱水位检测
 

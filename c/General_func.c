@@ -27,6 +27,7 @@ MCU_xdata ONOFF_STATUS SYS_Power_Status = OFF; //开关机状态
 MCU_xdata SYS_MODE SYS_Mode = mode_SYS_HUM;     //系统模式
 MCU_xdata SYS_MODE SYS_Mode_Buf = mode_SYS_HUM; //系统模式
 MCU_xdata UI08 Set_SYS_Mode_Timer = 0;          //模式设定时间
+UI08 G_Disp_SA_Time = 0; //SA保护显示时间
 
 MCU_xdata DYR_TYPE SYS_DYR_Tyde = DYR_STRONG;     //干衣类型
 MCU_xdata DYR_TYPE SYS_DYR_Tyde_Buf = DYR_STRONG; //干衣类型
@@ -171,14 +172,6 @@ void SYS_data_init(void)
         Temp_coil.value = 25 + 9;
 
         Sys_eep_bit.byte = 0;
-
-        sEC_SYS.troom_c = 77;
-        sEC_SYS.tcoil_c = 77;
-        sEC_SYS.EC_protect_type = 0;
-        sEC_SYS.EC_count = 0;
-        sEC_SYS.EC_protect_byte.byte = 0;
-        sEC_SYS.EC_count_timer = 0;
-        sEC_SYS.EC_comp_timer = 0;
 
         _SYS_UVC_Status = 0;
 }

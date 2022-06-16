@@ -123,6 +123,9 @@ void prg_S_DSP(void)
     G_Disp_Machine_Temp_Time--;
   }
 
+  if (G_Disp_SA_Time > 0)
+    G_Disp_SA_Time--;
+
 //  if (wifi_net_led_timer > 0)
 //  {
 //    wifi_net_led_timer--;
@@ -240,6 +243,29 @@ UI08 Err_dsp(void)
   }
   return 0;
 }
+
+/***********************************************
+ * 工作模式显示
+ * ********************************************/
+void Disp_Work_Mode(void)
+{
+  switch (SYS_Mode_Buf)
+  {
+  case mode_SYS_HUM: //除湿模式
+  {
+    DRY_locate;
+  }
+  break;
+  case mode_DRY_Clothes: //干衣模式
+  {
+    DRY_Clothes_locate;
+  }
+  break;
+  default:
+    break;
+  }
+}
+
 /*************************************************
  // 函数名称    : clear_all
  // 功能描述    : 清除所有显示
@@ -583,19 +609,16 @@ void LedDsp_content(void)
     UVC_locate;
   }
 
-  switch (SYS_Mode_Buf)
+  if ((G_Disp_SA_Time > 0) && (Comp_SA_EN == ENABLE)) //压缩机连续超长时间运后, 安全待机显示
   {
-  case mode_SYS_HUM: //除湿模式
+    if (_Flash_500ms)
+      Disp_Work_Mode();
+  }
+  else
   {
-    DRY_locate;
+    Disp_Work_Mode();
   }
-  break;
-  case mode_DRY_Clothes: //干衣模式
-  {
-    DRY_Clothes_locate;
-  }
-  break;
-  }
+
   /**********************************************************
 
    機體開機運轉前1分鐘,環境狀態指示燈熄滅

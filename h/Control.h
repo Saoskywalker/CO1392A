@@ -74,8 +74,8 @@ extern MCU_xdata UI08 Feel_Mode;
 // extern MCU_xdata UI08 Dump_SW;//机台倾倒开关状态
 // extern MCU_xdata UI08 Dump_Status;//机台倾倒情况
 
-extern MCU_xdata sEC_struct sEC_SYS;
-#define _EC_err sEC_SYS.EC_protect_byte.bit_.b0       // EC故障
+extern UI08 Comp_SA_EN; // SA保护标志
+extern UI08 G_Comp_Overtime_Protect_Flag; //压缩机连续运行停机功能标记
 
 ///
 ///

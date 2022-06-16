@@ -2,6 +2,7 @@
 
 MCU_xdata DO_PARA Comp_para; //压缩机
 MCU_xdata DO_PARA UVC_para;	 // UVC
+MCU_xdata DO_PARA G_Work_Para; //工作时间
 
 MCU_xdata DI_PARA water_full_para; //水箱水位检测
 // MCU_xdata DI_PARA     pump_sw_para;//副水箱水位检测
@@ -23,6 +24,11 @@ void io_data_init(void)
 	UVC_para.off_time = 0;
 	UVC_para.BUF = OFF;
 	UVC_para.OUT = OFF;
+
+	G_Work_Para.on_time = 0;
+	G_Work_Para.off_time = 180;
+	G_Work_Para.BUF = OFF;
+	G_Work_Para.OUT = OFF;
 
 	water_full_para.Status = DI_SHORT;
 	water_full_para.short_time = 0;
