@@ -170,8 +170,12 @@ static void dpid_data_upload(void)
 
     case DPID_HUMIDITY_INDOOR: //室内湿度(只上报)
     {
-
-        mcu_dp_value_update(DPID_HUMIDITY_INDOOR, (unsigned char)Hum_dsp_com); //当前湿度
+        if (Hum_dsp_com >= 90)
+            mcu_dp_value_update(DPID_HUMIDITY_INDOOR, (unsigned char)90); //当前湿度
+        else if (Hum_dsp_com <= 30)
+            mcu_dp_value_update(DPID_HUMIDITY_INDOOR, (unsigned char)30); //当前湿度
+        else
+            mcu_dp_value_update(DPID_HUMIDITY_INDOOR, (unsigned char)Hum_dsp_com); //当前湿度
     }
     break;
 
