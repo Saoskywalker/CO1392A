@@ -284,6 +284,28 @@ void clear_all(void)
   AirQ_Class_LED_buf = 0;
 }
 
+/****************************************************
+ * 环境湿度状态显示
+ * ************************************************/
+void hum_state_dis(void)
+{
+  if (SYS_RUN_timer > 59)
+  {
+    if (Hum_dsp_state < 40)
+    {
+      AirQ_Class_LED_buf = GREEN_LED;
+    }
+    else if (Hum_dsp_state < 70)
+    {
+      AirQ_Class_LED_buf = BLUE_LED;
+    }
+    else
+    {
+      AirQ_Class_LED_buf = ORANGE_LED;
+    }
+  }
+}
+
 // *****************************************************************************
 // 函数名称 : LedDsp_Test
 // 功能说明 : LED产检显示
@@ -521,7 +543,7 @@ void LedDsp_content(void)
     {
       Disp_All();
       Decimal_point_off;
-      AirQ_Class_LED_buf = ALL_ON_LED;
+      hum_state_dis();
     }
     return;
   }
@@ -626,37 +648,15 @@ void LedDsp_content(void)
   .藍色,環境濕度在40%RH~70%RH
   .綠色,環境濕度低於40%RH
   *****************************************************/
-  if ((SYS_RUN_timer > 59) && (!M_Defrost_status))
+  if (!M_Defrost_status)
   {
-    if (Hum_dsp_state < 40)
-    {
-      AirQ_Class_LED_buf = GREEN_LED;
-    }
-    else if (Hum_dsp_state < 70)
-    {
-      AirQ_Class_LED_buf = BLUE_LED;
-    }
-    else
-    {
-      AirQ_Class_LED_buf = ORANGE_LED;
-    }
+    hum_state_dis();
   }
-  else if (M_Defrost_status)
+  else
   {
     if (_Flash_500ms)
     {
-      if (Hum_dsp_state < 40)
-      {
-        AirQ_Class_LED_buf = GREEN_LED;
-      }
-      else if (Hum_dsp_state < 70)
-      {
-        AirQ_Class_LED_buf = BLUE_LED;
-      }
-      else
-      {
-        AirQ_Class_LED_buf = ORANGE_LED;
-      }
+      hum_state_dis();
     }
   }
 
