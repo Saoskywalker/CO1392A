@@ -459,6 +459,12 @@ void key_decode(void)
 
     Disp_Delay = 10;
 
+    //¹ÊÕÏÊ±½ûÖ¹²Ù×÷, ³ý¿ì²âÍâ
+    if ((key_num != fast_test_key) &&
+        (Sys_Err.temp_room_err || Sys_Err.hum_Sensor_err ||
+         Sys_Err.temp_coil_err || Sys_Err.comm_err || Sys_Err.Water_Full))
+        return;
+
     if ((Child_Lock_status == ENABLE) && (key_num != Child_key))
     {
         if (Child_Lock_Disp_Count == 0)
@@ -473,10 +479,9 @@ void key_decode(void)
 
     if (key_num != SELF_TEST_KEY && key_num != COMP_TEST_KEY)
     {
-        if ((Sys_Err.Water_Full == ENABLE) ||
-            (SYS_Power_Status == OFF && M_Timer_Run == 0 && key_num != power_key &&
-             key_num != set_timer_key && key_num != Child_key && key_num != fast_test_key &&
-             key_num != WIFI_RESET_KEY))
+        if (SYS_Power_Status == OFF && M_Timer_Run == 0 && key_num != power_key &&
+            key_num != set_timer_key && key_num != Child_key && key_num != fast_test_key &&
+            key_num != WIFI_RESET_KEY)
         {
             // Key_ERR_Buzz_Cnt = 3;
             return;
