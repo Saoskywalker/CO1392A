@@ -257,16 +257,16 @@ void prg_s_general(void)
                 Dump_Buzz_Cnt--;
                 Buzz_Time = BUZZ_long_time;
         }
-        //
 
-        if (M_sleep_Time > 0)
-        {
-                M_sleep_Time--;
-                if (M_sleep_Time == 0)
-                {
-                        _Sleep_status = 1;
-                }
-        }
+        //倒计时后, 进入休眠
+        // if (M_sleep_Time > 0)
+        // {
+        //         M_sleep_Time--;
+        //         if (M_sleep_Time == 0)
+        //         {
+        //                 _Sleep_status = 1;
+        //         }
+        // }
 
         if (communication_timer > 0)
         {
