@@ -11,9 +11,9 @@
 #define HUM_SET_60_UPLOAD 0X03
 #define HUM_SET_70_UPLOAD 0X04
 //故障上报值
-#define TEMP_HUM_SEN_ERR_UPLOAD (1 << 0) // E1,温湿度传感器故障
+#define TEMP_SEN_ERR_UPLOAD (1 << 0) // E1,温度传感器故障
 #define COIL_SEN_ERR_UPLOAD (1 << 1)     // E2,铜管传感器故障
-#define MOTOR_ERR_UPLOAD (1 << 2)        // E4,马达故障
+#define HUM_ERR_UPLOAD (1 << 2)        // E3,湿度故障
 #define MCU_COMMUN_ERR_UPLOAD (1 << 3)   // E5,MCU通信故障
 #define DUST_SEN_ERR_UPLOAD (1 << 4)     // E9,粉尘传感器故障
 

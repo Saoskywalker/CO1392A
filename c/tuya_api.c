@@ -518,7 +518,7 @@ static void upload_data_deal(void)
 
     if (Sys_Err.temp_room_err) // E1,温湿度传感器故障
     {
-        err_buf |= TEMP_HUM_SEN_ERR_UPLOAD;
+        err_buf |= TEMP_SEN_ERR_UPLOAD;
     }
 
     if (Sys_Err.temp_coil_err) // E2,铜管传感器故障
@@ -526,9 +526,9 @@ static void upload_data_deal(void)
         err_buf |= COIL_SEN_ERR_UPLOAD;
     }
 
-    if (Sys_Err.pan_motor_err) // E4,马达故障
+    if (Sys_Err.hum_Sensor_err) // E3, 湿度故障
     {
-        err_buf |= MOTOR_ERR_UPLOAD;
+        err_buf |= HUM_ERR_UPLOAD;
     }
 
     if (Sys_Err.comm_err) // E5,MCU通信故障
