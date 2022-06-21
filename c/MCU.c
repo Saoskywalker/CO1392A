@@ -90,15 +90,26 @@ void BTM_Int(void) interrupt 9
  *入口参数：void
  *出口参数：void
  **************************************************/
-
 void timer0(void) interrupt 1
+{
+    TL0 = (65536 - (2000 - 1)) % 256; //溢出时间：时钟为Fsys，则1000*（1/Fsys）=125us;  主频8M
+    TH0 = (65536 - (2000 - 1)) / 256;
+}
+
+/**************************************************
+ *函数名称：void timer3()interrupt 13
+ *函数功能：定时器中断服务函数  125us
+ *入口参数：void
+ *出口参数：void
+ **************************************************/
+void timer3(void) interrupt 13
 {
     static UI08 sys_time_rj = 0;
     static UI16 cnt1s = 0;
 
-    TL0 = (65536 - (2000 - 1)) % 256; //溢出时间：时钟为Fsys，则1000*（1/Fsys）=125us;  主频8M
-    TH0 = (65536 - (2000 - 1)) / 256;
-    //
+    TXINX = 0x03; //选择定时器T3
+    TFX = 0;      //溢出清零
+
     if (Buzz_Time > 0)
     {
         if (Buzzer_IO_Status == RESET)
@@ -124,6 +135,7 @@ void timer0(void) interrupt 1
     // exv_run();
 
     // Get_the_pump_pwm_width();
+
     //================   1ms时间片   =====================================
     if (++sys_time_rj >= 8)
     {
@@ -131,7 +143,7 @@ void timer0(void) interrupt 1
         prg_ms1();
         Led_Scan();
 
-        if (++cnt1s>=1000)
+        if (++cnt1s >= 1000)
         {
             cnt1s = 0;
             _1S_For_For_SYS = 1;

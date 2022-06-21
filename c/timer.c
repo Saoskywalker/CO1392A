@@ -45,6 +45,7 @@ void BTM_Init(void)
 void TimerInit(void)
 {
     //主时钟 32M
+/*     
     TMCON |= bit0; //------111 ;Timer0 选择时钟Fsys
     // T0设置
     TMOD |= 0x01;                     // 0000 0001;Timer0设置工作方式1
@@ -53,8 +54,19 @@ void TimerInit(void)
     TR0 = 0;
     ET0 = 1; //定时器0允许
     TR0 = 1; //打开定时器0
-
+ */
     // BTM_Init();
+
+    // T3设置
+    TXINX = 0x03; //选择定时器T3
+    TXMOD = 0x80;
+    TXCON = 0x00;                  //设置为16位重载寄存
+    RCAPXH = (65536 - 1999) / 256; //溢出时间：时钟为Fsys，则32000*（1/Fsys）=2ms;
+    RCAPXL = (65536 - 1999) % 256;
+    TRX = 0;
+    IE1 |= 0x40; //定时器3中断允许
+    IP1 |= 0X40; //timer3中断优先级为高
+    TRX = 1; //打开定时器3
 }
 
 #define PWM_CYCLE_VALUE 4000
