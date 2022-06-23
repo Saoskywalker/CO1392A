@@ -37,8 +37,8 @@
 
 /*  模块工作方式选择,只能三选一,推荐使用防误触模式  */
 //#define CONFIG_MODE     CONFIG_MODE_DEFAULT             //默认工作模式
-//#define CONFIG_MODE     CONFIG_MODE_LOWPOWER            //安全模式 (低功耗配网方式)
-#define CONFIG_MODE     CONFIG_MODE_SPECIAL             //防误触模式(特殊配网方式)
+#define CONFIG_MODE     CONFIG_MODE_LOWPOWER            //安全模式 (低功耗配网方式)
+// #define CONFIG_MODE     CONFIG_MODE_SPECIAL             //防误触模式(特殊配网方式)
 
 /*  设置低功耗配网方式和特殊配网方式的配网模式打开时间,该宏处于注释状态将按三分钟处理,可以支持的设置数据范围: 3~10 分钟  */
 //#define CONFIG_MODE_DELAY_TIME    10         //配网模式打开时间 单位:分钟
