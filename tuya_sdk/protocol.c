@@ -540,6 +540,7 @@ void wifi_test_result(unsigned char result,unsigned char rssi)
     }else {
         //测试成功
         //rssi为信号强度(0-100, 0信号最差，100信号最强)
+        M_wifi_rssi_dsp=rssi;//rssi为信号强度(0-100, 0信号最差，100信号最强)
     }
 }
 #endif
