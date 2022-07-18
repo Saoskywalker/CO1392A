@@ -388,8 +388,8 @@ static void Ec_Protect1_Logic(void)
     case 1:
     {
         //
-        // if (g_dt > 5)  //室温管温大于5度        小能力系统
-        if (g_dt > 8) //室温管温大于8度        大能力系统
+        if (g_dt > 5)  //室温管温大于5度        小能力系统
+        // if (g_dt > 8) //室温管温大于8度        大能力系统
         {
             S_EC1_Cycle_Count = 0;
             S_EC1_Count_Time = 0;
